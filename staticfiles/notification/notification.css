@@ -1,0 +1,81 @@
+
+body{
+    /* background-color: white; */
+}
+
+.notification-wrapper{
+    width:95%;
+    max-width:700px;
+    margin-left:auto;
+    margin-right: auto;
+}
+
+
+.notification-container{
+    /* border:1px solid black; */
+    margin-top:4em;
+}
+
+.notification{
+    /* border:1px solid red; */
+    display:flex;
+    justify-content: space-around;
+    align-items:center;
+    padding:1em .5em ;
+    border-bottom:1px solid rgb(185, 185, 185);
+    /* margin-bottom:.5em; */
+    background-color:white;
+    /* opacity:.5; */
+}
+
+.not-seen-notification{
+    /* opacity:1; */
+
+}
+
+.notification .profile-icon{
+    height:60px;
+    width:60px;
+    border:1px solid black;
+}
+
+.notification .profile-icon img{
+  height:100%;
+}
+
+.notification span.notification-title{
+    font-weight:bolder;
+    margin-bottom:.5em;
+}
+
+.notification .info{
+    width:85%;
+    /* border:1px solid black; */
+    padding:.5em;
+    display:flex;
+    flex-direction: column;
+}
+
+.notification .info .title{
+    font-weight:bold;
+
+}
+
+.notification .info .text{
+    font-size:.9rem;
+    color:rgb(104, 104, 104);
+}
+.notification .info a{
+    font-size:.9rem;
+    cursor:pointer;
+}
+
+.notification.is-not-seen{
+    background-color: rgba(189, 189, 189, 0.281);
+}
+
+.notification .info .time{
+    font-size:.8rem;
+    margin-top:1em;
+    opacity:.4;
+}
