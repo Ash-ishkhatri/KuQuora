@@ -20,10 +20,6 @@ def index_view(request):
         disliked_post_ids.append(disliked_obj.post.id)
 
     notification_count = Notification.objects.filter(user=request.user,is_seen=False).count()
-
-        
-
-
     context = {
         'posts':posts,
         'liked_posts_ids':liked_post_ids,

@@ -27,7 +27,7 @@
         <div class="buttons">
             <div class="like">
                 {% csrf_token %}
-                <i id='like' data-post_id = '{{post.id}}'data-url = "{% url 'like_post' %}" class="fas fa-thumbs-up
+                <i id='like'  data-post_id = '{{post.id}}' data-url = "{% url 'like_post' %}" class="fas fa-thumbs-up
                 {% if post.id in liked_posts_ids %}
                     liked
                 {% endif %}

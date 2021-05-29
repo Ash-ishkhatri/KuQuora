@@ -7,7 +7,7 @@ from notification.models import Notification
 
 User = get_user_model()
 
-
+            
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

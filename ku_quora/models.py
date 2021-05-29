@@ -7,6 +7,7 @@ from django.urls import reverse
 from notification.models  import  Notification
 from django.db.models.signals import post_save
 
+
 class Tag(models.Model):
     title = models.CharField(max_length = 30)
     slug = models.SlugField(null=True,unique=True,blank=True)

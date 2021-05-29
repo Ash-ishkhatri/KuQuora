@@ -6,6 +6,9 @@ from ku_quora.models import Post,Like,Dislike
 from django.http import JsonResponse
 import json
 
+
+# from django.contrib.auth.model import User
+
 User = get_user_model()
 # Create your views here.
 
@@ -23,6 +26,7 @@ def register_view(request):
         password2 = request.POST.get('password2')
 
         user = User.objects.filter(username=username).exists()
+        
         if user:
             messages.error(request,'Error------    :( username already exists')
             return redirect('register')
@@ -39,12 +43,13 @@ def register_view(request):
         user = User.objects.create_user(username=username,email=email,
                 password = password1,first_name=first_name,last_name=last_name)
         messages.success(request,"Success - ----  : ) Signed Up successfully")
-        return redirect('register')
-
+        return redirect('login')
+        
     return render(request,'account/register.html',{})
 
 
 def login_view(request):
+
     if request.user.is_authenticated:
         return redirect('index')
     if request.method == 'POST':
@@ -59,8 +64,10 @@ def login_view(request):
         else:
             messages.error(request,f"user credentials didn't match")
             return redirect('login')
-
+    
     return render(request,'account/login.html',{})
+
+
 
 def logout_view(request):
     logout(request)
@@ -73,7 +80,7 @@ def profile_view(request,id):
     followings = 0
     selfProfile = 1
     already_following = 1
-
+    
     if id == request.user.id:
         selfProfile = 1
         user = request.user
