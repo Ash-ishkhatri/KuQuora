@@ -50,8 +50,13 @@ class Like(models.Model):
         post = instance.post
         sender = instance.user
         user = post.user
+       
         notification_type = 1
-        notification, created = Notification.objects.get_or_create(post=post,sender=sender,user=user,notification_type=notification_type)
+
+        checkDislikeNotification = Notification.objects.filter(post=post,sender=sender,user=user,notification_type=2).exists()
+        if checkDislikeNotification:
+            Notification.objects.filter(post=post,sender=sender,user=user,notification_type=2).delete()
+        notification = Notification.objects.create(post=post,sender=sender,user=user,notification_type=notification_type)
         notification.save()
         print('like notified')
 
@@ -66,8 +71,10 @@ class Dislike(models.Model):
         sender = instance.user
         user = post.user
         notification_type = 2
-        notification, created = Notification.objects.get_or_create(post=post,sender=sender,user=user,notification_type=notification_type)
-        notification.save()
+        checkLikeNotification = Notification.objects.filter(post=post,sender=sender,user=user,notification_type=1).exists()
+        if checkLikeNotification:
+            Notification.objects.filter(post=post,sender=sender,user=user,notification_type=1).delete()
+        notification = Notification.objects.create(post=post,sender=sender,user=user,notification_type=notification_type)
         print('dislike notified')
 
 
