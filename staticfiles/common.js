@@ -20,38 +20,40 @@ if(window.location.pathname == '/notification/'){
 
 }
 
+likeDislikeAudio = document.querySelector('audio#likeDislike');
+likeDislikeAudio.volume=0.2;
+
 
 
 likeBtns = document.querySelectorAll('.blog-post .footer .buttons .like')
-console.log(likeBtns)
-likeBtns.forEach(btn => {
+
+likeBtns.forEach(btn=>{
     btn.addEventListener('click',()=>{
-        likesDisplayArea = event.target.nextElementSibling;
-        dislikeDisplayArea = event.target.parentNode.nextElementSibling.children[1];
+        likeDislikeAudio.play()
+
+        likeDisplayArea = event.target.children[2];
+        dislikeDisplayArea = event.target.nextElementSibling.children[1];
 
         event.target.classList.toggle('liked');
         
-        dislikeBtn = event.target.parentNode.nextElementSibling.children[0];
-
+        dislikeBtn = event.target.nextElementSibling;
         if(dislikeBtn.classList.contains('disliked')){
             dislikeBtn.classList.remove('disliked');
         }
-        
         xhr = new XMLHttpRequest()
         
         csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
-        console.log(csrfToken)
         
 
         xhr.open('POST',event.target.getAttribute('data-url'),true)
-        xhr.setRequestHeader('X-CSRFToken',csrfToken)
-        xhr.setResponseType = 'json'
+        xhr.setRequestHeader('X-CSRFToken',csrfToken);
+        xhr.setResponseType = 'json';
 
         xhr.onload = function(){
             console.log(this.response)
             data = JSON.parse(this.response)
             console.log(data)
-            likesDisplayArea.innerHTML = data.current_likes;
+            likeDisplayArea.innerHTML = data.current_likes;
             dislikeDisplayArea.innerHTML = data.current_dislikes;
         }
 
@@ -59,47 +61,148 @@ likeBtns.forEach(btn => {
             'post_id':event.target.dataset.post_id
         }
         xhr.send(JSON.stringify(data))
-
-
-
     })
 })
 
 
-dislikeBtns = document.querySelectorAll('.blog-post .footer .buttons .dislike')
-dislikeBtns.forEach(btn => {
+
+
+
+
+
+
+
+
+disLikeBtns = document.querySelectorAll('.blog-post .footer .buttons .dislike')
+
+disLikeBtns.forEach(btn=>{
     btn.addEventListener('click',()=>{
-        dislikeDisplayArea  = event.target.nextElementSibling;
-        console.log(dislikeDisplayArea)
-        likesDisplayArea = event.target.parentNode.previousElementSibling.children[2];
+        likeDislikeAudio.play()
+        dislikeDisplayArea = event.target.children[1];
+        likeDisplayArea = event.target.previousElementSibling.children[2];
+
         event.target.classList.toggle('disliked');
-
-        likeBtn = event.target.parentNode.previousElementSibling.children[1];
-        if(likeBtn.classList.contains('liked')){
-            likeBtn.classList.remove('liked');
+        
+        dislikeBtn = event.target.previousElementSibling;
+        if(dislikeBtn.classList.contains('liked')){
+            dislikeBtn.classList.remove('liked');
         }
-
-        xhr = new XMLHttpRequest();
+        xhr = new XMLHttpRequest()
+        
         csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
-        console.log(csrfToken);
-        xhr.open('POST',event.target.getAttribute('data-url'),true);
+        
+
+        xhr.open('POST',event.target.getAttribute('data-url'),true)
         xhr.setRequestHeader('X-CSRFToken',csrfToken);
         xhr.setResponseType = 'json';
+
         xhr.onload = function(){
-            console.log(this.response);
-            data = JSON.parse(this.response);
-            likesDisplayArea.innerHTML = data.current_likes;
+            console.log(this.response)
+            data = JSON.parse(this.response)
+            console.log(data)
+            likeDisplayArea.innerHTML = data.current_likes;
             dislikeDisplayArea.innerHTML = data.current_dislikes;
         }
-        
+
         data = {
             'post_id':event.target.dataset.post_id
         }
-
-        xhr.send(JSON.stringify(data));
+        xhr.send(JSON.stringify(data))
     })
+})
 
-});
+
+
+
+
+
+
+
+
+
+
+
+// console.log(likeBtns)
+// likeBtns.forEach(btn => {
+//     btn.addEventListener('click',()=>{
+//         // likeDislikeAudio.play();
+//         // likesDisplayArea = event.target.nextElementSibling;
+//         // dislikeDisplayArea = event.target.parentNode.nextElementSibling.children[1];
+
+//         // event.target.classList.toggle('liked');
+//         // console.log(btn)
+//         // dislikeBtn = event.target.parentNode.nextElementSibling.children[0];
+
+//         // if(dislikeBtn.classList.contains('disliked')){
+//         //     dislikeBtn.classList.remove('disliked');
+//         // }
+        
+
+
+//         xhr = new XMLHttpRequest()
+        
+//         csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+//         console.log(csrfToken)
+        
+
+//         xhr.open('POST',event.target.getAttribute('data-url'),true)
+//         xhr.setRequestHeader('X-CSRFToken',csrfToken)
+//         xhr.setResponseType = 'json'
+
+//         xhr.onload = function(){
+//             console.log(this.response)
+//             data = JSON.parse(this.response)
+//             console.log(data)
+//             likesDisplayArea.innerHTML = data.current_likes;
+//             dislikeDisplayArea.innerHTML = data.current_dislikes;
+//         }
+
+//         data = {
+//             'post_id':event.target.dataset.post_id
+//         }
+//         xhr.send(JSON.stringify(data))
+
+
+
+//     })
+// })
+
+
+// dislikeBtns = document.querySelectorAll('.blog-post .footer .buttons .dislike')
+// dislikeBtns.forEach(btn => {
+//     btn.addEventListener('click',()=>{
+//         likeDislikeAudio.play()
+//         dislikeDisplayArea  = event.target.nextElementSibling;
+//         console.log(dislikeDisplayArea)
+//         likesDisplayArea = event.target.parentNode.previousElementSibling.children[2];
+//         event.target.classList.toggle('disliked');
+
+//         likeBtn = event.target.parentNode.previousElementSibling.children[1];
+//         if(likeBtn.classList.contains('liked')){
+//             likeBtn.classList.remove('liked');
+//         }
+
+//         xhr = new XMLHttpRequest();
+//         csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+//         console.log(csrfToken);
+//         xhr.open('POST',event.target.getAttribute('data-url'),true);
+//         xhr.setRequestHeader('X-CSRFToken',csrfToken);
+//         xhr.setResponseType = 'json';
+//         xhr.onload = function(){
+//             console.log(this.response);
+//             data = JSON.parse(this.response);
+//             likesDisplayArea.innerHTML = data.current_likes;
+//             dislikeDisplayArea.innerHTML = data.current_dislikes;
+//         }
+        
+//         data = {
+//             'post_id':event.target.dataset.post_id
+//         }
+
+//         xhr.send(JSON.stringify(data));
+//     })
+
+// });
 
 
 

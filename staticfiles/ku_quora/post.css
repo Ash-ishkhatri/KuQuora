@@ -1,4 +1,9 @@
 
+.blog-post{
+    margin-top:2em;
+    margin-bottom:2em;
+}
+
 .blog-post:hover,
 .add-question:hover{
     cursor:pointer;
@@ -8,9 +13,9 @@
    
 }
 .blog-post:hover{
-    /* box-shadow:5px 5px 20px rgb(219, 219, 219); */
-    background-color: rgb(241, 241, 241);
-    /* transform:scale(1.001); */
+    box-shadow:5px 5px 20px rgb(179, 179, 179);
+    /* background-color: rgb(241, 241, 241); */
+    transform:scale(1.01);
 }
 
 .blog-post:nth-of-type(1){
@@ -105,14 +110,25 @@
     margin-top:.8em;
 }
 
+.like,
+.dislike{
+    /* border:1px solid black; */
+}
 
-.blog-post i.liked,
-.blog-post i.disliked{
+.like label,
+.dislike label,
+.like i,
+.dislike i{
+    pointer-events:none;
+}
+
+.blog-post .liked i,
+.blog-post .disliked i{
     animation:pop .5s ease;
     -webkit-text-stroke: white;
     color:red;
-
 }
+
 
 @keyframes pop{
     0%{
@@ -129,9 +145,6 @@
     }
 }
 
-/* .blog-post .buttons{
-    border:1px solid black;
-} */
 
 
 .blog-post .buttons .options{

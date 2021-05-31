@@ -1,5 +1,5 @@
 
-<div class="blog-post">
+<div class="blog-post" >
     <div class="header">
         <div class="profile">
                 <a href="{% url 'profile' post.user.id %}"><img src="{{post.user.profile.image.url}}" alt="" ></a>
@@ -25,22 +25,22 @@
     </div>
     <div class="footer">
         <div class="buttons">
-            <div class="like">
+            <div class="like 
+            {% if post.id in liked_posts_ids %}
+            liked
+        {% endif %}" data-post_id = '{{post.id}}' data-url = "{% url 'like_post' %}">
                 {% csrf_token %}
-                <i id='like'  data-post_id = '{{post.id}}' data-url = "{% url 'like_post' %}" class="fas fa-thumbs-up
-                {% if post.id in liked_posts_ids %}
-                    liked
-                {% endif %}
-                "></i>
+                <i id='like'   class="fas fa-thumbs-up"></i>
                 <label for='like' class="count">{{post.likes}}</label>
             </div> 
-            <div class="dislike">
-                <i id='dislike' data-post_id='{{post.id}}' data-url = "{% url 'dislike_post' %}" class="fas fa-thumbs-down
+            <div class="dislike 
                 {% if post.id in disliked_posts_ids %}
                     disliked
-                {% endif %}"></i>
+                {% endif %}" data-post_id='{{post.id}}' data-url = "{% url 'dislike_post' %}">
+                <i id='dislike'  class="fas fa-thumbs-down"> </i>
                 <label for='dislike' class="count">{{post.dislikes}}</label>
             </div>
+            
             <div class="comment">
                 <i class="fas fa-comment"></i>
                 <span class="count">0</span>
