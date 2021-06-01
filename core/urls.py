@@ -11,7 +11,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',include('ku_quora.urls')),
     path('account/',include('account.urls')),
-    path('notification/',include('notification.urls'))
+    path('notification/',include('notification.urls')),
 ]
 
 

@@ -116,96 +116,6 @@ disLikeBtns.forEach(btn=>{
 
 
 
-
-
-
-
-
-
-// console.log(likeBtns)
-// likeBtns.forEach(btn => {
-//     btn.addEventListener('click',()=>{
-//         // likeDislikeAudio.play();
-//         // likesDisplayArea = event.target.nextElementSibling;
-//         // dislikeDisplayArea = event.target.parentNode.nextElementSibling.children[1];
-
-//         // event.target.classList.toggle('liked');
-//         // console.log(btn)
-//         // dislikeBtn = event.target.parentNode.nextElementSibling.children[0];
-
-//         // if(dislikeBtn.classList.contains('disliked')){
-//         //     dislikeBtn.classList.remove('disliked');
-//         // }
-        
-
-
-//         xhr = new XMLHttpRequest()
-        
-//         csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
-//         console.log(csrfToken)
-        
-
-//         xhr.open('POST',event.target.getAttribute('data-url'),true)
-//         xhr.setRequestHeader('X-CSRFToken',csrfToken)
-//         xhr.setResponseType = 'json'
-
-//         xhr.onload = function(){
-//             console.log(this.response)
-//             data = JSON.parse(this.response)
-//             console.log(data)
-//             likesDisplayArea.innerHTML = data.current_likes;
-//             dislikeDisplayArea.innerHTML = data.current_dislikes;
-//         }
-
-//         data = {
-//             'post_id':event.target.dataset.post_id
-//         }
-//         xhr.send(JSON.stringify(data))
-
-
-
-//     })
-// })
-
-
-// dislikeBtns = document.querySelectorAll('.blog-post .footer .buttons .dislike')
-// dislikeBtns.forEach(btn => {
-//     btn.addEventListener('click',()=>{
-//         likeDislikeAudio.play()
-//         dislikeDisplayArea  = event.target.nextElementSibling;
-//         console.log(dislikeDisplayArea)
-//         likesDisplayArea = event.target.parentNode.previousElementSibling.children[2];
-//         event.target.classList.toggle('disliked');
-
-//         likeBtn = event.target.parentNode.previousElementSibling.children[1];
-//         if(likeBtn.classList.contains('liked')){
-//             likeBtn.classList.remove('liked');
-//         }
-
-//         xhr = new XMLHttpRequest();
-//         csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
-//         console.log(csrfToken);
-//         xhr.open('POST',event.target.getAttribute('data-url'),true);
-//         xhr.setRequestHeader('X-CSRFToken',csrfToken);
-//         xhr.setResponseType = 'json';
-//         xhr.onload = function(){
-//             console.log(this.response);
-//             data = JSON.parse(this.response);
-//             likesDisplayArea.innerHTML = data.current_likes;
-//             dislikeDisplayArea.innerHTML = data.current_dislikes;
-//         }
-        
-//         data = {
-//             'post_id':event.target.dataset.post_id
-//         }
-
-//         xhr.send(JSON.stringify(data));
-//     })
-
-// });
-
-
-
 try{
     followBtn = document.querySelector('.button button')
     followBtn.addEventListener('click',()=>{
@@ -217,6 +127,7 @@ try{
             event.target.innerHTML='Follow';
         }
         csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+        
         const xhr = new XMLHttpRequest();
         xhr.open('POST',event.target.dataset.url,true);
         xhr.setRequestHeader('X-CSRFToken',csrfToken)
@@ -239,5 +150,31 @@ try{
 }catch(err){
     console.log(err)
 }
+
+
+
+
+setInterval(()=>{
+
+    csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+
+
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST','/notification/getLatestNotification',true);
+    xhr.setRequestHeader('X-CSRFToken',csrfToken)
+    xhr.onload = function(e){
+        data = JSON.parse(this.response)
+        console.log(data)
+    }
+
+    notificationsCount = document.querySelector('.notification-count').innerHTML;
+
+    // console.log(notificationsCount)
+    data = {
+        'currentNotificationCount':notificationsCount
+    }
+
+    xhr.send(JSON.stringify(data));
+},1000)
 
 

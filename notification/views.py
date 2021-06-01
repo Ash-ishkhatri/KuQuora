@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from .models import Notification
 from datetime import datetime
+import json
+from django.http import JsonResponse
 
 # Create your views here.
 def notification_view(request):
@@ -14,3 +16,25 @@ def notification_view(request):
     }
 
     return render(request,'notification/notification.html',context)
+
+
+def getLatestNotification_view(request):
+
+    data = json.loads(request.body)
+    oldCount = data['currentNotificationCount']
+
+
+    print(type(oldCount))
+
+    newCount = Notification.objects.filter(user=request.user).count()
+    
+    currentNotificationCount = 0
+    oldCount = int(oldCount)
+    if newCount > oldCount:
+        currentNotificationCount = newCount
+    else:
+        currentNotificationCount = oldCount
+    response = {
+        'currentNotificationCount':currentNotificationCount
+    }
+    return JsonResponse(response)
