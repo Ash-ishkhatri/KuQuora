@@ -27,20 +27,30 @@ body{
     background-color:white;
     margin:1em auto;
     border-radius:5px;
-    box-shadow:3px 3px 10px rgb(201, 223, 206);
+    box-shadow:3px 3px 15px rgb(190, 204, 193);
     cursor:pointer;
     transition:transform .6s ease-out;
 }
 
+.notification-seen{
+    opacity:1;
+    box-shadow:none;
+    background-color:rgba(180, 180, 180, 0.144);
+}
+
+
+
 .notification:hover{
     transform:scale(1.03);
 }
-
+.notification-seen:hover{
+    transform:none;
+}
 .not-seen-notification{
     /* opacity:1; */
 
 }
-.notification >*:not(.profile-icon){
+.notification >*:not(.sender){
     pointer-events:none;
 }
 

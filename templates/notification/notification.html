@@ -12,6 +12,10 @@ notification
     <div class="notification-container notification-wrapper">
        {% for notification in notifications %}
             <div class="notification 
+
+            {% if notification.is_seen %}
+                notification-seen
+            {% endif %}
                 
             "
             data-url = "
@@ -21,6 +25,8 @@ notification
                 {{notification.post.id}}
             {% endif %}
             "
+
+            data-notification_id = "{{notification.id}}"
 
             >
                 <div class="sender">

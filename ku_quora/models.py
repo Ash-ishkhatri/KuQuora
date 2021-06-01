@@ -39,7 +39,7 @@ class Post(models.Model):
         return reverse('post_detail',args=[self.id])
 
     def save(self,*args,**kwargs):
-        self.slug = slugify(self.title)
+        self.slug = slugify(self.title + str(self.id))
         return super().save(*args,**kwargs)
 
 class Like(models.Model):

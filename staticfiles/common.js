@@ -3,6 +3,16 @@ try{
     FollowersIcon = document.querySelector('nav li i.fa-list');
     NotificationIcon = document.querySelector('nav li i.fa-bell');    
 
+    if(window.location.pathname == '/'){
+        homeIcon.style.color = 'white';
+        homeIcon.style.webkitTextStroke = '0px';
+    }
+    if(window.location.pathname == '/notification/'){
+        NotificationIcon.style.color = 'white';
+        NotificationIcon.style.webkitTextStroke = '0px';
+    
+    }
+    
 }
 catch(error){
     console.log(error)
@@ -10,18 +20,11 @@ catch(error){
 
 
 
-if(window.location.pathname == '/'){
-    homeIcon.style.color = 'white';
-    homeIcon.style.webkitTextStroke = '0px';
-}
-if(window.location.pathname == '/notification/'){
-    NotificationIcon.style.color = 'white';
-    NotificationIcon.style.webkitTextStroke = '0px';
-
-}
-
 likeDislikeAudio = document.querySelector('audio#likeDislike');
-likeDislikeAudio.volume=0.2;
+likeDislikeAudio.volume=0.6;
+notificationAudio = document.querySelector('audio#notification');
+notificationAudio.volume=0.6;
+
 
 
 
@@ -29,7 +32,7 @@ likeBtns = document.querySelectorAll('.blog-post .footer .buttons .like')
 
 likeBtns.forEach(btn=>{
     btn.addEventListener('click',()=>{
-        likeDislikeAudio.play()
+       likeDislikeAudio.play()
 
         likeDisplayArea = event.target.children[2];
         dislikeDisplayArea = event.target.nextElementSibling.children[1];
@@ -51,10 +54,13 @@ likeBtns.forEach(btn=>{
 
         xhr.onload = function(){
             console.log(this.response)
-            data = JSON.parse(this.response)
-            console.log(data)
-            likeDisplayArea.innerHTML = data.current_likes;
-            dislikeDisplayArea.innerHTML = data.current_dislikes;
+            if(this.response){
+                data = JSON.parse(this.response)
+                console.log(data)
+                likeDisplayArea.innerHTML = data.current_likes;
+                dislikeDisplayArea.innerHTML = data.current_dislikes;
+            }
+            
         }
 
         data = {
@@ -116,15 +122,12 @@ disLikeBtns.forEach(btn=>{
 
 
 
-<<<<<<< HEAD
 
 
 
 
 
 
-=======
->>>>>>> notification-polling
 try{
     followBtn = document.querySelector('.button button')
     followBtn.addEventListener('click',()=>{
@@ -161,44 +164,64 @@ try{
 }
 
 
-<<<<<<< HEAD
 notifications = document.querySelectorAll('.notification');
 
 notifications.forEach(notification=>{
     notification.addEventListener('click',()=>{
         destinationUrl = event.target.dataset.url.trim();
-        // console.log(destinationUrl)
-        window.location.pathname = destinationUrl;
-        
 
+        csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+        
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST','/notification/notification_seen_status',true);
+        xhr.setRequestHeader('X-CSRFToken',csrfToken)
+        xhr.onload = function(e){
+            data = JSON.parse(this.response)
+            console.log(data)
+        }
+
+        data = {
+            'id':event.target.dataset.notification_id
+        }
+
+        xhr.send(JSON.stringify(data));
+
+        window.location.pathname = destinationUrl;
+        console.log(event.target.dataset.notification_id);
+        
     })
 
 })
-=======
+
 
 
 setInterval(()=>{
+    csrfToken = document.querySelectorAll('input[name="csrfmiddlewaretoken"]')[0].value;
 
-    csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
-
+    console.log(csrfToken)
+    
+    notificationsCount = parseInt(document.querySelector('.notification-count').innerHTML);
 
     const xhr = new XMLHttpRequest();
     xhr.open('POST','/notification/getLatestNotification',true);
     xhr.setRequestHeader('X-CSRFToken',csrfToken)
     xhr.onload = function(e){
         data = JSON.parse(this.response)
-        console.log(data)
+        document.querySelector('.notification-count').innerHTML = data.currentNotificationCount;
+        // currentNotification = data.currentNotificationCount;
+        if(notificationsCount < data.currentNotificationCount){
+            notificationAudio.play();
+        } 
     }
 
-    notificationsCount = document.querySelector('.notification-count').innerHTML;
-
+   
     // console.log(notificationsCount)
+    console.log(notificationsCount)
     data = {
         'currentNotificationCount':notificationsCount
     }
 
     xhr.send(JSON.stringify(data));
-},1000)
+},1000);
 
->>>>>>> notification-polling
 

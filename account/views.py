@@ -5,6 +5,7 @@ from .models import Follow
 from ku_quora.models import Post,Like,Dislike
 from django.http import JsonResponse
 import json
+from notification.models import Notification
 
 
 # from django.contrib.auth.model import User
@@ -104,7 +105,7 @@ def profile_view(request,id):
     disliked_objs = Dislike.objects.filter(user=request.user).all()
     for disliked_obj in disliked_objs:
         disliked_post_ids.append(disliked_obj.post.id)
-
+    notification_count = Notification.objects.filter(user=request.user,is_seen=False).count()
     context = {
         'selfProfile' : selfProfile,
         'User':user,
@@ -113,7 +114,8 @@ def profile_view(request,id):
         'followings':followings,
         'already_following':already_following,
         'liked_posts_ids':liked_post_ids,
-        'disliked_posts_ids':disliked_post_ids
+        'disliked_posts_ids':disliked_post_ids,
+        'notification_count':notification_count
     }
     return render(request,'account/profile.html',context)
 

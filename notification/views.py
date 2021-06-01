@@ -19,22 +19,36 @@ def notification_view(request):
 
 
 def getLatestNotification_view(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        oldCount = data['currentNotificationCount']
+        
+        print('oldcount is :',oldCount)
+        newCount = Notification.objects.filter(user=request.user,is_seen=False).count()
+        
+        currentNotificationCount = 0
+        if newCount > oldCount:
+            currentNotificationCount = newCount
+        else:
+            currentNotificationCount = oldCount
+        response = {
+            'currentNotificationCount':currentNotificationCount
+        }
 
-    data = json.loads(request.body)
-    oldCount = data['currentNotificationCount']
+        return JsonResponse(response)
+
+def notification_seen_status_view(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        notification_id = data['id']
+        notification = Notification.objects.get(id=notification_id)
+        notification.is_seen = True
+        notification.save()
+
+        response = {
+            'done':'true'
+        }
+
+        return JsonResponse(response)
 
 
-    print(type(oldCount))
-
-    newCount = Notification.objects.filter(user=request.user).count()
-    
-    currentNotificationCount = 0
-    oldCount = int(oldCount)
-    if newCount > oldCount:
-        currentNotificationCount = newCount
-    else:
-        currentNotificationCount = oldCount
-    response = {
-        'currentNotificationCount':currentNotificationCount
-    }
-    return JsonResponse(response)
