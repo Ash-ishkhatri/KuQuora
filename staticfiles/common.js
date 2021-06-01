@@ -116,12 +116,15 @@ disLikeBtns.forEach(btn=>{
 
 
 
+<<<<<<< HEAD
 
 
 
 
 
 
+=======
+>>>>>>> notification-polling
 try{
     followBtn = document.querySelector('.button button')
     followBtn.addEventListener('click',()=>{
@@ -133,6 +136,7 @@ try{
             event.target.innerHTML='Follow';
         }
         csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+        
         const xhr = new XMLHttpRequest();
         xhr.open('POST',event.target.dataset.url,true);
         xhr.setRequestHeader('X-CSRFToken',csrfToken)
@@ -157,6 +161,7 @@ try{
 }
 
 
+<<<<<<< HEAD
 notifications = document.querySelectorAll('.notification');
 
 notifications.forEach(notification=>{
@@ -169,4 +174,31 @@ notifications.forEach(notification=>{
     })
 
 })
+=======
+
+
+setInterval(()=>{
+
+    csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+
+
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST','/notification/getLatestNotification',true);
+    xhr.setRequestHeader('X-CSRFToken',csrfToken)
+    xhr.onload = function(e){
+        data = JSON.parse(this.response)
+        console.log(data)
+    }
+
+    notificationsCount = document.querySelector('.notification-count').innerHTML;
+
+    // console.log(notificationsCount)
+    data = {
+        'currentNotificationCount':notificationsCount
+    }
+
+    xhr.send(JSON.stringify(data));
+},1000)
+
+>>>>>>> notification-polling
 

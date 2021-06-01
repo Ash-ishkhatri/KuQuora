@@ -7,7 +7,7 @@ notification
 
 
 {% block content %}
-
+{% csrf_token %}
     
     <div class="notification-container notification-wrapper">
        {% for notification in notifications %}
