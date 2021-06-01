@@ -24,7 +24,7 @@ class Tag(models.Model):
         return super().save(*args,**kwargs)
     
 class Post(models.Model):
-    id = models.UUIDField(primary_key=True,default=uuid.uuid4,editable=False)
+    id = models.UUIDField(primary_key=True,default=uuid.uuid4)
     title = models.CharField(max_length=100)
     body = models.TextField()
     posted_on = models.DateTimeField(auto_now_add=True)
@@ -36,7 +36,7 @@ class Post(models.Model):
     slug = models.SlugField(null=False,unique=True,blank=True)
 
     def get_absolute_url(self):
-        return reverse('post_detail',args=[str(self.id)])
+        return reverse('post_detail',args=[self.id])
 
     def save(self,*args,**kwargs):
         self.slug = slugify(self.title)

@@ -1,4 +1,6 @@
-
+.post{
+transition:all 1s ease;
+}
 .blog-post{
     margin-top:2em;
     margin-bottom:2em;
@@ -8,18 +10,15 @@
 .add-question:hover{
     cursor:pointer;
 }
-.add-question:hover{
-    background-color:rgb(235, 235, 235);
-   
-}
+
 .blog-post:hover{
-    box-shadow:5px 5px 20px rgb(179, 179, 179);
+    box-shadow:5px 5px 20px rgb(222, 236, 226);
     /* background-color: rgb(241, 241, 241); */
     transform:scale(1.01);
 }
 
 .blog-post:nth-of-type(1){
-    margin-top:5em;
+    margin-top:3em;
 }
 
 .blog-post >* {
@@ -151,6 +150,7 @@
     position:relative;
     right:0;
     margin-left:auto;
+    /* border:1px solid black; */
 }
 
 
@@ -158,18 +158,27 @@
     position:absolute;
     background-color:white;
     padding:2em 3em;
-    left:-4em;
-    box-shadow:2px 2px 30px rgb(216, 216, 216);
+    /* border:1px solid black; */
+    box-shadow:4px 4px 20px rgb(233, 233, 233);
     z-index:999;
-    top:-.3em;
     border-radius:10px;
-    visibility: hidden;
+    bottom:0;
+    right:0;
+    visibility:hidden;
+    transition:transform 1s ease-out;
 }
 
-.blog-post .buttons .options i:hover + ul,
-.blog-post .buttons .options ul:hover{
-    visibility: visible;
- }
+
+.blog-post .buttons .options ul.animate{
+    transform:scale(1);
+}
+
+/* @keyframes options{
+    0%{
+        visibility:hidden;
+
+    }
+} */
 
 .blog-post .buttons .options ul li{
     list-style:none;

@@ -11,57 +11,63 @@ notification
     
     <div class="notification-container notification-wrapper">
        {% for notification in notifications %}
-       
-        <div class="notification 
-            {% if not notification.is_seen %}
-                not-seen-notification
-            {% endif %}
-        ">
-            <div class="sender">
-                <a href="{% url 'profile' notification.sender.id %}">
-                    <div class="profile-icon">
-                        <img src="" alt="">
-                    </div>
-                </a>
-            </div>
-            <div class="info">
-                {% if not notification.notification_type == 3 %}
-                    <span class = 'notification-title'> 
-                        {% if notification.sender == request.user %}
-                            You
-                        {% else %}
-                            {{notification.sender.username}}
-                        {% endif %}
-                        {% if notification.notification_type == 1 %}
-                            liked your post
-                        {% endif %}
-                        {% if notification.notification_type == 2 %}
-                            disliked your post
-                        {% endif %}
-                    </span> 
+            <div class="notification 
                 
-                    <div class="text">
-                        <div class="title">{{notification.post.title}}</div>
-                        <span>{{notification.post.body|truncatechars:100}}</span>
-                    </div>
-                    <a href="{{notification.post.get_absolute_url}}"><span>See post</span></a>
-                   <div class="time">
-                       {{notification.date}}
-                    </div>
-                {% else %}
-                    <span class="notification-title">
-                         {{notification.sender.username}} started following you
-                    </span>                    
-                    <a href="{% url 'profile' notification.sender.id %}"><span>Check out his profile</span></a>       
+            "
+            data-url = "
+            {% if notification.notification_type == 3 %}
+                {% url 'profile' notification.sender.id %}
+            {% else %}
+                {{notification.post.id}}
+            {% endif %}
+            "
+
+            >
+                <div class="sender">
+                    <a href="{% url 'profile' notification.sender.id %}">
+                        <div class="profile-icon">
+                            <img src="" alt="">
+                        </div>
+                    </a>
+                </div>
+                <div class="info">
+                    {% if not notification.notification_type == 3 %}
+                        <span class = 'notification-title'> 
+                            {% if notification.sender == request.user %}
+                                You
+                            {% else %}
+                                {{notification.sender.username}}
+                            {% endif %}
+                            {% if notification.notification_type == 1 %}
+                                liked your post
+                            {% endif %}
+                            {% if notification.notification_type == 2 %}
+                                disliked your post
+                            {% endif %}
+                        </span> 
+                    
+                        <div class="text">
+                            <div class="title">{{notification.post.title}}</div>
+                            <span>{{notification.post.body|truncatechars:100}}</span>
+                        </div>
+                        <!-- <a href="{{notification.post.get_absolute_url}}"><span>See post</span></a> -->
                     <div class="time">
-                       {{notification.date}}
-                    </div>
-               {% endif %}
+                        {{notification.date}}
+                        </div>
+                    {% else %}
+                        <span class="notification-title">
+                            {{notification.sender.username}} started following you
+                        </span>                    
+                        <!-- <a href="{% url 'profile' notification.sender.id %}"><span>Check out his profile</span></a>        -->
+                        <div class="time">
+                        {{notification.date}}
+                        </div>
+                {% endif %}
+                </div>
+                <div class="receiver">
+        
+                </div>
             </div>
-            <div class="receiver">
-    
-            </div>
-        </div>
         {% endfor %}
     </div>
 
