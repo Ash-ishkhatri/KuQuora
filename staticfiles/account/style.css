@@ -44,13 +44,12 @@ form input:not(input[type='submit']){
     /* font-size:1.3rem; */
     font-size:1.1rem;
     padding:.3em .5em;
-    border:1px solid rgb(194, 194, 194);
-    /* outline:none; */
+    border:2px solid rgb(213, 219, 209);
+    outline:none;
 }
 
-form input{
-    outline-color:rgba(255, 137, 2, 0.692);
-
+form input:focus{
+    border:1px solid blue;
 }
 
 form > div:not(div.first_name , 
@@ -67,6 +66,7 @@ form > div.field{
     align-items:center;
 
 } 
+
 form > div.field label{
     position:absolute;
     left:.2em;
@@ -76,6 +76,20 @@ form > div.field label{
     transition:transform .2s ease-in-out;
     color:gray;
 } 
+
+form > div.field span{
+    position:absolute;
+    padding:.2em .5em;
+    right : 0;
+    opacity:0;
+    font-size:.8rem;
+} 
+
+span.medium{
+    background-color:rgb(233, 136, 26);
+    color:black;
+}
+
 form div.field input:focus + label,
 form div.field input:valid + label{
     transform:translate(0em,-1.8em);
@@ -104,7 +118,6 @@ form span.message{
 form span.error{
     background-color:rgba(255, 0, 0, 0.24);
     color:rgb(134, 6, 6);
-
 }
 form span.success{
     background-color:rgba(3, 243, 35, 0.24);
@@ -112,6 +125,10 @@ form span.success{
 
 }
 
+form input[type='submit'].inactive{
+    pointer-events:none;
+    opacity:.3;
+}
 
 
 

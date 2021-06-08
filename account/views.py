@@ -142,3 +142,40 @@ def follow_view(request):
             'followers':followers
         }
         return JsonResponse(response)
+
+def validateUsername_view(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        username = data['username']
+        
+        taken = User.objects.filter(username=username).exists()
+
+        if taken:
+            response = {
+                'taken':True
+            }
+        else:
+            response = {
+                'taken':False
+            }
+
+        return JsonResponse(response)
+
+
+def validateEmail_view(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        email = data['email']
+        
+        taken = User.objects.filter(email=email).exists()
+
+        if taken:
+            response = {
+                'taken':True
+            }
+        else:
+            response = {
+                'taken':False
+            }
+
+        return JsonResponse(response)
