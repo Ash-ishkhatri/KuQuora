@@ -126,7 +126,6 @@ form span.success{
 }
 
 form input[type='submit'].inactive{
-    pointer-events:none;
     opacity:.3;
 }
 
