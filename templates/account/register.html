@@ -26,20 +26,26 @@
         <label for="last_name">Last name</label>
     </div>
     <div class="field username">
-        <input type="text" name='username' id='username'  required>
+        <input data-url = "{% url 'validateUsername' %}" type="text" name='username' id='username'  required>
         <label for="username">Username</label>
+        <span class = "error">username invalid or Already taken</span>
     </div>
     <div class="field email">
-        <input type="text" name='email' id='email'  required>
+        <input type="text" data-url = "{% url 'validateEmail' %}" name='email' id='email'  required>
         <label for="email">Email</label>
+        <span class = "error">email invalid or Already taken</span>
     </div>
     <div class="field password1">
         <input type="password" name='password1' id='password1'  required>
         <label for="password1">Password</label>
+        <span class = "weak error">too weak</span>
+        <span class = "medium">medium</span>
+        <span class = "strong success">strong</span>
     </div>
     <div class="field password2">
         <input type="password" name='password2' id='password2' required >
         <label for="password2">Confirm Password</label>
+        <span class="error">Password donot match with previous</span>
     </div>
     <input type="submit" value = "Sign Up">
 
