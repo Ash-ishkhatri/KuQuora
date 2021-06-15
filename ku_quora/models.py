@@ -5,7 +5,23 @@ User = get_user_model()
 from django.utils.text import slugify
 from django.urls import reverse
 from notification.models  import  Notification
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save,post_delete,pre_delete
+import os
+from core.settings import BASE_DIR
+
+
+# def clean_media():
+#     media = os.path.join(BASE_DIR,'media')
+#     for item in os.listdir(media):
+#         # if not os.listdir(os.path.join(BASE_DIR,item)):
+#             # os.removedirs(os.path.join(media,item))
+#         print(media)
+
+def get_file_path(instance,filename):
+    subfolder = 'postimages'
+    return os.path.join(str(instance.post.user.id),subfolder,filename)
+
+
 
 
 class Tag(models.Model):
@@ -41,6 +57,23 @@ class Post(models.Model):
     def save(self,*args,**kwargs):
         self.slug = slugify(self.title + str(self.id))
         return super().save(*args,**kwargs)
+
+
+class PostImages(models.Model):
+    post = models.ForeignKey(Post, on_delete = models.CASCADE)
+    image = models.ImageField(upload_to = get_file_path)
+    
+    # def delete(self,*args,**kwargs):
+    #     print('image deleted')
+        
+    #     self.image.delete()
+    #     super(PostImages,self).delete(*args, **kwargs)
+
+    def deleteImage(sender,instance,*args,**kwargs):
+        instance.image.delete()
+        print('image deleted')
+            
+
 
 class Like(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE,related_name='user_who_liked')
@@ -80,3 +113,4 @@ class Dislike(models.Model):
 
 post_save.connect(Like.notify_like,sender=Like)
 post_save.connect(Dislike.notify_dislike,sender=Dislike)
+pre_delete.connect(PostImages.deleteImage,sender=PostImages)

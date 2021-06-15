@@ -12,7 +12,6 @@ body{
 
 
 .notification-container{
-    /* border:1px solid black; */
     margin-top:4em;
 }
 
@@ -27,15 +26,17 @@ body{
     background-color:white;
     margin:1em auto;
     border-radius:5px;
-    box-shadow:3px 3px 15px rgb(190, 204, 193);
+    border:1px solid rgb(172, 172, 172);
+    /* box-shadow:3px 3px 15px rgb(190, 204, 193); */
     cursor:pointer;
     transition:transform .6s ease-out;
 }
 
 .notification-seen{
-    opacity:1;
+    opacity:.5;
     box-shadow:none;
-    background-color:rgba(180, 180, 180, 0.144);
+    background-color:rgba(226, 226, 226, 0.144);
+    pointer-events:none;
 }
 
 

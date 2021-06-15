@@ -6,18 +6,67 @@ try{
     if(window.location.pathname == '/'){
         homeIcon.style.color = 'white';
         homeIcon.style.webkitTextStroke = '0px';
+        homeIcon.parentNode.style.backgroundColor = 'var(--blue)';
     }
     if(window.location.pathname == '/notification/'){
         NotificationIcon.style.color = 'white';
         NotificationIcon.style.webkitTextStroke = '0px';
+        NotificationIcon.parentNode.style.backgroundColor = 'var(--blue)';
     
     }
+
+    const searchBox = document.querySelector('nav div.search-box i');
+    searchBox.addEventListener('click',()=>{
+        const input = event.target.previousElementSibling;
+        input.style.transform = 'scaleX(1)';
+    })
     
 }
 catch(error){
     console.log(error)
 }
 
+window.addEventListener('load',()=>{
+    const posts = document.querySelectorAll('.blog-post');
+    posts.forEach(post=>{
+        const expandBtn = post.querySelector('.expand span');
+
+        if(post.clientHeight > 500){
+            expandBtn.style.visibility = "visible";
+            post.style.height = '500px';
+            post.style.overflow = 'hidden';
+        }
+        expandBtn.addEventListener('click',()=>{
+            console.log(expandBtn.parentNode.dataset.status)
+            if(expandBtn.parentNode.dataset.status == 'collapsed'){
+                expandBtn.querySelector('.text').innerHTML = 'collapse';
+                expandBtn.parentNode.setAttribute('data-status','expanded');
+                expandBtn.querySelector('i').style.transform = 'rotate(180deg)';
+                post.style.height = post.scrollHeight + "px";
+                
+            }else{
+                expandBtn.querySelector('.text').innerHTML = 'expand';
+                expandBtn.querySelector('i').style.transform = 'rotate(0deg)';
+                expandBtn.parentNode.setAttribute('data-status','collapsed');
+
+                post.style.height = '510px';
+
+            }
+        })
+        const optionsBtn = post.querySelector('.options');
+        const ul = optionsBtn.querySelector('ul');
+        optionsBtn.addEventListener('click',()=>{
+            if(ul.dataset.status == 'expanded'){
+                ul.dataset.status = 'collapsed';
+                ul.style.clipPath = 'circle(0% at 100% 100%)';         
+            }else{
+                ul.dataset.status = 'expanded';
+               ul.style.clipPath = 'circle(150% at 100% 100%)';         
+            }
+        })
+
+    })
+})
 
 
 likeDislikeAudio = document.querySelector('audio#likeDislike');
@@ -177,7 +226,6 @@ notifications.forEach(notification=>{
         xhr.setRequestHeader('X-CSRFToken',csrfToken)
         xhr.onload = function(e){
             data = JSON.parse(this.response)
-            console.log(data)
         }
 
         data = {
@@ -197,8 +245,7 @@ notifications.forEach(notification=>{
 
 setInterval(()=>{
     csrfToken = document.querySelectorAll('input[name="csrfmiddlewaretoken"]')[0].value;
-
-    console.log(csrfToken)
+    
     
     notificationsCount = parseInt(document.querySelector('.notification-count').innerHTML);
 
@@ -216,7 +263,6 @@ setInterval(()=>{
 
    
     // console.log(notificationsCount)
-    console.log(notificationsCount)
     data = {
         'currentNotificationCount':notificationsCount
     }

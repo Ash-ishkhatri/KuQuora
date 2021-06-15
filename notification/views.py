@@ -23,7 +23,7 @@ def getLatestNotification_view(request):
         data = json.loads(request.body)
         oldCount = data['currentNotificationCount']
         
-        print('oldcount is :',oldCount)
+        # print('oldcount is :',oldCount)
         newCount = Notification.objects.filter(user=request.user,is_seen=False).count()
         
         currentNotificationCount = 0

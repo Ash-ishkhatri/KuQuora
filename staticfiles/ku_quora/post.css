@@ -1,9 +1,35 @@
 .post{
-transition:all 1s ease;
+    transition:all 1s ease;
 }
 .blog-post{
     margin-top:2em;
     margin-bottom:2em;
+    position:relative;
+
+}
+
+.blog-post .expand{
+    position:absolute;
+    bottom:2.5em;
+    left:0;
+    display:flex;
+    justify-content:center ;
+    padding:.5em 0;
+    width:100%;
+    visibility: hidden;
+    opacity:.7;
+}
+
+.blog-post .expand span{
+    padding:.3em 1em;
+    border-radius: 8px;
+    color:white;
+    background-color:var(--blue);
+    box-shadow:0 -10px 100px gray;
+}
+
+.blog-post .expand span i{
+    margin:0 0 0 1em;
 }
 
 .blog-post:hover,
@@ -12,7 +38,7 @@ transition:all 1s ease;
 }
 
 .blog-post:hover{
-    box-shadow:5px 5px 20px rgb(222, 236, 226);
+    box-shadow:5px 5px 20px rgb(221, 221, 221);
     /* background-color: rgb(241, 241, 241); */
     transform:scale(1.01);
 }
@@ -33,9 +59,22 @@ transition:all 1s ease;
 
 }
 
+.blog-post .header .profile{
+    height:50px;
+    width:50px;
+}
+
+.blog-post .header .profile img{
+    height:100%;
+    width:100%;
+    border-radius: 50%;
+}
+
 .blog-post .body{
     flex-direction: column;
 }
+
+
 
 .blog-post .body h2{
     text-align: left;
@@ -84,15 +123,12 @@ transition:all 1s ease;
 }
 
 
-.blog-post .buttons .options i.fa-ellipsis-h {
-    transform:rotate(90deg);
-}
-
 
 .blog-post .body .text{
     line-height:1.5rem;
     width:95%;
     color:rgb(141, 141, 141);
+    padding:1em 0 2em;
     /* border:1px solid black; */
 }
 
@@ -106,7 +142,11 @@ transition:all 1s ease;
     margin-top:.5em;
 }
 .blog-post .footer {
-    margin-top:.8em;
+    position:absolute;
+    width:95%;
+    bottom:0;
+    background-color:white;
+    padding:1em 0;
 }
 
 .like,
@@ -146,41 +186,66 @@ transition:all 1s ease;
 
 
 
+
+.blog-post .images{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+}
+
+.blog-post .images .image{
+    margin:0 .5em;
+    /* height:500px; */
+    width:200px;
+    flex-grow:.5;
+
+}
+
+.blog-post .images .image img{
+    width:100%;
+}
+
+.blog-post .buttons >div{
+    padding:.5em 1em;
+    border-radius:5px;
+}
+
+.blog-post .buttons >div:hover{
+    background-color: rgb(230, 230, 230);
+}
+
+
+.blog-post .buttons .options i.fa-ellipsis-h {
+    transform:rotate(90deg);
+}
+.blog-post .buttons .options ul {
+}
 .blog-post .buttons .options{
     position:relative;
     right:0;
     margin-left:auto;
-    /* border:1px solid black; */
 }
-
-
 .blog-post .buttons .options ul{
     position:absolute;
-    background-color:white;
+    background-color:var(--post);
     padding:2em 3em;
-    /* border:1px solid black; */
-    box-shadow:4px 4px 20px rgb(233, 233, 233);
+    box-shadow:4px 4px 50px rgb(216, 216, 216);
     z-index:999;
     border-radius:10px;
     bottom:0;
-    right:0;
-    visibility:hidden;
-    transition:transform 1s ease-out;
+    /* height:400px; */
+    width:400px;
+    right:2em;
+    /* visibility:hidden; */
+    transition:transform 1s ease-out,
+                clip-path .3s ease-in-out;
+    /* border:1px solid black; */
+    clip-path:circle(0% at 100% 100%);
+
 }
-
-
-.blog-post .buttons .options ul.animate{
-    transform:scale(1);
-}
-
-/* @keyframes options{
-    0%{
-        visibility:hidden;
-
-    }
-} */
 
 .blog-post .buttons .options ul li{
     list-style:none;
-    margin:1em 0;
+    padding:.5em 0;
+    text-align:center;
 }

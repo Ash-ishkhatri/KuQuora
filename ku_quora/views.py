@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect,get_object_or_404
-from .models import Post,Tag,Like,Dislike
+from .models import Post,Tag,Like,Dislike,PostImages
 from django.contrib.auth.decorators import login_required
 import json
 from django.http import JsonResponse
@@ -19,12 +19,16 @@ def index_view(request):
     for disliked_obj in disliked_objs:
         disliked_post_ids.append(disliked_obj.post.id)
 
+    print('profile pic is : ',request.user.profile.profile_pic)
+
     notification_count = Notification.objects.filter(user=request.user,is_seen=False).count()
+    images = PostImages.objects.all()
     context = {
         'posts':posts,
         'liked_posts_ids':liked_post_ids,
         'disliked_posts_ids':disliked_post_ids,
-        'notification_count':notification_count
+        'notification_count':notification_count,
+        'images':images,
     }
     return render(request,'ku_quora/index.html',context)
 
@@ -36,15 +40,24 @@ def create_post_view(request):
         title = request.POST.get('title')
         body = request.POST.get('body')
         tags = request.POST.get('tags')
+        images = request.FILES.getlist('image1')
+
         tags_list = list(tags.split(' '))
 
-        print(tags_list)
         for tag in tags_list:
             t, created = Tag.objects.get_or_create(title=tag)
             tags_objs.append(t)
         
         p, created = Post.objects.get_or_create(title=title,body=body,user=user)
         p.tags.set(tags_objs)
+        
+        for image in images:
+            i, created = PostImages.objects.get_or_create(post=p,image=image)
+            
+
+        # i, created = PostImages.objects.get_or_create(post=p,image=image1)
+
+        
         return redirect('index')
 
 def post_detail_view(request,post_id):
@@ -60,12 +73,14 @@ def post_detail_view(request,post_id):
     for disliked_obj in disliked_objs:
         disliked_post_ids.append(disliked_obj.post.id)
     notification_count = Notification.objects.filter(user=request.user,is_seen=False).count()
- 
+    p = Post.objects.get(id=post_id)
+    images = PostImages.objects.filter(post=p)
     context = {
         'post':post,
         'liked_posts_ids':liked_post_ids,
         'disliked_posts_ids':disliked_post_ids,
-        'notification_count':notification_count
+        'notification_count':notification_count,
+        'images':images,
     }
     return render(request,'ku_quora/post_detail.html',context)
 
@@ -83,13 +98,14 @@ def tags_post_view(request,tag_slug):
     tag = get_object_or_404(Tag,slug=tag_slug)
     posts = Post.objects.filter(tags=tag).order_by('-posted_on')
     notification_count = Notification.objects.filter(user=request.user,is_seen=False).count()
-
+    images = PostImages.objects.all()
     context = {
         'posts':posts,
         'tag':tag,
         'liked_posts_ids':liked_post_ids,
         'disliked_posts_ids':disliked_post_ids,
-        'notification_count':notification_count
+        'notification_count':notification_count,
+        'images':images
     }
     return render(request,'ku_quora/tag_post.html',context)
 

@@ -17,7 +17,6 @@ try{
             // addQuestionForm.style.transform = 'scaleY(1)';
             triggerArrow.classList.remove('animate-direction-down');
             triggerArrow.classList.add('animate-direction-up');
-            console.log('clicked')
                 // form.style.opacity = '1';
             
             }
@@ -31,8 +30,41 @@ try{
             }
     }
 
+   
+   
+
 
     
-}catch(err){
-    console.log(err)
+// }catch(err){
+//     console.log(err)
+// }
+
+
+function previewImage(){
+    
+    let files = document.querySelector("input[type='file']").files;
+    let previewImageContainer = document.querySelector('.previewImageContainer');
+    function readAndPreview(file){
+
+        let reader = new FileReader();
+
+        reader.addEventListener('load',function(){
+            let image = new Image()
+            image.src = this.result;
+            previewImageContainer.appendChild(image);
+        })
+        reader.readAsDataURL(file);
+    }
+
+    // files.forEach(file,()=>{
+    //     // readAndPreview(file);
+    //     console.log(file)
+    // });
+
+    [].forEach.call(files,readAndPreview);
+
+}
+}
+catch(err){
+    console.log(err);
 }

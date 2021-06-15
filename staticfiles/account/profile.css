@@ -21,16 +21,42 @@
 .profile-main .primary .image{
     height:150px;
     width:150px;
-    border-radius:50%;
-    overflow: hidden;
     border:5px solid white;
     box-shadow:1px 7px 15px rgb(209, 209, 209);
+    border-radius:50%;
+    position:relative;
 }
 
 .profile-main .image img{
     height:100%;
+    width:100%;
+    object-fit: cover;
+    border-radius:50%;
+
 }
 
+.profile-main .primary .image:hover ul.options{
+   visibility: visible;
+}
+
+
+.profile-main .primary ul.options{
+    border-radius:0 10px 10px 10px;
+    background-color:var(--post);
+    left:5em;
+    top:8em;
+    box-shadow:4px 4px 30px rgb(206, 206, 206);
+    padding:2em;
+    position:absolute;
+    z-index:99999;
+    visibility: hidden;
+}
+
+.profile-main .primary ul.options li{
+    white-space: nowrap;
+    list-style:none;
+    padding:.5em 0 ;
+}
 .profile-main >*{
     /* border:1px solid black; */
 }
@@ -89,6 +115,12 @@
     width:50%;
     justify-content: space-around;
     margin:.3em 1em 1.6em;
+}
+.profile-main .social-media-links >*{
+    cursor:pointer;
+    text-decoration:none;
+    color:black;
+    font-size:1.3rem;
 }
 
 .profile-main .followings >div{

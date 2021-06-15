@@ -2,7 +2,7 @@
 <div class="blog-post" >
     <div class="header">
         <div class="profile">
-                <a href="{% url 'profile' post.user.id %}"><img src="" alt="" ></a>
+            <a href="{% url 'profile' post.user.id %}"><img src="/media/{{post.user.profile.profile_pic}}" alt="" ></a>
         </div>
         <div>
             <span class="author">{{post.user.username}}</span>
@@ -19,11 +19,18 @@
         <div class="text"> 
             {{post.body|safe}}
         </div>
-        <div class="image">
-            <!-- <img src="/media/profile.png" alt=""> -->
-        </div>
+    </div>
+    <div class="images">
+            {% for image in images %}
+                {% if image.post == post %}
+                <div class="image">
+                    <a href="/media/{{image.image}}" target = "_blank" ><img src="/media/{{image.image}}" alt=""></a>
+                </div>
+                {% endif %} 
+            {% endfor %}
     </div>
     <div class="footer">
+        
         <div class="buttons">
             <div class="like 
             {% if post.id in liked_posts_ids %}
@@ -47,7 +54,10 @@
             </div>
             <div class="options">
                 <i class="fas fa-ellipsis-h"></i>
-                <ul>
+                <ul data-status = 'collapsed'>
+                    {% if request.user == post.user %}
+                        <a href=""><li>Edit</li></a>
+                    {% endif %}
                    <li>option1</li>
                    <li>option2</li>
                    <li>option3</li>
@@ -55,4 +65,11 @@
             </div>
         </div>
     </div>
+
+    <div class="expand" data-status = 'collapsed'>
+        <span><span class="text">Expand</span><i class="fas fa-arrow-down"></i></span>
+    </div>
+
+
+
 </div>

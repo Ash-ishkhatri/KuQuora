@@ -1,8 +1,8 @@
 from django.shortcuts import render,redirect
 from django.contrib import messages
 from django.contrib.auth import get_user_model,login,logout,authenticate
-from .models import Follow
-from ku_quora.models import Post,Like,Dislike
+from .models import Follow,Profile
+from ku_quora.models import Post,Like,Dislike,PostImages
 from django.http import JsonResponse
 import json
 from notification.models import Notification
@@ -106,6 +106,7 @@ def profile_view(request,id):
     for disliked_obj in disliked_objs:
         disliked_post_ids.append(disliked_obj.post.id)
     notification_count = Notification.objects.filter(user=request.user,is_seen=False).count()
+    images = PostImages.objects.all()
     context = {
         'selfProfile' : selfProfile,
         'User':user,
@@ -115,9 +116,32 @@ def profile_view(request,id):
         'already_following':already_following,
         'liked_posts_ids':liked_post_ids,
         'disliked_posts_ids':disliked_post_ids,
+        'notification_count':notification_count,
+        'images':images
+    }
+    
+    return render(request,'account/profile.html',context)
+
+def profileEdit_view(request,id):
+    if request.method == 'POST':
+        designation = request.POST.get('designation')
+        fb_link = request.POST.get('fb_link')
+        profile_pic = request.FILES.get('profile_pic')
+        twitter_link = request.POST.get('twitter_link')
+        linkedin_link = request.POST.get('linkedin_link')
+        u = User.objects.get(id=id)
+        Profile.objects.filter(user=u).update(profile_pic=profile_pic
+            ,designation=designation,fb_link=fb_link,twitter_link=twitter_link
+            ,linkedin_link=linkedin_link)
+        print('updated profile')
+        print('inside')
+        return redirect('index')
+    notification_count = Notification.objects.filter(user=request.user).count()
+
+    context = {
         'notification_count':notification_count
     }
-    return render(request,'account/profile.html',context)
+    return render(request,'account/editProfile.html',context)
 
 def follow_view(request):
     if request.method == 'POST':

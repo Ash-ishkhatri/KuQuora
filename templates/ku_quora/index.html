@@ -6,47 +6,130 @@ ku-quora
 
 
 {% block content %}
-<div class="question-wrapper">
-    <div class="addQuestion-container">
-        <div class="add-question">
-            <div class="visible-part">
-                <div class="profile-info">
-                    <img src="" alt="">
-                    <span class='username'>{{user.username}}</span>
-                </div>
-                <div class='text'>What is your question?</div>
-            </div>
-        </div>
-        <div class="add-question-form" data-status = 'collapsed'>
-            <form action="{% url 'create_post' %}" method = 'POST' >
-                {% csrf_token %}
-                
-                <ul class="tips">
-                    <h3>Tips on getting good answers quickly</h3>
-                    <li>Ask question in a way everyone could understand.</li>
-                    <li>Double check grammar and spelling</li>
-                    <li>Keep your question short and to the point.</li>
-                </ul>
-                <input type="text" name='title' placeholder = "Title of your question" required>
-                <input type="text" name='tags' placeholder = "Tags for your question to be included in hastags" required>
-                <input type="text" name = 'body' placeholder = "Start your question with 'what,how,when..." required>
-                <div class="button">
-                    <input type="submit" value = 'Add Question'> 
-                </div>
-                
-            </form>
-        </div> 
-        <i class="fa fa-angle-double-down animate-direction-down"></i>
+<div class="body-wrapper">
 
+    <!-- <div class="question-wrapper "> -->
+        <div class="addQuestion-container">
+            <div class="add-question">
+                <div class="visible-part">
+                    <div class="profile-info">
+                        <img src="/media/{{user.profile.profile_pic}}" alt="">
+                        <span class='username'>{{user.username}}</span>
+                    </div>
+                    <div class='text'>What is your question?</div>
+                </div>
+            </div>
+            <div class="add-question-form" data-status = 'collapsed'>
+                <form action="{% url 'create_post' %}" enctype="multipart/form-data"  method = 'POST' >
+                    {% csrf_token %}
+                    
+                    <ul class="tips">
+                        <h3>Tips on getting good answers quickly</h3>
+                        <li>Ask question in a way everyone could understand.</li>
+                        <li>Double check grammar and spelling</li>
+                        <li>Keep your question short and to the point.</li>
+                    </ul>
+                    <input type="text" name='title' placeholder = "Title of your question" required>
+                    <input type="text" name='tags' placeholder = "Tags for your question to be included in hastags" required>
+                    <input type="text" name = 'body' placeholder = "Start your question with 'what,how,when..." required>
+                    <label for="images">
+                        <i class="fas fa-image"></i>
+                    </label>
+                    <input type="file" id = "images" name = 'image1' onchange = "previewImage()" multiple>
+                    <div class="button">
+                        <input type="submit" value = 'Add Question'> 
+                    </div>
+                </form>
+            </div> 
+            <div class="previewImageContainer">
+
+            </div>
+            <i class="fa fa-angle-double-down animate-direction-down"></i>
+
+        </div>
+
+    <!-- </div> -->
+        <div class="news">
+            <!-- Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quasi inventore incidunt ducimus vitae laudantium distinctio perspiciatis praesentium commodi cupiditate assumenda id est vel suscipit saepe ea dolore, voluptate autem earum asperiores. Atque expedita animi aut odio, repellat quibusdam laborum esse nemo impedit eaque cumque! Tenetur dolores perferendis saepe dicta natus. -->
+        </div>
+
+    <div class="post ">
+        {% for post in posts %}
+        {% include 'ku_quora/post_template.html' %}
+        {% endfor %}
+
+<!--<div class="blog-post" >
+     <div class="header">
+        <div class="profile">
+                <a href=""><img src="" alt="" ></a>
+        </div>
+        <div>
+            <span class="author">Ash-ish</span>
+            <span class="time-stamp">2020-10-3 4:00pm</span>
+        </div>
+    </div>
+    <div class="body">
+        <h2 class = "title"><a href="">lorem ipsum</a></h1>
+        <span class="tags">
+                <a href="">#lorem</a>
+                <a href="">#ku</a>
+        </span>
+        <div class="text"> 
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Eos deleniti ratione inventore eaque beatae illo, soluta sed tenetur at veritatis??
+        </div>
+        <div class="image">
+            <img src="/media/profile.png" alt=""> 
+        </div>
+    </div>
+    <div class="images">
+        <div class="image">
+            <img src="../../media/post/images/deer_art_vector_134088_3840x2400.jpg" alt="">
+        </div>
+        <div class="image">
+            <img src="../../media/post/images/wallpaperflare.com_wallpaper_2.jpg" alt="">
+        </div>
+        <div class="image">
+            <img src="../../media/post/images/2065766.jpg" alt="">
+        </div>
+    </div>
+    <div class="footer">
+        
+        <div class="buttons">
+            <div class="like 
+            {% if post.id in liked_posts_ids %}
+            liked
+        {% endif %}" data-post_id = '{{post.id}}' data-url = "{% url 'like_post' %}">
+                {% csrf_token %}
+                <i id='like'   class="fas fa-thumbs-up"></i>
+                <label for='like' class="count">{{post.likes}}</label>
+            </div> 
+            <div class="dislike 
+                {% if post.id in disliked_posts_ids %}
+                    disliked
+                {% endif %}" data-post_id='{{post.id}}' data-url = "{% url 'dislike_post' %}">
+                <i id='dislike'  class="fas fa-thumbs-down"> </i>
+                <label for='dislike' class="count">{{post.dislikes}}</label>
+            </div>
+            
+            <div class="comment">
+                <i class="fas fa-comment"></i>
+                <span class="count">0</span>
+            </div>
+         
+            <div class="options">
+                <i class="fas fa-ellipsis-h"></i>
+                <ul>
+                   <li>option1</li>
+                   <li>option2</li>
+                   <li>option3</li>
+                </ul>
+            </div>
+            
+        </div>
     </div>
 </div>
-
-<div class="post">
-    {% for post in posts %}
-    {% include 'ku_quora/post_template.html' %}
-{% endfor %}
-
-</div>
+    </div>
+</div> -->
 
 
 {% endblock %}

@@ -1,3 +1,11 @@
+:root{
+    --primaryColor : black;
+    --blue : rgb(0,96,223);
+    --body : rgb(245, 245, 245);
+    --post : rgb(255,255,255);
+}
+
+
 *{
     padding:0;
     margin:0;
@@ -7,14 +15,43 @@
 
 
 body{
-    /* background: rgb(7,2,84); */
-    background-color:rgb(245,246,251);
+    background-color:var(--body);
     font-family:-apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 }
 
 .wrapper{
     width:90%;
-    max-width:900px;
+    max-width:1000px;
     margin:0 auto;
 }
+
+.body-wrapper{
+    margin-top:5em;
+}
+
+.news{
+    display:none;
+}
+
+@media only screen and (min-width : 1000px){
+
+    .body-wrapper{
+        max-width:1200px;
+        width:100%;
+        margin:4em auto 0;
+        /* border:1px solid black; */
+        display:grid;
+        grid-template-columns:2fr 1fr;
+    }
+
+    .news{
+        display:block;
+        grid-column:2/3;
+        grid-row:1/3;
+        /* border:1px solid red; */
+    }
+    
+}
+
+
 

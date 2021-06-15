@@ -1,0 +1,17 @@
+{% extends 'ku_quora/base.html' %}
+
+{% block content %}
+{% csrf_token %}
+
+edit profile of {{request.user}}
+    <form action="" method = 'POST' enctype="multipart/form-data">
+        {% csrf_token %}
+       
+        <input type="file" name='profile_pic' value = "{{request.user.profile.profile_pic}} "placeholder='profile_pic'>
+        <input type="text" name='designation' value = "{{request.user.profile.designation}} "placeholder='designation' >
+        <input type="text" name='fb_link' value = "{{request.user.profile.fb_link}} "placeholder='fb_link' >
+        <input type="text" name='twitter_link' value = "{{request.user.twitter_link}} "placeholder='twitter_link' >
+        <input type="text" name='linkedin_link' value = "{{request.user.linkedin_link}} "placeholder='linkedin_link' >
+        <input type="submit">
+    </form>
+{% endblock %}
