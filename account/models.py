@@ -23,9 +23,6 @@ def get_upload_directory(instance,filename):
     subfolder = 'profile'
     if filename != None:
         return os.path.join(str(instance.user.id),subfolder,filename)
-    else:
-        return os.path.join(str(instance.user.id),subfolder,'default/defaultProfile.png')        
-
 
 
 
@@ -34,7 +31,7 @@ class Profile(models.Model):
     token = models.CharField(max_length=200,unique=True,null=False,blank=False)
     designation = models.CharField(max_length=200,null=True,blank=True)
     is_verified = models.BooleanField(default=False)
-    profile_pic = models.ImageField(upload_to = get_upload_directory , default = 'default/defaultProfile.png')
+    profile_pic = models.ImageField(upload_to = get_upload_directory )
     fb_link = models.CharField(max_length=200,null=True,blank=True)
     twitter_link = models.CharField(max_length=200,null=True,blank=True)
     linkedin_link = models.CharField(max_length=200,null=True,blank=True)
@@ -42,14 +39,18 @@ class Profile(models.Model):
     def __str__(self):
         return self.token
     
-
     def save_profile(sender,instance,*args,**kwargs):
         try:
-            profile = Profile(user = instance , token=str(uuid.uuid1()))
+            profile = Profile(user = instance ,profile_pic = 'default/defaultProfile.png', token=str(uuid.uuid1()))
             profile.save()
             print('saved profile')
         except Exception as e:
             print('error',e)
+    
+    def get_profile_url(self):
+        print('inside')
+        return (os.path.join(str(self.id),'profile',str(self.profile_pic)))
+        
 
 class Follow(models.Model):
     following = models.ForeignKey(User, on_delete=models.CASCADE,related_name='following')
@@ -63,7 +64,8 @@ class Follow(models.Model):
         notification.save()
         print('follow notified')
 
-
 post_save.connect(Profile.save_profile,sender=User)
 post_save.connect(Follow.notify_follow,sender=Follow)
+# post_save.connect(Profile.configure_image_path,sender=Profile)
+
 post_delete.connect(clean_media_files , sender=User)

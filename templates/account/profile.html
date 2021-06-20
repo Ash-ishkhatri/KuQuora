@@ -8,7 +8,7 @@
         <div class="primary">
             <div class="image">
                 <!-- this img url is not working nicely .... rewrite the url -->
-               <img src="/media/{{request.user.id}}/{{profile}}/{{request.user.profile.profile_pic}}" alt="">
+               <img src="/media/{{User.profile.profile_pic}}" alt="">
                 <ul class="options">
                     {% if request.user == User %}
                         <li><a href="{% url 'profileEdit' User.id %}">Edit profile</a></li>
@@ -20,54 +20,19 @@
         <div class="info-container">
             <div class="info">
                 <h1>{{User.username}}</h1>
-                <p>{% if User.profile.designation != None%}
-                        {{User.profile.designation}}
-                    {% else %}
-                        -----
-                    {% endif %}
+                <p>Student
 
                 </p>
                 <div class="social-media-links">
-                   
-                        <a 
-                        {% if User.profile.fb_link != None %}
-                            style = "opacity:1;"     
-                        {% else %}
-                             style = "opacity:.2;pointer-events:none;"
-                        {% endif %}
-                        href="
-                        {% if User.profile.fb_link != None %}
-                            {{User.profile.fb_link}}
-                        {% endif %}
-                        "><div class="fb">
+                        <a href=""><div class="fb">
                             <i class="fab fa-facebook"></i>
                         </div></a>
                     
-                        <a twitter_link
-                        {% if User.profile.twitter_link != None %}
-                            style = "opacity:1;"     
-                        {% else %}
-                            style = "opacity:.2;pointer-events:none;"
-                        {% endif %}
-                        href="
-                        {% if User.profile.twitter_link != None %}
-                            {{User.profile.twitter_link}}
-                        {% endif %}"
-                        ><div class="twitter">
+                        <a href=><div class="twitter">
                             <i class="fab fa-twitter"></i>
                         </div></a>
                     
-                        <a 
-                        {% if User.profile.linkedin_link != None %}
-                        style = "opacity:1;"     
-                        {% else %}
-                            style = "opacity:.2;pointer-events:none;"
-                        {% endif %}
-                        href="
-                        {% if User.profile.linkedin_link != None %}
-                            {{User.profile.linkedin_link}}
-                        {% endif %}"
-                        ><div class="linkdin">
+                        <a href=""><div class="linkdin">
                             <i class="fab fa-linkedin"></i>
                         </div></a>
                 </div>

@@ -18,9 +18,6 @@ def index_view(request):
     disliked_objs = Dislike.objects.filter(user=request.user).all()
     for disliked_obj in disliked_objs:
         disliked_post_ids.append(disliked_obj.post.id)
-
-    print('profile pic is : ',request.user.profile.profile_pic)
-
     notification_count = Notification.objects.filter(user=request.user,is_seen=False).count()
     images = PostImages.objects.all()
     context = {

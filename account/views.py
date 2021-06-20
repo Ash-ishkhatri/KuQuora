@@ -6,7 +6,8 @@ from ku_quora.models import Post,Like,Dislike,PostImages
 from django.http import JsonResponse
 import json
 from notification.models import Notification
-
+from core.settings import BASE_DIR
+import os
 
 # from django.contrib.auth.model import User
 
@@ -44,7 +45,8 @@ def register_view(request):
         user = User.objects.create_user(username=username,email=email,
                 password = password1,first_name=first_name,last_name=last_name)
         messages.success(request,"Success - ----  : ) Signed Up successfully")
-        return redirect('login')
+        login(request,user)
+        redirect(login_view)
         
     return render(request,'account/register.html',{})
 
@@ -95,7 +97,7 @@ def profile_view(request,id):
         followers = Follow.objects.filter(following = user).count()
         followings = Follow.objects.filter(follower = user).count()
         already_following = Follow.objects.filter(follower=request.user,following=user).exists()
-
+    print('designation = ', user.profile.designation)
     liked_post_ids = []
     liked_objs = Like.objects.filter(user=request.user).all()
     for liked_obj in liked_objs:
@@ -130,11 +132,11 @@ def profileEdit_view(request,id):
         twitter_link = request.POST.get('twitter_link')
         linkedin_link = request.POST.get('linkedin_link')
         u = User.objects.get(id=id)
-        Profile.objects.filter(user=u).update(profile_pic=profile_pic
-            ,designation=designation,fb_link=fb_link,twitter_link=twitter_link
-            ,linkedin_link=linkedin_link)
-        print('updated profile')
-        print('inside')
+        Profile.objects.filter(user=u).update(designation=designation,fb_link=fb_link,twitter_link=twitter_link,linkedin_link=linkedin_link)
+        updatedProfile = Profile.objects.get(user=u)
+        updatedProfile.profile_pic = profile_pic
+        updatedProfile.save()
+        messages.success(request,'Successfully updated profile')
         return redirect('index')
     notification_count = Notification.objects.filter(user=request.user).count()
 
