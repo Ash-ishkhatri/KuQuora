@@ -58,11 +58,13 @@ body{
 .notification .profile-icon{
     height:60px;
     width:60px;
-    border:1px solid black;
+    overflow: hidden;
+    border-radius: 50%;
 }
 
 .notification .profile-icon img{
   height:100%;
+  object-fit: cover;
 }
 
 .notification span.notification-title{

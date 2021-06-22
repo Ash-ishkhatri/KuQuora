@@ -32,7 +32,7 @@ notification
                 <div class="sender">
                     <a href="{% url 'profile' notification.sender.id %}">
                         <div class="profile-icon">
-                            <img src="" alt="">
+                            <img src="/media/{{notification.sender.profile.profile_pic}}" alt="">
                         </div>
                     </a>
                 </div>

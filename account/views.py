@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model,login,logout,authenticate
 from .models import Follow,Profile
 from ku_quora.models import Post,Like,Dislike,PostImages
+from saved.models import SavedPosts
 from django.http import JsonResponse
 import json
 from notification.models import Notification
@@ -97,7 +98,7 @@ def profile_view(request,id):
         followers = Follow.objects.filter(following = user).count()
         followings = Follow.objects.filter(follower = user).count()
         already_following = Follow.objects.filter(follower=request.user,following=user).exists()
-    print('designation = ', user.profile.designation)
+
     liked_post_ids = []
     liked_objs = Like.objects.filter(user=request.user).all()
     for liked_obj in liked_objs:
@@ -107,6 +108,12 @@ def profile_view(request,id):
     disliked_objs = Dislike.objects.filter(user=request.user).all()
     for disliked_obj in disliked_objs:
         disliked_post_ids.append(disliked_obj.post.id)
+    
+    saved_post_ids = []
+    saved_objs = SavedPosts.objects.filter(user = request.user).all()
+    for obj in saved_objs:
+        saved_post_ids.append(obj.post.id)
+    
     notification_count = Notification.objects.filter(user=request.user,is_seen=False).count()
     images = PostImages.objects.all()
     context = {
@@ -119,7 +126,8 @@ def profile_view(request,id):
         'liked_posts_ids':liked_post_ids,
         'disliked_posts_ids':disliked_post_ids,
         'notification_count':notification_count,
-        'images':images
+        'images':images,
+        'saved_post_ids':saved_post_ids
     }
     
     return render(request,'account/profile.html',context)

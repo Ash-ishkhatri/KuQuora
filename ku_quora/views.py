@@ -4,20 +4,28 @@ from django.contrib.auth.decorators import login_required
 import json
 from django.http import JsonResponse
 from notification.models import Notification
+from saved.models import SavedPosts
 
 @login_required(login_url='login')
 def index_view(request):
     
     posts = Post.objects.all().order_by('-posted_on')
+
     liked_post_ids = []
     liked_objs = Like.objects.filter(user=request.user).all()
     for liked_obj in liked_objs:
         liked_post_ids.append(liked_obj.post.id)
-        print(liked_obj.post.id)
+    
     disliked_post_ids = []
     disliked_objs = Dislike.objects.filter(user=request.user).all()
     for disliked_obj in disliked_objs:
         disliked_post_ids.append(disliked_obj.post.id)
+    
+    saved_post_ids = []
+    saved_objs = SavedPosts.objects.filter(user = request.user).all()
+    for obj in saved_objs:
+        saved_post_ids.append(obj.post.id)
+
     notification_count = Notification.objects.filter(user=request.user,is_seen=False).count()
     images = PostImages.objects.all()
     context = {
@@ -26,6 +34,7 @@ def index_view(request):
         'disliked_posts_ids':disliked_post_ids,
         'notification_count':notification_count,
         'images':images,
+        'saved_post_ids':saved_post_ids,
     }
     return render(request,'ku_quora/index.html',context)
 
@@ -58,17 +67,22 @@ def create_post_view(request):
         return redirect('index')
 
 def post_detail_view(request,post_id):
-
     post = get_object_or_404(Post,id = post_id)
     liked_post_ids = []
     liked_objs = Like.objects.filter(user=request.user).all()
     for liked_obj in liked_objs:
         liked_post_ids.append(liked_obj.post.id)
         print(liked_obj.post.id)
-    disliked_post_ids = []
+    disliked_post_ids = [] 
     disliked_objs = Dislike.objects.filter(user=request.user).all()
     for disliked_obj in disliked_objs:
         disliked_post_ids.append(disliked_obj.post.id)
+   
+    saved_post_ids = []
+    saved_objs = SavedPosts.objects.filter(user = request.user).all()
+    for obj in saved_objs:
+        saved_post_ids.append(obj.post.id)
+
     notification_count = Notification.objects.filter(user=request.user,is_seen=False).count()
     p = Post.objects.get(id=post_id)
     images = PostImages.objects.filter(post=p)
@@ -78,6 +92,8 @@ def post_detail_view(request,post_id):
         'disliked_posts_ids':disliked_post_ids,
         'notification_count':notification_count,
         'images':images,
+        'saved_post_ids':saved_post_ids,
+
     }
     return render(request,'ku_quora/post_detail.html',context)
 
@@ -92,6 +108,11 @@ def tags_post_view(request,tag_slug):
     disliked_objs = Dislike.objects.filter(user=request.user).all()
     for disliked_obj in disliked_objs:
         disliked_post_ids.append(disliked_obj.post.id)
+    saved_post_ids = []
+    saved_objs = SavedPosts.objects.filter(user = request.user).all()
+    for obj in saved_objs:
+        saved_post_ids.append(obj.post.id)
+    
     tag = get_object_or_404(Tag,slug=tag_slug)
     posts = Post.objects.filter(tags=tag).order_by('-posted_on')
     notification_count = Notification.objects.filter(user=request.user,is_seen=False).count()
@@ -102,6 +123,7 @@ def tags_post_view(request,tag_slug):
         'liked_posts_ids':liked_post_ids,
         'disliked_posts_ids':disliked_post_ids,
         'notification_count':notification_count,
+        'saved_post_ids':saved_post_ids,
         'images':images
     }
     return render(request,'ku_quora/tag_post.html',context)
@@ -184,3 +206,19 @@ def dislike_post_view(request):
 
         return JsonResponse(response)
     return redirect('index')
+
+
+
+def delete_post_view(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        post_id = data['post_id']
+        Post.objects.filter(id = post_id).delete()
+        
+        response = {
+            'deleted':True
+        }            
+
+        return JsonResponse(response)
+    return redirect('index')
+

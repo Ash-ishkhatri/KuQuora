@@ -7,11 +7,15 @@
                 <a href="{% url 'notification' %}"><li class = 'bell-icon'><i class="fas fa-bell"></i>
                     <span class="notification-count">{{notification_count}}</span>
                 </li></a>
-                
-                <div class="search-box">
+                <a href=" {% url 'saved' %}"><li><i class="fas fa-save"></i></li></a>
+
+                <form class = "search-box" action="  ">
                     <input type="text" placeholder = 'Search Quora'>
+                   <button>
                     <i class="fas fa-search"></i>
-                </div>
+                   </button> 
+                </form>
+
                 <div class="profile-icon">
                     <img src="/media/{{request.user.profile.profile_pic}}" alt="">
                     <ul class="options">
@@ -22,3 +26,7 @@
             </ul>
     </ul>
 </nav>
+
+<div class="overlay-message">
+    deleted successfully
+</div>

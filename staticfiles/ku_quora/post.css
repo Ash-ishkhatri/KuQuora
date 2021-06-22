@@ -5,7 +5,7 @@
     margin-top:2em;
     margin-bottom:2em;
     position:relative;
-
+    overflow: hidden;
 }
 
 .blog-post .expand{
@@ -68,6 +68,7 @@
     height:100%;
     width:100%;
     border-radius: 50%;
+    object-fit: cover;
 }
 
 .blog-post .body{
@@ -143,10 +144,11 @@
 }
 .blog-post .footer {
     position:absolute;
-    width:95%;
-    bottom:0;
+    width:100%;
     background-color:white;
     padding:1em 0;
+    right:0;
+    bottom:0;
 }
 
 .like,
@@ -218,34 +220,53 @@
 .blog-post .buttons .options i.fa-ellipsis-h {
     transform:rotate(90deg);
 }
-.blog-post .buttons .options ul {
-}
+
 .blog-post .buttons .options{
     position:relative;
     right:0;
     margin-left:auto;
 }
+
 .blog-post .buttons .options ul{
     position:absolute;
     background-color:var(--post);
-    padding:2em 3em;
+    padding:2em;
     box-shadow:4px 4px 50px rgb(216, 216, 216);
     z-index:999;
     border-radius:10px;
-    bottom:0;
-    /* height:400px; */
     width:400px;
     right:2em;
-    /* visibility:hidden; */
-    transition:transform 1s ease-out,
-                clip-path .3s ease-in-out;
-    /* border:1px solid black; */
-    clip-path:circle(0% at 100% 100%);
+    bottom:2em;
+    visibility: hidden;
+    transition:transform 1s ease-out;
 
 }
 
 .blog-post .buttons .options ul li{
     list-style:none;
     padding:.5em 0;
-    text-align:center;
+    border-radius:6px;
+}
+
+.blog-post .buttons .options ul li:hover{
+    background-color: rgb(230, 230, 230);
+}
+
+.blog-post .buttons .options ul li i{
+    margin-right:1.5em;
+    -webkit-text-stroke:0px;
+    pointer-events: none;
+}
+.blog-post .buttons .options ul li i.fa-trash{
+    color:rgba(255, 0, 0, 0.52);
+}
+.blog-post .buttons .options ul li i.fa-pen{
+    color:rgba(11, 57, 95, 0.52);
+}
+.blog-post .buttons .options ul li i.fa-save{
+    color:rgba(18, 109, 56, 0.52);
+}
+
+.deleted{
+   display:none;
 }

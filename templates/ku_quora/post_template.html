@@ -31,6 +31,7 @@
     </div>
     <div class="footer">
         
+
         <div class="buttons">
             <div class="like 
             {% if post.id in liked_posts_ids %}
@@ -53,14 +54,22 @@
                 <span class="count">0</span>
             </div>
             <div class="options">
-                <i class="fas fa-ellipsis-h"></i>
+                <div><i class="fas fa-ellipsis-h"></i></div>
                 <ul data-status = 'collapsed'>
                     {% if request.user == post.user %}
-                        <a href=""><li>Edit</li></a>
+                        <a href=""><li><i class="fas fa-pen"></i>Edit</li></a>
+                       <li data-post-id = {{post.id}} class = "deletePostBtn"><i class="fas fa-trash"></i>delete post</li>
                     {% endif %}
-                   <li>option1</li>
-                   <li>option2</li>
-                   <li>option3</li>
+                   <li data-post-id = {{post.id}} class = "savePostBtn"><i class="fas fa-save"></i>
+                        <span>
+                            {% if post.id in saved_post_ids %}
+                                 unsave
+                            {% else %}
+                                save
+                            {% endif %}
+                            
+                        </span>
+                    </li>
                 </ul>
             </div>
         </div>

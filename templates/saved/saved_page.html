@@ -1,0 +1,101 @@
+{% extends 'ku_quora/base.html' %}
+
+{% block title %}
+saved
+{% endblock %}
+
+{% block content %}
+{% csrf_token %}
+    
+{% for post in saved_posts %}
+
+
+<div class="blog-post" >
+    <div class="header">
+        <div class="profile">
+            <a href="{% url 'profile' post.post.user.id %}"><img src="/media/{{post.post.user.profile.profile_pic}}" alt="" ></a>
+        </div>
+        <div>
+            <span class="author">{{post.post.user.username}}</span>
+            <span class="time-stamp">{{post.post.posted_on}}</span>
+        </div>
+    </div>
+    <div class="body">
+        <h2 class = "title"><a href="{{post.post.get_absolute_url}}">{{post.post.title}}</a></h1>
+        <span class="tags">
+           {% for tag  in post.post.tags.all %}
+                <a href="{{tag.get_absolute_url}}">#{{tag}}</a>
+           {% endfor %}
+        </span>
+        <div class="text"> 
+            {{post.post.body|safe}}
+        </div>
+    </div>
+    <div class="images">
+            {% for image in images %}
+                {% if image.post == post.post %}
+                <div class="image">
+                    <a href="/media/{{image.image}}" target = "_blank" ><img src="/media/{{image.image}}" alt=""></a>
+                </div>
+                {% endif %} 
+            {% endfor %}
+    </div>
+    <div class="footer">
+        
+
+        <div class="buttons">
+            <div class="like 
+            {% if post.post.id in liked_posts_ids %}
+            liked
+        {% endif %}" data-post_id = '{{post.post.id}}' data-url = "{% url 'like_post' %}">
+                {% csrf_token %}
+                <i id='like'   class="fas fa-thumbs-up"></i>
+                <label for='like' class="count">{{post.post.likes}}</label>
+            </div> 
+            <div class="dislike 
+                {% if post.post.id in disliked_posts_ids %}
+                    disliked
+                {% endif %}" data-post_id='{{post.post.id}}' data-url = "{% url 'dislike_post' %}">
+                <i id='dislike'  class="fas fa-thumbs-down"> </i>
+                <label for='dislike' class="count">{{post.post.dislikes}}</label>
+            </div>
+            
+            <div class="comment">
+                <i class="fas fa-comment"></i>
+                <span class="count">0</span>
+            </div>
+            <div class="options">
+                <div><i class="fas fa-ellipsis-h"></i></div>
+                <ul data-status = 'collapsed'>
+                    {% if request.user == post.post.user %}
+                        <a href=""><li><i class="fas fa-pen"></i>Edit</li></a>
+                       <li data-post-id = {{post.post.id}} class = "deletePostBtn"><i class="fas fa-trash"></i>delete post</li>
+                    {% endif %}
+                   <a href=""><li data-post-id = {{post.post.id}} class = "savePostBtn"><i class="fas fa-save"></i></a>
+                        <span>
+                            {% if post.post.id in saved_post_ids %}
+                                 unsave
+                            {% else %}
+                                save
+                            {% endif %}
+                            
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="expand" data-status = 'collapsed'>
+        <span><span class="text">Expand</span><i class="fas fa-arrow-down"></i></span>
+    </div>
+
+
+
+</div>
+
+{% endfor %}
+
+
+
+{% endblock %}
