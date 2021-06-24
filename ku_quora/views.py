@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect,get_object_or_404
-from .models import Post,Tag,Like,Dislike
+from .models import Post,Tag,Like,Dislike, Answer
 from django.contrib.auth.decorators import login_required
 import json
 from django.http import JsonResponse
@@ -61,11 +61,14 @@ def post_detail_view(request,post_id):
         disliked_post_ids.append(disliked_obj.post.id)
     notification_count = Notification.objects.filter(user=request.user,is_seen=False).count()
  
+    answers = Answer.objects.filter(post=post)
+
     context = {
         'post':post,
         'liked_posts_ids':liked_post_ids,
         'disliked_posts_ids':disliked_post_ids,
-        'notification_count':notification_count
+        'notification_count':notification_count,
+        'answers' : answers
     }
     return render(request,'ku_quora/post_detail.html',context)
 
@@ -171,3 +174,27 @@ def dislike_post_view(request):
 
         return JsonResponse(response)
     return redirect('index')
+
+def AnswerView(request):
+    if request.method == "POST":
+        answer=request.POST.get('answer')
+        user=request.user
+        postSno =request.POST.get('postSno')
+        post= Post.objects.get(id=postSno)
+        answer=Answer(answer= answer, user=user, post=post)
+        answer.save()
+        return redirect(f"/{post.id}")        
+        
+
+
+# def CommentView(request):
+#     if request.method == "POST":
+#         comment=request.POST.get('comment')
+#         user=request.user
+#         CmtSno =request.POST.get('CmtSno')
+#         answer= Answer.objects.get(ansId=CmtSno)
+#         comment=Comment(comment= comment, user=user, answer=answer)
+#         comment.save()
+        
+#     return redirect(f"/{post.slug}")        
+
