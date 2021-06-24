@@ -187,14 +187,14 @@ def AnswerView(request):
         
 
 
-# def CommentView(request):
-#     if request.method == "POST":
-#         comment=request.POST.get('comment')
-#         user=request.user
-#         CmtSno =request.POST.get('CmtSno')
-#         answer= Answer.objects.get(ansId=CmtSno)
-#         comment=Comment(comment= comment, user=user, answer=answer)
-#         comment.save()
+def CommentView(request):
+    if request.method == "POST":
+        comment=request.POST.get('comment')
+        user=request.user
+        CmtSno =request.POST.get('CmtSno')
+        answer= Answer.objects.get(ansId=CmtSno)
+        comment=Comment(comment= comment, user=user, answer=answer)
+        comment.save()
         
-#     return redirect(f"/{post.slug}")        
+    return redirect(f"/{post.slug}")        
 
