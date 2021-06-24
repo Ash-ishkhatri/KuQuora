@@ -179,79 +179,8 @@ saveBtn.forEach(btn => {
 
 
 
-
-
-likeDislikeAudio = document.querySelector('audio#likeDislike');
-likeDislikeAudio.volume=0.6;
 notificationAudio = document.querySelector('audio#notification');
 notificationAudio.volume=0.6;
-
-
-likeBtns = document.querySelectorAll('.blog-post .footer .buttons .like')
-
-likeBtns.forEach(btn=>{
-    btn.addEventListener('click',()=>{
-        likeDislikeAudio.play()
-        likeDisplayArea = event.target.children[2];
-        dislikeDisplayArea = event.target.nextElementSibling.children[1];
-        event.target.classList.toggle('liked');
-        dislikeBtn = event.target.nextElementSibling;
-        if(dislikeBtn.classList.contains('disliked')){
-            dislikeBtn.classList.remove('disliked');
-        }
-        csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
-        data = {
-            'post_id':event.target.dataset.post_id
-        }
-        fetch(event.target.dataset.url,{
-            method : 'post',
-            body : JSON.stringify(data),
-            headers : {
-                'Content-Type' : 'application/json',
-                'X-CSRFToken' : csrfToken
-            }
-        })
-        .then(res =>  res.json())
-        .then(data => {
-            console.log(data)
-            likeDisplayArea.innerHTML = data.current_likes;
-            dislikeDisplayArea.innerHTML = data.current_dislikes;
-        })
-    })
-})
-
-
-disLikeBtns = document.querySelectorAll('.blog-post .footer .buttons .dislike')
-
-disLikeBtns.forEach(btn=>{
-    btn.addEventListener('click',()=>{
-        likeDislikeAudio.play()
-        dislikeDisplayArea = event.target.children[1];
-        likeDisplayArea = event.target.previousElementSibling.children[2];
-        event.target.classList.toggle('disliked');
-        dislikeBtn = event.target.previousElementSibling;
-        if(dislikeBtn.classList.contains('liked')){
-            dislikeBtn.classList.remove('liked');
-        }
-        csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
-        data = {
-            'post_id':event.target.dataset.post_id
-        }
-        fetch(event.target.dataset.url,{
-            method : 'post',
-            body : JSON.stringify(data),
-            headers : {
-                'Content-Type' : 'application/json',
-                'X-CSRFToken' : csrfToken
-            }
-        })
-        .then(res =>  res.json())
-        .then(data => {
-            likeDisplayArea.innerHTML = data.current_likes;
-            dislikeDisplayArea.innerHTML = data.current_dislikes;
-        })
-    })
-})
 
 
 try{

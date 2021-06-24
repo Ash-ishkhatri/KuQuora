@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect
 from django.contrib import messages
 from django.contrib.auth import get_user_model,login,logout,authenticate
 from .models import Follow,Profile
-from ku_quora.models import Post,Like,Dislike,PostImages
+from ku_quora.models import Post,PostImages
 from saved.models import SavedPosts
 from django.http import JsonResponse
 import json
@@ -99,16 +99,6 @@ def profile_view(request,id):
         followings = Follow.objects.filter(follower = user).count()
         already_following = Follow.objects.filter(follower=request.user,following=user).exists()
 
-    liked_post_ids = []
-    liked_objs = Like.objects.filter(user=request.user).all()
-    for liked_obj in liked_objs:
-        liked_post_ids.append(liked_obj.post.id)
-        print(liked_obj.post.id)
-    disliked_post_ids = []
-    disliked_objs = Dislike.objects.filter(user=request.user).all()
-    for disliked_obj in disliked_objs:
-        disliked_post_ids.append(disliked_obj.post.id)
-    
     saved_post_ids = []
     saved_objs = SavedPosts.objects.filter(user = request.user).all()
     for obj in saved_objs:
@@ -123,8 +113,6 @@ def profile_view(request,id):
         'followers':followers,
         'followings':followings,
         'already_following':already_following,
-        'liked_posts_ids':liked_post_ids,
-        'disliked_posts_ids':disliked_post_ids,
         'notification_count':notification_count,
         'images':images,
         'saved_post_ids':saved_post_ids

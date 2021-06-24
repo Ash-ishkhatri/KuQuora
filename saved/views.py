@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from ku_quora.models import Like,Dislike,Post,PostImages
+from ku_quora.models import Post,PostImages
 from .models import SavedPosts
 from django.http import JsonResponse
 from notification.models import Notification
@@ -7,16 +7,7 @@ import json
 
 # Create your views here.
 def saved_view(request):
-    liked_post_ids = []
-    liked_objs = Like.objects.filter(user=request.user).all()
-    for liked_obj in liked_objs:
-        liked_post_ids.append(liked_obj.post.id)
-        print(liked_obj.post.id)
-    disliked_post_ids = [] 
-    disliked_objs = Dislike.objects.filter(user=request.user).all()
-    for disliked_obj in disliked_objs:
-        disliked_post_ids.append(disliked_obj.post.id)
-    
+   
     saved_post_ids = []
     saved_objs = SavedPosts.objects.filter(user = request.user).all()
     for obj in saved_objs:
@@ -27,8 +18,6 @@ def saved_view(request):
     images = PostImages.objects.all()
 
     context = {
-        'liked_posts_ids':liked_post_ids,
-        'disliked_posts_ids':disliked_post_ids,
         'notification_count':notification_count,
         'saved_posts':saved_objs,
         'saved_post_ids':saved_post_ids,
