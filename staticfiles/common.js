@@ -90,6 +90,7 @@ deletePostBtn.forEach(btn => {
             'post_id' : event.target.dataset.postId
         }
         let blogPost = getBlogPost(event.target);
+        let options = blogPost.querySelector('.options');
         blogPost.classList.add('deleted');
         blogPost.querySelector('.footer').classList.add('deleted');
         fetch('/delete/',{
@@ -104,6 +105,8 @@ deletePostBtn.forEach(btn => {
         .then(data => {
             console.log(data);
                 if(data.deleted == true){
+                    options.dataset.status = 'collapsed';
+                    options.style.visibility = 'hidden';  
                     let msg = document.querySelector('.overlay-message');
                     msg.innerHTML = "deleted successfully";
                     msg.style.display = 'block'; 
@@ -121,11 +124,15 @@ deletePostBtn.forEach(btn => {
 const saveBtn = document.querySelectorAll('li.savePostBtn');
 console.log(saveBtn)
 saveBtn.forEach(btn => {
+    
     csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
     btn.addEventListener('click',()=>{
+        console.log(event.target)
         let data = {
             'post_id' : event.target.dataset.postId
         }
+        let blogPost = getBlogPost(event.target);
+        let options = blogPost.querySelector('.options ul');
         let location = window.location.pathname; 
         let post = getBlogPost(event.target); 
         fetch('/saved/save_post/',{
@@ -142,7 +149,7 @@ saveBtn.forEach(btn => {
                 if(data.status === 'saved'){
                     let msg = document.querySelector('.overlay-message');
                     let btnText = btn.querySelector('span');
-                    btnText.innerText = 'unsave';
+                    btnText.innerText = 'unsave'; 
                     msg.innerHTML = "post saved successfully";
                     msg.style.display = 'block'; 
                     setTimeout(()=>{
@@ -150,10 +157,10 @@ saveBtn.forEach(btn => {
                     },3000)
                 }
                 if(data.status === 'unsaved'){
-                        if(location == '/saved/'){
-                            console.log('deltet')
-                            post.style.display = "none";
-                        }
+                    if(location == '/saved/'){
+                        console.log('deltet')
+                        post.style.display = "none";
+                    } 
                     let msg = document.querySelector('.overlay-message');
                     let btnText = btn.querySelector('span');
                     btnText.innerText = 'save';
@@ -163,6 +170,8 @@ saveBtn.forEach(btn => {
                         msg.style.display = "none";
                     },3000)
                 }
+                options.dataset.status = 'collapsed';
+                options.style.visibility = 'hidden'; 
         })
 
     })

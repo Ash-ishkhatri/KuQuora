@@ -60,7 +60,7 @@
                         <a href=""><li><i class="fas fa-pen"></i>Edit</li></a>
                        <li data-post-id = {{post.id}} class = "deletePostBtn"><i class="fas fa-trash"></i>delete post</li>
                     {% endif %}
-                   <li data-post-id = {{post.id}} class = "savePostBtn"><i class="fas fa-save"></i>
+                   <li data-post-id = {{post.id}} class = "savePostBtn"><i data-post-id = {{post.id}} class="fas fa-save"></i>
                         <span>
                             {% if post.id in saved_post_ids %}
                                  unsave

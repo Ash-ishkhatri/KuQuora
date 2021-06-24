@@ -212,7 +212,7 @@
     border-radius:5px;
 }
 
-.blog-post .buttons >div:hover{
+.blog-post .buttons >div:not(.options):hover{
     background-color: rgb(230, 230, 230);
 }
 
@@ -227,6 +227,17 @@
     margin-left:auto;
 }
 
+.blog-post .options >div{
+    width:100%;
+    padding:.5em;
+    border-radius:5px;
+
+}
+.blog-post .options >div:hover{
+    background-color: rgb(230, 230, 230);
+
+}
+
 .blog-post .buttons .options ul{
     position:absolute;
     background-color:var(--post);
@@ -239,7 +250,6 @@
     bottom:2em;
     visibility: hidden;
     transition:transform 1s ease-out;
-
 }
 
 .blog-post .buttons .options ul li{
@@ -255,6 +265,10 @@
 .blog-post .buttons .options ul li i{
     margin-right:1.5em;
     -webkit-text-stroke:0px;
+    pointer-events: none;
+}
+.blog-post .buttons .options ul li span{
+
     pointer-events: none;
 }
 .blog-post .buttons .options ul li i.fa-trash{
