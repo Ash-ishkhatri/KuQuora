@@ -31,27 +31,27 @@ window.addEventListener('load',()=>{
     posts.forEach(post=>{
         const expandBtn = post.querySelector('.expand span');
 
-        if(post.clientHeight > 500){
-            expandBtn.style.visibility = "visible";
-            post.style.height = '500px';
-            post.style.overflow = 'hidden';
-        }
-        expandBtn.addEventListener('click',()=>{
-            console.log(expandBtn.parentNode.dataset.status)
-            if(expandBtn.parentNode.dataset.status == 'collapsed'){
-                expandBtn.querySelector('.text').innerHTML = 'collapse';
-                expandBtn.parentNode.setAttribute('data-status','expanded');
-                expandBtn.querySelector('i').style.transform = 'rotate(180deg)';
-                post.style.height = post.scrollHeight + 100 + "px";
+        // if(post.clientHeight > 500){
+        //     expandBtn.style.visibility = "visible";
+        //     post.style.height = '500px';
+        //     post.style.overflow = 'hidden';
+        // }
+        // expandBtn.addEventListener('click',()=>{
+        //     console.log(expandBtn.parentNode.dataset.status)
+        //     if(expandBtn.parentNode.dataset.status == 'collapsed'){
+        //         expandBtn.querySelector('.text').innerHTML = 'collapse';
+        //         expandBtn.parentNode.setAttribute('data-status','expanded');
+        //         expandBtn.querySelector('i').style.transform = 'rotate(180deg)';
+        //         post.style.height = post.scrollHeight + 100 + "px";
                 
-            }else{
-                expandBtn.querySelector('.text').innerHTML = 'expand';
-                expandBtn.querySelector('i').style.transform = 'rotate(0deg)';
-                expandBtn.parentNode.setAttribute('data-status','collapsed');
-                post.style.height = '510px';
+        //     }else{
+        //         expandBtn.querySelector('.text').innerHTML = 'expand';
+        //         expandBtn.querySelector('i').style.transform = 'rotate(0deg)';
+        //         expandBtn.parentNode.setAttribute('data-status','collapsed');
+        //         post.style.height = '510px';
 
-            }
-        })
+        //     }
+        // })
 
         const options = post.querySelector('.options');
         const optionsBtn = post.querySelector('.options > div');
@@ -91,8 +91,7 @@ deletePostBtn.forEach(btn => {
         }
         let blogPost = getBlogPost(event.target);
         let options = blogPost.querySelector('.options');
-        blogPost.classList.add('deleted');
-        blogPost.querySelector('.footer').classList.add('deleted');
+        
         fetch('/delete/',{
             method : 'post',
             body : JSON.stringify(data),
@@ -113,12 +112,16 @@ deletePostBtn.forEach(btn => {
                     setTimeout(()=>{
                         msg.style.display = "none";
                     },3000)
+                    if(/post/.test(window.location.pathname)){
+                        window.location = '/';
+                    }
+                    blogPost.classList.add('deleted');
                 }
         })
 
     })
 })
-
+console.log(window.location)
 
 // saving post through fetch api
 const saveBtn = document.querySelectorAll('li.savePostBtn');

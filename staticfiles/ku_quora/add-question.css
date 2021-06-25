@@ -6,7 +6,7 @@
      max-width:800px;
      padding:1em;
      background-color:var(--post);
-     border-radius:10px;
+     /* border-radius:10px; */
      transition:transform .5s ease,
                   height .5s ease;
      /* border:1px solid rgb(199, 197, 197); */

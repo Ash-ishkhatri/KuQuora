@@ -60,6 +60,7 @@ function previewImage(){
     //     // readAndPreview(file);
     //     console.log(file)
     // });
+    previewImageContainer.innerHTML = '';
 
     [].forEach.call(files,readAndPreview);
 

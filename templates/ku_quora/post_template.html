@@ -1,5 +1,5 @@
 
-<div class="blog-post" >
+ <div class="blog-post">
     <div class="header">
         <div class="profile">
             <a href="{% url 'profile' post.user.id %}"><img src="/media/{{post.user.profile.profile_pic}}" alt="" ></a>
@@ -29,19 +29,23 @@
                 {% endif %} 
             {% endfor %}
     </div>
-    <div class="footer">
+
+    <div id = "footer" class="footer">
         <div class="buttons">
-            <div class="comment">
+            <a href = "{% url 'post_detail' post.id %}#footer"><div class="comment">
                 <i class="fas fa-comment"></i>
+                <span>answers</span>
                 <span class="count">0</span>
-            </div>
+            </div></a>
             <div class="options">
                 <div><i class="fas fa-ellipsis-h"></i></div>
                 <ul data-status = 'collapsed'>
                     {% if request.user == post.user %}
                         <a href=""><li><i class="fas fa-pen"></i>Edit</li></a>
-                       <li data-post-id = {{post.id}} class = "deletePostBtn"><i class="fas fa-trash"></i>delete post</li>
+                        {% csrf_token %}
+                        <li data-post-id = {{post.id}} class = "deletePostBtn"><i class="fas fa-trash"></i>delete post</li>
                     {% endif %}
+                    {% csrf_token %}
                    <li data-post-id = {{post.id}} class = "savePostBtn"><i data-post-id = {{post.id}} class="fas fa-save"></i>
                         <span>
                             {% if post.id in saved_post_ids %}
@@ -54,12 +58,67 @@
                 </ul>
             </div>
         </div>
+        
     </div>
-
-    <div class="expand" data-status = 'collapsed'>
-        <span><span class="text">Expand</span><i class="fas fa-arrow-down"></i></span>
+    {% if inDetailView %}
+    <div class="answersForm">
+        <form action="">
+            {% csrf_token %}
+            <textarea name="answer" placeholder = "Write your answer here... "id="" cols="30" rows="7"></textarea>
+            <input type="file" id = "images" multiple>
+            <input class = "post_id" type="hidden" value = "{{post.id}}">
+            <button>post answer</button>
+        </form>
     </div>
-
-
+    {% endif %}
 
 </div>
+
+{% if inDetailView %}
+
+<div class="all-answers">
+
+    <h2>Answers:</h2>
+
+    {%if not answers.all%}
+        <div class = "noAnswer">No answer yet. Be the first to answer</div>
+    {% else %}
+    {% for answer in answers.all %}
+        <div class="answer-container">  
+                <div class="header">
+                    <div class="profile">
+                        <a href="{% url 'profile' answer.user.id %}"><img src="/media/{{answer.user.profile.profile_pic}}" alt="sdf"></a>
+                    </div>
+                    <div>
+                        <span class="author">{{answer.user.username}}</span>
+                        <span class="time-stamp">{{answer.time}}</span>
+                    </div>
+                </div>
+                <div class="body">
+                    {{answer.body}}
+                </div>
+                <div class="images">
+                    {% for image in answerImages %}
+                        {% if image.answer == answer %}
+                            <a href="/media/{{image.image}}" target="_blank"><img src="/media/{{image.image}}" alt=""></a>
+                        {% endif %}
+                    {% endfor %}
+            </div>
+
+        </div>
+    {% endfor %}
+        {% endif %}
+
+ </div>
+
+<!-- {% comment %} 
+    <div class="add answer">
+        <form action='answer/' method="post">
+            {% csrf_token %}
+            <input type="text area" name="answer" placeholder="Enter your ansnwer here">
+            <input type="hidden" name="postSno" value="{{post.sno}}">
+            <input type="submit" value="Submit">
+        </form>
+    </div> 
+{% endcomment %} -->
+{% endif %}

@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect,get_object_or_404
-from .models import Post,Tag,PostImages
+from .models import Post,Tag,PostImages,Answer,AnswerImages
 from django.contrib.auth.decorators import login_required
 import json
 from django.http import JsonResponse
@@ -54,12 +54,23 @@ def post_detail_view(request,post_id):
     notification_count = Notification.objects.filter(user=request.user,is_seen=False).count()
     p = Post.objects.get(id=post_id)
     images = PostImages.objects.filter(post=p)
+    
+    answers = Answer.objects.filter(post=post).order_by('-time')
+    answerImages = []
+
+    for answer in answers:
+        images = AnswerImages.objects.filter(answer=answer).all()
+        for image in images:
+            answerImages.append(image)
+    detail = 1
     context = {
         'post':post,
         'notification_count':notification_count,
         'images':images,
+        'answerImages':answerImages,
         'saved_post_ids':saved_post_ids,
-
+        'answers':answers,
+        'inDetailView':detail
     }
     return render(request,'ku_quora/post_detail.html',context)
 
@@ -96,4 +107,54 @@ def delete_post_view(request):
 
         return JsonResponse(response)
     return redirect('index')
+
+# def AnswerView(request):
+#     if request.method == "POST":
+#         answer=request.POST.get('answer')
+#         user=request.user
+#         postSno =request.POST.get('postSno')
+#         post= Post.objects.get(id=postSno)
+#         answer=Answer(answer= answer, user=user, post=post)
+#         answer.save()
+#         return redirect(f"/{post.id}")        
+        
+def addAnswerNew_view(request):
+    if request.method == "POST":
+        post_id = request.POST.get('post_id')
+        body = request.POST.get('answer')  
+        post = Post.objects.get(id=post_id)
+        answer,created = Answer.objects.get_or_create(post=post,user=request.user,body=body)
+        answer.save()
+        OutImages = []
+        for file in request.FILES:
+            image = request.FILES.get(file)
+            i, created = AnswerImages.objects.get_or_create(answer=answer,image=image)
+            i.save()
+
+        Images = AnswerImages.objects.filter(answer=answer)
+        for image in Images:
+            OutImages.append(str(image.image))
+            
+        response = {
+            'author':request.user.username,
+            'body':body,
+            'time':answer.time,
+            'profile_pic':answer.user.profile.profile_pic.url,
+            'images':OutImages
+        }
+
+        return JsonResponse(response)
+        
+
+
+# def CommentView(request):
+#     if request.method == "POST":
+#         comment=request.POST.get('comment')
+#         user=request.user
+#         CmtSno =request.POST.get('CmtSno')
+#         answer= Answer.objects.get(ansId=CmtSno)
+#         comment=Comment(comment= comment, user=user, answer=answer)
+#         comment.save()
+        
+#     return redirect(f"/{post.slug}")        
 

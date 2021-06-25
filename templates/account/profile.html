@@ -3,7 +3,7 @@
 {% block content %}
 {% csrf_token %}
 <div class="profile-main-container">
-
+    <h1>{{ User.username }}</h1>
     <div class="profile-main">
         <div class="primary">
             <div class="image">
@@ -13,7 +13,7 @@
                     {% if request.user == User %}
                         <li><a href="{% url 'profileEdit' User.id %}">Edit profile</a></li>
                     {% endif %}
-                    <li><a target = '_blank' href="/media/{{request.user.profile.profile_pic}}">View Profile Image</a></li>
+                    <li><a target = '_blank' href="/media/{{User.profile.profile_pic}}">View Profile Image</a></li>
                 </ul>
             </div> 
         </div>

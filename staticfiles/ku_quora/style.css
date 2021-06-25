@@ -6,7 +6,7 @@ nav{
     height:8vh;
     display:flex;
     align-items: center;
-
+    margin-bottom:5em;
 }
 nav > ul{
     display:flex;
@@ -145,10 +145,10 @@ nav .search-box button > i{
     color:white;
     padding:1em 4em;
     border-radius:5px;
-    background-color: rgba(77, 151, 16, 0.548);
+    background-color: rgb(77, 151, 16);
     position:fixed;
-    right:0;
+    right:1em;
     display:none;
-    top:0;
+    top:1em;
     z-index:9999;
 }
