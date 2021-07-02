@@ -45,9 +45,9 @@ def register_view(request):
         
         user = User.objects.create_user(username=username,email=email,
                 password = password1,first_name=first_name,last_name=last_name)
-        messages.success(request,"Success - ----  : ) Signed Up successfully")
+        # messages.success(request,"Success - ----  : ) Signed Up successfully")
         login(request,user)
-        redirect(login_view)
+        return redirect('index')
         
     return render(request,'account/register.html',{})
 
@@ -203,3 +203,7 @@ def validateEmail_view(request):
             }
 
         return JsonResponse(response)
+
+def followings_view(request):
+
+    return render(request,'account/followings.html',{})

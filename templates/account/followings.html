@@ -1,0 +1,29 @@
+{% extends 'ku_quora/base.html' %}
+
+{% block content %}
+{% csrf_token %}
+
+<!-- followings  -->
+<!-- <h1>{{request.user}}</h1> -->
+
+<div class="container">
+    <div class="following">
+        <table>
+            <tr>
+                <td class = "profile">
+                    <img src="" alt="">
+                    <span class="username"></span>
+                    <span class="designation"></span>
+                </td>
+            </tr>
+            <tr>
+               <button>follow</button>
+            </tr>
+        </table>
+    </div>
+    <div class="followers">
+
+    </div>
+</div>
+
+{% endblock %}

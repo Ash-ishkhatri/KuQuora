@@ -3,7 +3,6 @@
 {% block content %}
 {% csrf_token %}
 <div class="profile-main-container">
-    <h1>{{ User.username }}</h1>
     <div class="profile-main">
         <div class="primary">
             <div class="image">
@@ -73,7 +72,10 @@
 <div class="posts">
 
     {% for post in posts %}
+    <div class="post">
+
         {% include 'ku_quora/post_template.html' %}
+    </div>
     {% endfor %}
     
 </div>

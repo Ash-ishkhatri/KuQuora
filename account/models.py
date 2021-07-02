@@ -12,6 +12,7 @@ User = get_user_model()
 
 
 def clean_media_files(sender,instance,*args,**kwargs):
+    print('media files cleamed')
     user_id = instance.id
     media = os.path.join(BASE_DIR,'media')
     for item in os.listdir(media):

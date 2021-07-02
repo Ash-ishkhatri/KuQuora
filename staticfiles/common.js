@@ -30,29 +30,6 @@ window.addEventListener('load',()=>{
     const posts = document.querySelectorAll('.blog-post');
     posts.forEach(post=>{
         const expandBtn = post.querySelector('.expand span');
-
-        // if(post.clientHeight > 500){
-        //     expandBtn.style.visibility = "visible";
-        //     post.style.height = '500px';
-        //     post.style.overflow = 'hidden';
-        // }
-        // expandBtn.addEventListener('click',()=>{
-        //     console.log(expandBtn.parentNode.dataset.status)
-        //     if(expandBtn.parentNode.dataset.status == 'collapsed'){
-        //         expandBtn.querySelector('.text').innerHTML = 'collapse';
-        //         expandBtn.parentNode.setAttribute('data-status','expanded');
-        //         expandBtn.querySelector('i').style.transform = 'rotate(180deg)';
-        //         post.style.height = post.scrollHeight + 100 + "px";
-                
-        //     }else{
-        //         expandBtn.querySelector('.text').innerHTML = 'expand';
-        //         expandBtn.querySelector('i').style.transform = 'rotate(0deg)';
-        //         expandBtn.parentNode.setAttribute('data-status','collapsed');
-        //         post.style.height = '510px';
-
-        //     }
-        // })
-
         const options = post.querySelector('.options');
         const optionsBtn = post.querySelector('.options > div');
         const ul = options.querySelector('ul');
@@ -241,13 +218,36 @@ notifications.forEach(notification=>{
                 'X-CSRFToken' : csrfToken
             }
         })
-        .then(res =>  res.json())
+        .then(res =>  res())
         .then(data => {
             window.location.pathname = destinationUrl;
         })
     })
 
 })
+
+// let pageCount = 1;
+//    // infinite scroll posts
+//    if(window.location.pathname == ('/')){
+//     document.querySelector('button.getPosts').onclick =  () => {
+//         pageCount++;
+//         fetch(`/get_post?page=${pageCount}`,{
+//             method : 'get',
+//             headers : {
+//                 'Content-Type':'application/json'
+//             }
+//         })
+//         .then(res => res.json())
+//         .then(data => {
+//             posts = JSON.parse(data.posts);
+//             console.log(posts)
+//         })
+//     }
+
+//     }
+
+
+
 
 setInterval(()=>{
     csrfToken = document.querySelectorAll('input[name="csrfmiddlewaretoken"]')[0].value;

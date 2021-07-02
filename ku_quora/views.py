@@ -5,11 +5,22 @@ import json
 from django.http import JsonResponse
 from notification.models import Notification
 from saved.models import SavedPosts
+from django.core.paginator import Paginator, EmptyPage , PageNotAnInteger
+from django.core import serializers
 
 @login_required(login_url='login')
 def index_view(request):
     
     posts = Post.objects.all().order_by('-posted_on')
+
+    # p = Paginator(posts,2)
+    # page = request.GET.get('page')
+    # try:
+    #     posts = p.page(page)
+    # except PageNotAnInteger:
+    #     posts = p.page(1)
+    # except EmptyPage:
+    #     posts = p.page(p.num_pages)
 
     saved_post_ids = []
     saved_objs = SavedPosts.objects.filter(user = request.user).all()
@@ -158,3 +169,21 @@ def addAnswerNew_view(request):
         
 #     return redirect(f"/{post.slug}")        
 
+
+# def get_post_view(request):
+#     if request.method == 'GET':
+#         posts = Post.objects.all().order_by('-posted_on')
+#         p = Paginator(posts,2)
+#         page = request.GET.get('page')
+#         try:
+#             posts = p.page(page)
+#         except PageNotAnInteger:
+#             posts = p.page(1)
+#         except EmptyPage:
+#             posts = p.page(p.num_pages)
+
+#         posts = serializers.serialize('json',posts)
+#         response = {
+#             'posts':posts
+#         }
+#         return JsonResponse(response)

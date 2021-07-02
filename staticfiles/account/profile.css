@@ -25,6 +25,7 @@
     box-shadow:1px 7px 15px rgb(209, 209, 209);
     border-radius:50%;
     position:relative;
+    cursor:pointer;
 }
 
 .profile-main .image img{
@@ -43,12 +44,12 @@
 .profile-main .primary ul.options{
     border-radius:0 10px 10px 10px;
     background-color:var(--post);
-    left:5em;
-    top:8em;
     box-shadow:4px 4px 30px rgb(206, 206, 206);
     padding:2em;
-    position:absolute;
     z-index:99999;
+    width:180px;
+    left:5em;
+    top:-2em;
     visibility: hidden;
 }
 

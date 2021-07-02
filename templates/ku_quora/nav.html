@@ -3,11 +3,11 @@
             <li class='logo'><a href="{%url 'index'%}">Ku-Quora</a></li>
             <ul class="icons">
                 <a href="{%url 'index'%}"><li><i class="fas fa-home"></i></li></a>
-                <a href=""><li><i class="fas fa-list"></i></li></a>
+                <a href="{% url 'followings' %}"><li><i class="fas fa-list"></i></li></a>
                 <a href="{% url 'notification' %}"><li class = 'bell-icon'><i class="fas fa-bell"></i>
                     <span class="notification-count">{{notification_count}}</span>
                 </li></a>
-                <a href=" {% url 'saved' %}"><li><i class="fas fa-save"></i></li></a>
+                <a title = "Saved posts" href=" {% url 'saved' %}"><li><i class="fas fa-save"></i></li></a>
 
                 <form class = "search-box" action="  ">
                     <input type="text" placeholder = 'Search Quora'>

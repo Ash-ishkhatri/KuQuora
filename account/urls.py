@@ -10,6 +10,6 @@ urlpatterns = [
     path('follow/',views.follow_view,name='follow'),
     path('validateUsername/',views.validateUsername_view,name='validateUsername'),
     path('validateEmail/',views.validateEmail_view,name='validateEmail'),
-
+    path('followings/',views.followings_view,name='followings'),
 
 ]

@@ -1,4 +1,3 @@
-
 from django.db import models
 import uuid
 from django.contrib.auth import get_user_model
@@ -51,7 +50,6 @@ class Post(models.Model):
     def save(self,*args,**kwargs):
         self.slug = slugify(self.title + str(self.id))
         return super().save(*args,**kwargs)
-
     
 class Answer(models.Model):
     ansID = models.AutoField( primary_key= True)
@@ -60,6 +58,7 @@ class Answer(models.Model):
     #parent = models.ForeignKey('self', on_delete=models.CASCADE, null= True)
     body = models.TextField()
     time = models.DateTimeField(auto_now_add=True)
+    upVotes = models.ManyToManyField(User,related_name='likes')
 
     def __str__(self):
         return '%s - %s' %(self.post.title, self.user)

@@ -21,23 +21,28 @@
 
 </head>
 <body>
-    {% include 'ku_quora/nav.html' %}
-    {% if messages %}
+
+
+     {% include 'ku_quora/nav.html' %}
+    <!--{% if messages %}
         {% for message in messages %}
             {% if message.tags %}
                 <span class = "message {{message.tags}}">{{message}}</span>
             {% endif %}
         {% endfor %}
-     {% endif %}
+     {% endif %} -->
     {% block content %}
 
+
+    
     {% endblock %}
     <audio id='likeDislike' src="{% static 'audio/likeDislike.mp3' %}"></audio>
     <audio id='notification' src="{% static 'audio/notification.mp3' %}"></audio>
 
+    <script src = "{% static 'common.js' %}"></script>
+    <script src = "{% static 'ku_quora/add-question.js' %}"></script>
+    <script src = "{% static 'ku_quora/post_answer.js' %}"></script>
 </body>
-<script src = "{% static 'common.js' %}"></script>
-<script src = "{% static 'ku_quora/add-question.js' %}"></script>
-<script src = "{% static 'ku_quora/post_answer.js' %}"></script>
+
 
 </html>

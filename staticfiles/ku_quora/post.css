@@ -1,11 +1,19 @@
 .post{
     transition:all 1s ease;
 }
+
+.all-answers{
+    margin-bottom:10em;
+
+}
+
 .blog-post{
     margin-top:2em;
     margin-bottom:2em;
     position:relative;
     overflow: hidden;
+    border : 1px solid var(--border);
+    /* box-shadow:2px 2px 10px rgb(209, 209, 209); */
 }
 
 .blog-post .expand{
@@ -213,67 +221,66 @@
 }
 
 
-.blog-post .buttons .options i.fa-ellipsis-h {
+ .options i.fa-ellipsis-h {
     transform:rotate(90deg);
 }
 
-.blog-post .buttons .options{
+.options{
     position:relative;
     right:0;
     margin-left:auto;
 }
 
-.blog-post .options >div{
+.options >div{
     width:100%;
     padding:.5em;
     border-radius:5px;
 
 }
-.blog-post .options >div:hover{
+.options >div:hover{
     background-color: rgb(230, 230, 230);
-
 }
 
-.blog-post .buttons .options ul{
+ .options ul{
     position:absolute;
-    background-color:var(--post);
+    background-color:white;
     padding:2em;
-    box-shadow:4px 4px 50px rgb(216, 216, 216);
+    /* box-shadow:4px 4px 50px rgb(216, 216, 216); */
     z-index:999;
-    border-radius:10px;
     width:400px;
     right:2em;
     bottom:2em;
+    border:1px solid var(--border);
     visibility: hidden;
     transition:transform 1s ease-out;
 }
 
-.blog-post .buttons .options ul li{
+.options ul li{
     list-style:none;
     padding:.5em 0;
     border-radius:6px;
 }
 
-.blog-post .buttons .options ul li:hover{
+.options ul li:hover{
     background-color: rgb(230, 230, 230);
 }
 
-.blog-post .buttons .options ul li i{
+.options ul li i{
     margin-right:1.5em;
     -webkit-text-stroke:0px;
     pointer-events: none;
 }
-.blog-post .buttons .options ul li span{
+.options ul li span{
 
     pointer-events: none;
 }
-.blog-post .buttons .options ul li i.fa-trash{
+.options ul li i.fa-trash{
     color:rgba(255, 0, 0, 0.52);
 }
-.blog-post .buttons .options ul li i.fa-pen{
+.options ul li i.fa-pen{
     color:rgba(11, 57, 95, 0.52);
 }
-.blog-post .buttons .options ul li i.fa-save{
+.options ul li i.fa-save{
     color:rgba(18, 109, 56, 0.52);
 }
 
@@ -315,9 +322,9 @@
 .all-answers{
      width:95%;
      max-width:800px;
-     margin-top:-2em;
+     /* margin-top:-2em; */
      padding:6em 1em 0;
-     background-color:var(--post);
+     /* background-color:var(--post); */
      border-radius:0px;
      /* border:1px solid rgb(199, 197, 197); */
      margin-left:auto;
@@ -326,8 +333,9 @@
 }
 
 .all-answers .answer-container{
-    border:1px solid rgb(148, 148, 148);
     width:98%;
+     background-color:var(--post);
+    
 }
 
 .all-answers .answer-container .body{
@@ -347,18 +355,58 @@
 
 .answersForm form textarea{
     width:100%;
-    font-size:1.2rem;
     padding:.5em;
     min-height:200px;
     resize:vertical;
     outline:none;
     /* border:none; */
-    border:1px solid rgb(77, 77, 77);
+    border:1px solid var(--border);
     margin-bottom:.5em;
+    font-size:1.2rem;
 }
 .answersForm form textarea:focus{
     border:1px solid rgb(7, 172, 172);
 }
+
+.answersForm form  input[id = "images"]{
+    display:none;
+}
+.answersForm form  i.fa-image{
+    font-size:2.3rem;
+}
+
+.answersForm form label{
+    display: flex;
+    align-items: center;
+    gap:.5em;
+    cursor:pointer;
+}
+
+.answersForm form label:hover{
+    background-color: rgb(236, 236, 236);
+}
+
+.answersForm form >*{
+    display: block;
+    margin:.5em .2em;
+    padding:.5em;
+}
+.answersForm form button{
+    float:right;
+    background:green;
+    border:none;
+    padding:.5em 1em;
+    font-size: 1.1rem;
+    cursor: pointer;
+    color:white;
+    font-weight: bold;
+}
+
+.answersForm > .previewImageContainer >img{
+    height:200px;
+    margin:1em;
+}
+
 
 .all-answers >div{
     /* border:1px solid black; */
@@ -397,7 +445,9 @@
     overflow: hidden;
 }
 
-
+.all-answers .answer-container .images img{
+    max-height:200px;
+}
 .all-answers .answer-container .images a{
 
 }
@@ -408,4 +458,11 @@
     object-fit: cover;
     /* margin:.4em 0; */
 
+}
+
+.all-answers .footer{
+    border:1px solid red;
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
 }

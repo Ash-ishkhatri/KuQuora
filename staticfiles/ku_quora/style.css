@@ -152,3 +152,14 @@ nav .search-box button > i{
     top:1em;
     z-index:9999;
 }
+
+footer{
+    background-color:var(--post);
+    box-shadow:0 4px 10px rgb(240, 240, 240);
+    height:5vh;
+    width:100vw;
+    position:fixed;
+    left:0;
+    bottom:0;
+    margin-top:10em;
+}
