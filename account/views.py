@@ -89,8 +89,10 @@ def profile_view(request,id):
         selfProfile = 1
         user = request.user
         posts = Post.objects.filter(user=request.user).all().order_by('-posted_on')
-        followers = Follow.objects.filter(following = user).count()
-        followings = Follow.objects.filter(follower = user).count()
+        # followers = Follow.objects.filter(following = user).count()
+        # followings = Follow.objects.filter(follower = user).count()
+        followers = request.user.profile.get_followers_count()
+        followings = request.user.profile.get_followings_count()
     else:
         selfProfile=0
         user = User.objects.get(id = id)
@@ -104,7 +106,7 @@ def profile_view(request,id):
     for obj in saved_objs:
         saved_post_ids.append(obj.post.id)
     
-    notification_count = Notification.objects.filter(user=request.user,is_seen=False).count()
+    # notification_count = Notification.objects.filter(user=request.user,is_seen=False).count()
     images = PostImages.objects.all()
     context = {
         'selfProfile' : selfProfile,
@@ -113,7 +115,7 @@ def profile_view(request,id):
         'followers':followers,
         'followings':followings,
         'already_following':already_following,
-        'notification_count':notification_count,
+        # 'notification_count':notification_count,
         'images':images,
         'saved_post_ids':saved_post_ids
     }
@@ -134,10 +136,10 @@ def profileEdit_view(request,id):
         updatedProfile.save()
         messages.success(request,'Successfully updated profile')
         return redirect('index')
-    notification_count = Notification.objects.filter(user=request.user).count()
+    # notification_count = Notification.objects.filter(user=request.user).count()
 
     context = {
-        'notification_count':notification_count
+        # 'notification_count':notification_count
     }
     return render(request,'account/editProfile.html',context)
 

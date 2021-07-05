@@ -1,3 +1,4 @@
+from notification.views import notification_seen_status_view
 from django.db import models
 import uuid
 from django.contrib.auth import get_user_model
@@ -7,17 +8,21 @@ User = get_user_model()
 from django.utils.text import slugify
 from django.urls import reverse
 from notification.models  import  Notification
-from django.db.models.signals import post_save,post_delete,pre_delete
+from django.db.models.signals import post_save,post_delete,pre_delete,m2m_changed
 import os
 from core.settings import BASE_DIR
+
+from account.models import Follow
+
+from django.contrib.auth.models import User
+from django.utils.timezone import now
+
+
 
 def get_file_path(instance,filename):
     subfolder = 'postimages'
     return os.path.join(str(instance.post.user.id),subfolder,filename)
 
-from django.db.models.signals import post_save
-from django.contrib.auth.models import User
-from django.utils.timezone import now
 
 class Tag(models.Model):
     title = models.CharField(max_length = 30)
@@ -47,14 +52,25 @@ class Post(models.Model):
     def get_total_answer_count(self):
         return Answer.objects.filter(post=self).count()
 
-
     def get_absolute_url(self):
         return reverse('post_detail',args=[self.id])
-
+    
     def save(self,*args,**kwargs):
         self.slug = slugify(self.title + str(self.id))
         return super().save(*args,**kwargs)
     
+    def notify_post(sender,instance,*args,**kwargs):
+        user_from = instance.user
+        post = instance
+        # user_to = followers objs
+        notification_type = 3
+        
+        objs = Follow.objects.filter(following=user_from).all()
+        for obj in objs:
+            notification = Notification(user_from=user_from,user_to=obj.follower,notification_type=notification_type,post=post)
+            notification.save()
+
+
 class Answer(models.Model):
     ansID = models.AutoField( primary_key= True)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
@@ -69,6 +85,19 @@ class Answer(models.Model):
 
     def __str__(self):
         return '%s - %s' %(self.post.title, self.user)
+
+    def notify_answer(sender,instance,*args,**kwargs):
+        user_from = instance.user
+        user_to = instance.post.user
+        notification_type = 4
+        post = instance.post
+        answer = instance
+
+        Notification.objects.create(answer=answer,user_from=user_from,user_to=user_to,notification_type=notification_type,post=post)
+        print('answer notified')
+        # notification.save()
+    
+    # def notify_upVote(sender,instance,action,)
 
 class AnswerImages(models.Model):
     answer = models.ForeignKey(Answer, on_delete = models.CASCADE)
@@ -101,5 +130,7 @@ class PostImages(models.Model):
 
 pre_delete.connect(PostImages.deleteImage,sender=PostImages)
 pre_delete.connect(AnswerImages.deleteImage,sender=AnswerImages)
-
+post_save.connect(Post.notify_post,sender=Post)
+post_save.connect(Answer.notify_answer,sender=Answer)
+# m2m_changed.connect()
 

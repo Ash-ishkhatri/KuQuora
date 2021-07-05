@@ -5,7 +5,7 @@
                 <a href="{%url 'index'%}"><li><i class="fas fa-home"></i></li></a>
                 <a href="{% url 'followings' %}"><li><i class="fas fa-list"></i></li></a>
                 <a href="{% url 'notification' %}"><li class = 'bell-icon'><i class="fas fa-bell"></i>
-                    <span class="notification-count">{{notification_count}}</span>
+                    <span class="notification-count">{{request.user.profile.get_notification_count}}</span>
                 </li></a>
                 <a title = "Saved posts" href=" {% url 'saved' %}"><li><i class="fas fa-save"></i></li></a>
 

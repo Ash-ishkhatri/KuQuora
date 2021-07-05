@@ -25,6 +25,17 @@ def get_upload_directory(instance,filename):
     if filename != None:
         return os.path.join(str(instance.user.id),subfolder,filename)
 
+class Follow(models.Model):
+    following = models.ForeignKey(User, on_delete=models.CASCADE,related_name='following')
+    follower = models.ForeignKey(User, on_delete=models.CASCADE,related_name='follower')
+
+    def notify_follow(sender,instance,*args,**kwargs):
+        user_from = instance.follower
+        user_to = instance.following
+        notification_type = 2
+        if user_from != user_to:
+            notification , created = Notification.objects.get_or_create(user_from=user_from,user_to=user_to,notification_type=notification_type)
+            notification.save()
 
 
 class Profile(models.Model):
@@ -51,19 +62,17 @@ class Profile(models.Model):
     def get_profile_url(self):
         print('inside')
         return (os.path.join(str(self.id),'profile',str(self.profile_pic)))
-        
+    
+    def get_followers_count(self):
+        return Follow.objects.filter(following=self.user).count()
+   
+    def get_followings_count(self):
+        return Follow.objects.filter(follower=self.user).count()
 
-class Follow(models.Model):
-    following = models.ForeignKey(User, on_delete=models.CASCADE,related_name='following')
-    follower = models.ForeignKey(User, on_delete=models.CASCADE,related_name='follower')
+    def get_notification_count(self):
+        return Notification.objects.filter(user_to=self.user,is_seen=False).count()
 
-    def notify_follow(sender,instance,*args,**kwargs):
-        sender = instance.follower
-        user = instance.following
-        notification_type = 3
-        notification = Notification(sender=sender,user=user,notification_type=notification_type)
-        notification.save()
-        print('follow notified')
+
 
 post_save.connect(Profile.save_profile,sender=User)
 post_save.connect(Follow.notify_follow,sender=Follow)

@@ -1,4 +1,6 @@
-try{
+
+
+window.addEventListener('load',()=>{
     homeIcon = document.querySelector('nav li i.fa-home');
     FollowersIcon = document.querySelector('nav li i.fa-list');
     NotificationIcon = document.querySelector('nav li i.fa-bell');    
@@ -21,13 +23,6 @@ try{
         indicate(savedIcon);
     }
 
-}
-catch(error){
-    console.log(error)
-}
-
-
-window.addEventListener('load',()=>{
     const posts = document.querySelectorAll('.blog-post');
     posts.forEach(post=>{
         const expandBtn = post.querySelector('.expand span');
@@ -43,11 +38,48 @@ window.addEventListener('load',()=>{
                ul.style.visibility = 'visible';         
             }
         })
-
-       
-      
-
     })
+
+    // let updateTime = () => {
+    //     let timezone;
+        
+    
+    //     fetch('https://api.ipify.org?format=json',{
+    //         method : 'get',
+    //     }) 
+    //     .then(res => res.json())
+    //     .then(data => {
+    //         console.log(data.ip)
+    //         fetch('https://ipinfo.io/json?token=ba743880fdd4c3',{
+    //             method : 'get',
+    //         }) 
+    //         .then(res => res.json())
+    //         .then(data => {
+    //             console.log(data)
+    //             timezone = data.timezone
+    //                 fetch(`http://worldtimeapi.org/api/timezone/${timezone}`,
+    //                     {
+    //                         method : 'get'
+    //                     }
+    //                 ).then(res => res.json())
+    //                 .then(data => {
+    //                     console.log(data)
+    //                     let dateTime = data.datetime;
+    //                     dateTime = dateTime.split('');
+    //                     console.log(dateTime)
+    //                     let time = dateTime.slice(11,19);
+    //                     console.log(time)
+    //                     time = time.join('')
+    //                     const timeDisplay = document.querySelector('div.timezone');
+    //                     timeDisplay.innerHTML = time;
+    //                 })
+    
+    //         })
+    //     })
+    // }
+
+    // setInterval(updateTime , 30000);
+
 
 })
 
@@ -100,7 +132,6 @@ deletePostBtn.forEach(btn => {
 
     })
 })
-console.log(window.location)
 
 // saving post through fetch api
 const saveBtn = document.querySelectorAll('li.savePostBtn');
@@ -165,7 +196,7 @@ notificationAudio = document.querySelector('audio#notification');
 notificationAudio.volume=0.6;
 
 
-try{
+if(window.location.pathname.match('/profile/')){
     followBtn = document.querySelector('.button button')
     followBtn.addEventListener('click',()=>{
         event.target.classList.toggle('followed')
@@ -197,56 +228,35 @@ try{
         })
 
     })
-}catch(err){
-    console.log(err)
 }
 
 
 
-notifications = document.querySelectorAll('.notification');
+// notifications = document.querySelectorAll('.notification');
 
-notifications.forEach(notification=>{
-    notification.addEventListener('click',()=>{
-        destinationUrl = event.target.dataset.url.trim();
-        csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
-        data = {
-            'id':event.target.dataset.notification_id
-        }
-        fetch('/notification/notification_seen_status',{
-            method : 'post',
-            body : JSON.stringify(data),
-            headers : {
-                'Content-Type' : 'application/json',
-                'X-CSRFToken' : csrfToken
-            }
-        })
-        .then(res =>  res())
-        .then(data => {
-            window.location.pathname = destinationUrl;
-        })
-    })
-
-})
-
-// let pageCount = 1;
-//    // infinite scroll posts
-//    if(window.location.pathname == ('/')){
-//     document.querySelector('button.getPosts').onclick =  () => {
-//         pageCount++;
-//         fetch(`/get_post?page=${pageCount}`,{
-//             method : 'get',
+// notifications.forEach(notification=>{
+//     notification.addEventListener('click',()=>{
+//         destinationUrl = event.target.dataset.url.trim();
+//         csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+//         data = {
+//             'id':event.target.dataset.notification_id
+//         }
+//         fetch('/notification/notification_seen_status',{
+//             method : 'post',
+//             body : JSON.stringify(data),
 //             headers : {
-//                 'Content-Type':'application/json'
+//                 'Content-Type' : 'application/json',
+//                 'X-CSRFToken' : csrfToken
 //             }
 //         })
-//         .then(res => res.json())
+//         .then(res =>  res())
 //         .then(data => {
-//             posts = JSON.parse(data.posts);
-//             console.log(posts)
+//             window.location.pathname = destinationUrl;
 //         })
-//     }
+//     })
 
-//     }
+// })
+
 
 
 

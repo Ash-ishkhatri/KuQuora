@@ -7,6 +7,10 @@ from notification.models import Notification
 from saved.models import SavedPosts
 from django.core.paginator import Paginator, EmptyPage , PageNotAnInteger
 from django.core import serializers
+import requests
+import string
+
+# import geodecoder
 
 @login_required(login_url='login')
 def index_view(request):
@@ -27,13 +31,17 @@ def index_view(request):
     for obj in saved_objs:
         saved_post_ids.append(obj.post.id)
 
-    notification_count = Notification.objects.filter(user=request.user,is_seen=False).count()
+    # notification_count = Notification.objects.filter(user=request.user,is_seen=False).count()
     images = PostImages.objects.all()
+    
+    # r = requests.get("http://worldtimeapi.org/api/timezone/Europe")
+    
     context = {
         'posts':posts,
-        'notification_count':notification_count,
+        # 'notification_count':notification_count,
         'images':images,
         'saved_post_ids':saved_post_ids,
+        # 'requests':r
     }
     return render(request,'ku_quora/index.html',context)
 
@@ -45,12 +53,18 @@ def create_post_view(request):
         title = request.POST.get('title')
         body = request.POST.get('body')
         tags = request.POST.get('tags')
+        tags.replace(" ","")
         images = request.FILES.getlist('image1')
-        tags_list = list(tags.split(' '))
+        p, created = Post.objects.get_or_create(title=title,body=body,user=user)
+        tags_list = list(tags.split('#'))
+        tags_list.remove('')
+        print(tags_list)
+
+        tags_list = list(dict.fromkeys(tags_list))
+        print(tags_list)
         for tag in tags_list:
             t, created = Tag.objects.get_or_create(title=tag)
             tags_objs.append(t)
-        p, created = Post.objects.get_or_create(title=title,body=body,user=user)
         p.tags.set(tags_objs)
         for image in images:
             i, created = PostImages.objects.get_or_create(post=p,image=image)
@@ -62,7 +76,7 @@ def post_detail_view(request,post_id):
     saved_objs = SavedPosts.objects.filter(user = request.user).all()
     for obj in saved_objs:
         saved_post_ids.append(obj.post.id)
-    notification_count = Notification.objects.filter(user=request.user,is_seen=False).count()
+    # notification_count = Notification.objects.filter(user=request.user,is_seen=False).count()
     p = Post.objects.get(id=post_id)
     images = PostImages.objects.filter(post=p)
     
@@ -80,7 +94,7 @@ def post_detail_view(request,post_id):
     detail = 1
     context = {
         'post':post,
-        'notification_count':notification_count,
+        # 'notification_count':notification_count,
         'images':images,
         'answerImages':answerImages,
         'saved_post_ids':saved_post_ids,
@@ -99,12 +113,12 @@ def tags_post_view(request,tag_slug):
     
     tag = get_object_or_404(Tag,slug=tag_slug)
     posts = Post.objects.filter(tags=tag).order_by('-posted_on')
-    notification_count = Notification.objects.filter(user=request.user,is_seen=False).count()
+    # notification_count = Notification.objects.filter(user=request.user,is_seen=False).count()
     images = PostImages.objects.all()
     context = {
         'posts':posts,
         'tag':tag,
-        'notification_count':notification_count,
+        # 'notification_count':notification_count,
         'saved_post_ids':saved_post_ids,
         'images':images
     }
@@ -140,7 +154,6 @@ def addAnswerNew_view(request):
         body = request.POST.get('answer')  
         post = Post.objects.get(id=post_id)
         answer,created = Answer.objects.get_or_create(post=post,user=request.user,body=body)
-        answer.save()
         OutImages = []
         for file in request.FILES:
             image = request.FILES.get(file)

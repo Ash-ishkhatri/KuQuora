@@ -33,7 +33,7 @@ body{
 }
 
 .notification-seen{
-    opacity:.5;
+    opacity:.6;
     box-shadow:none;
     background-color:rgba(226, 226, 226, 0.144);
     pointer-events:none;
@@ -63,7 +63,7 @@ body{
 }
 
 .notification .profile-icon img{
-  height:100%;
+  width:100%;
   object-fit: cover;
 }
 
@@ -80,11 +80,19 @@ body{
     flex-direction: column;
 }
 
-.notification .info .title{
-    font-weight:bold;
-
+.notification .info .top{
+    display:flex;
+    align-items: center;
+    margin-bottom:1em;
 }
 
+.notification .info .title{
+    font-weight:bold;
+    margin-right:1em;
+    
+}
+.notification .info .time{
+}
 .notification .info .text{
     font-size:.9rem;
     color:rgb(104, 104, 104);
@@ -100,6 +108,5 @@ body{
 
 .notification .info .time{
     font-size:.8rem;
-    margin-top:1em;
     opacity:.4;
 }

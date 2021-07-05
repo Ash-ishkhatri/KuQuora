@@ -70,12 +70,12 @@
 }
 
 .add-question-form form >*{
-    padding:.2em .5em;
+    padding:.5em .5em;
     margin:.5em 0;
     display:block;
     width:100%;
     resize:vertical;
-    font-size:1.2rem;
+    font-size:1rem;
 }
 .add-question-form form >label{
     display: flex;

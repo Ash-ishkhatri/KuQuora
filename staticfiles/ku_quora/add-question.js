@@ -1,5 +1,4 @@
-
-try{
+if(window.location.pathname == '/'){
     addQuestion = document.querySelector('.add-question');
     triggerArrow = document.querySelector('.addQuestion-container i.fa-angle-double-down');
 
@@ -28,45 +27,41 @@ try{
                 triggerArrow.classList.add('animate-direction-down');
 
             }
+    }    
+    
+    function previewImage(){
+        
+        let files = document.querySelector("input[type='file']").files;
+        let previewImageContainer = document.querySelector('.previewImageContainer');
+        function readAndPreview(file){
+    
+            let reader = new FileReader();
+    
+            reader.addEventListener('load',function(){
+                let image = new Image()
+                image.src = this.result;
+                previewImageContainer.appendChild(image);
+            })
+            reader.readAsDataURL(file);
+        }
+    
+        // files.forEach(file,()=>{
+        //     // readAndPreview(file);
+        //     console.log(file)
+        // });
+        previewImageContainer.innerHTML = '';
+    
+        [].forEach.call(files,readAndPreview);
+    
     }
 
-   
+    addQuestionForm.addEventListener('submit',() => {
+        event.preventDefault();
+        const tags = addQuestionForm.querySelector('input[name="tags"]');
+        tagsValue = tags.value.split(' ').join('')
+        tags.value = tagsValue
+        console.log(tags.value)
+        event.target.submit();
+    })
 
-
-
-
-    
-// }catch(err){
-//     console.log(err)
-// }
-
-
-function previewImage(){
-    
-    let files = document.querySelector("input[type='file']").files;
-    let previewImageContainer = document.querySelector('.previewImageContainer');
-    function readAndPreview(file){
-
-        let reader = new FileReader();
-
-        reader.addEventListener('load',function(){
-            let image = new Image()
-            image.src = this.result;
-            previewImageContainer.appendChild(image);
-        })
-        reader.readAsDataURL(file);
-    }
-
-    // files.forEach(file,()=>{
-    //     // readAndPreview(file);
-    //     console.log(file)
-    // });
-    previewImageContainer.innerHTML = '';
-
-    [].forEach.call(files,readAndPreview);
-
-}
-}
-catch(err){
-    console.log(err);
 }

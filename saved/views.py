@@ -14,11 +14,11 @@ def saved_view(request):
         saved_post_ids.append(obj.post.id)
     
     print(saved_post_ids , saved_objs)
-    notification_count = Notification.objects.filter(user=request.user,is_seen=False).count()
+    # notification_count = Notification.objects.filter(user=request.user,is_seen=False).count()
     images = PostImages.objects.all()
 
     context = {
-        'notification_count':notification_count,
+        # 'notification_count':notification_count,
         'saved_posts':saved_objs,
         'saved_post_ids':saved_post_ids,
         'images':images,
@@ -43,4 +43,3 @@ def save_post_view(request):
         }            
 
         return JsonResponse(response)
-    return redirect('index')
