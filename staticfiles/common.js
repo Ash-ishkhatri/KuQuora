@@ -26,6 +26,7 @@ catch(error){
     console.log(error)
 }
 
+
 window.addEventListener('load',()=>{
     const posts = document.querySelectorAll('.blog-post');
     posts.forEach(post=>{
@@ -47,6 +48,7 @@ window.addEventListener('load',()=>{
       
 
     })
+
 })
 
 function getBlogPost(node){

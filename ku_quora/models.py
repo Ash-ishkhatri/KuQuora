@@ -44,6 +44,10 @@ class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     slug = models.SlugField(null=False,unique=True,blank=True)
 
+    def get_total_answer_count(self):
+        return Answer.objects.filter(post=self).count()
+
+
     def get_absolute_url(self):
         return reverse('post_detail',args=[self.id])
 
@@ -59,6 +63,9 @@ class Answer(models.Model):
     body = models.TextField()
     time = models.DateTimeField(auto_now_add=True)
     upVotes = models.ManyToManyField(User,related_name='likes')
+
+    def get_total_upVotes(self):
+        return self.upVotes.count()
 
     def __str__(self):
         return '%s - %s' %(self.post.title, self.user)

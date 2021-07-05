@@ -68,8 +68,12 @@ def post_detail_view(request,post_id):
     
     answers = Answer.objects.filter(post=post).order_by('-time')
     answerImages = []
+    UpVotedAnswerIds = []
+
 
     for answer in answers:
+        if answer.upVotes.filter(id=request.user.id):
+            UpVotedAnswerIds.append(answer.ansID)
         images = AnswerImages.objects.filter(answer=answer).all()
         for image in images:
             answerImages.append(image)
@@ -81,6 +85,7 @@ def post_detail_view(request,post_id):
         'answerImages':answerImages,
         'saved_post_ids':saved_post_ids,
         'answers':answers,
+        'UpVotedAnswerIds':UpVotedAnswerIds,
         'inDetailView':detail
     }
     return render(request,'ku_quora/post_detail.html',context)
@@ -156,6 +161,34 @@ def addAnswerNew_view(request):
 
         return JsonResponse(response)
         
+
+def deleteAnswer_view(request):
+    if request.method == 'POST':
+        answerId = request.POST.get('button')
+        answer = Answer.objects.get(ansID=answerId)
+        post = answer.post
+        answer.delete()
+        return redirect('post_detail',post.id)
+
+def post_upVote_view(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        answerId = data['answerId']
+        answer =get_object_or_404( Answer,ansID = answerId)
+        UpVoted = False
+        if answer.upVotes.filter(id = request.user.id ).exists():
+            answer.upVotes.remove(request.user)
+            UpVoted = False
+        else:
+            answer.upVotes.add(request.user)
+            UpVoted = True
+
+        response = {
+            'upVoteCount' : answer.get_total_upVotes(),
+            'upVoted':UpVoted
+        }
+
+        return JsonResponse(response)
 
 
 # def CommentView(request):

@@ -34,7 +34,7 @@
         <div class="buttons">
             <a href = "{% url 'post_detail' post.id %}#footer"><div class="comment">
                 <i class="fas fa-comment"></i>
-                <span class="count">0</span>
+                <span class="count">{{post.get_total_answer_count}}</span>
             </div></a>
             <div class="options">
                 <div><i class="fas fa-ellipsis-h"></i></div>
@@ -110,23 +110,34 @@
                             {% endif %}
                         {% endfor %}
                 </div>
-                <!-- <div class="footer">
-                    <div class="upvote">
-                        <i class="fas fa-thumbs-up"></i>
-                        <span class="upvote-count"></span>
+                <div class="footer">
+                    <div data-answerId = "{{answer.ansID}}" class="upVote">
+                        {% csrf_token %}
+                        <i class="fas fa-thumbs-up
+                        
+                        {% if answer.ansID in UpVotedAnswerIds %}
+                            upVoted
+                        {% endif %}
+
+                        "></i>
+                        <span class="count">{{answer.get_total_upVotes}}</span>
                     </div>
                     {% if request.user == answer.user %}
                     <div class="options">
                         <div><i class="fas fa-ellipsis-h"></i></div>
                         <ul data-status = 'collapsed'>
-                                {% csrf_token %}
-                                <li data-post-id = {{post.id}} class = "deletePostBtn"><i class="fas fa-trash"></i>delete comment</li>
-                              
+                            <li>
+                                <form action="/deleteAnswer/" method = "POST">
+                                    {% csrf_token %}
+                                    <button value = "{{answer.ansID}}" name = "button">
+                                        <i class="fas fa-trash"></i>delete post</li>
+                                    </button>
+                                </form>
                             </li>
                         </ul>
                     </div> 
                     {% endif %}
-                </div> -->
+                </div>
             </div>
         {% endfor %}
     {% endif %}
