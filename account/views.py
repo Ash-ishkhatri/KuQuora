@@ -8,7 +8,7 @@ from django.http import JsonResponse
 import json
 from notification.models import Notification
 from core.settings import BASE_DIR
-import os
+import os,re
 
 # from django.contrib.auth.model import User
 
@@ -29,7 +29,10 @@ def register_view(request):
         password2 = request.POST.get('password2')
 
         user = User.objects.filter(username=username).exists()
-        
+
+        # valid_name_pattern = re.compile("[A-Za-z]+")
+        # result = valid_name_pattern.fullmatch(first_name)
+
         if user:
             messages.error(request,'Error------    :( username already exists')
             return redirect('register')

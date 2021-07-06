@@ -97,6 +97,20 @@ class Answer(models.Model):
         print('answer notified')
         # notification.save()
     
+    def notify_upVote(sender,instance,action,reverse,pk_set,**kwargs):
+        if action == "post_add":
+            print('instance:',instance.body)
+            print('sender:',sender)
+            print('post_add:',pk_set)
+            pk = list(pk_set).pop()
+            print(pk)
+            user_from = User.objects.get(id=pk)
+            user_to = instance.user
+            notification_type = 1
+            answer = instance
+            if user_from != user_to:
+                Notification.objects.create(notification_type=notification_type,user_from=user_from,user_to=user_to,answer=answer)
+
     # def notify_upVote(sender,instance,action,)
 
 class AnswerImages(models.Model):
@@ -132,5 +146,5 @@ pre_delete.connect(PostImages.deleteImage,sender=PostImages)
 pre_delete.connect(AnswerImages.deleteImage,sender=AnswerImages)
 post_save.connect(Post.notify_post,sender=Post)
 post_save.connect(Answer.notify_answer,sender=Answer)
-# m2m_changed.connect()
+m2m_changed.connect(Answer.notify_upVote,sender=Answer.upVotes.through)
 

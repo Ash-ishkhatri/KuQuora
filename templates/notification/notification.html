@@ -22,8 +22,8 @@ notification
                 {% url 'profile' notification.user_from.id %}
             {% elif notification.notification_type == 3 %}
                 {% url 'post_detail' notification.post.id %}
-            {% elif notification.notification_type == 4 %}
-                {% url 'post_detail' notification.post.id%}#{{notification.answer.ansID}} 
+            {% elif notification.notification_type == 4 or notification.notification_type == 1 %}
+                {% url 'post_detail' notification.answer.post.id%}#{{notification.answer.ansID}} 
             {% endif %}
             "
 
@@ -54,7 +54,9 @@ notification
 
                         </div>
                         <div class="text">
-                            {% if notification.notification_type == 2 %}
+                            {% if notification.notification_type == 1 %}
+                                {{notification.user_from}} liked your answer
+                            {% elif notification.notification_type == 2 %}
                                 {{notification.user_from.username}} started following you
                             {% elif notification.notification_type == 3 %}
                                 {{notification.user_from.username}} just posted a new question

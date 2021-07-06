@@ -9,6 +9,8 @@ if(window.location.pathname.match(/notification/)){
             };
             const csrfToken = notification.querySelector('input[name="csrfmiddlewaretoken"]').value;
             const endpoint = notification.dataset.url;
+            console.log(endpoint);
+
             fetch('/notification/notification_seen_status',{
                 method : 'post',
                 body : JSON.stringify(data),
