@@ -19,21 +19,31 @@
         <div class="info-container">
             <div class="info">
                 <h1>{{User.username}}</h1>
-                <p>Student
-
+                <p>
+                    {% if request.user.profile.designation %}
+                        {{request.user.profile.designation}}
+                    {% endif %}
                 </p>
                 <div class="social-media-links">
-                        <a href=""><div class="fb">
+                    {% if request.user.profile.fb_link %}
+                        <a href="{{User.profile.fb_link}}"><div class="fb">
                             <i class="fab fa-facebook"></i>
                         </div></a>
-                    
+                    {% endif %}
+                    {% if request.user.profile.twitter_link %}
+
                         <a href=><div class="twitter">
                             <i class="fab fa-twitter"></i>
                         </div></a>
+                    {% endif %}
+
+                    {% if request.user.profile.linkedin_link %}
                     
                         <a href=""><div class="linkdin">
                             <i class="fab fa-linkedin"></i>
                         </div></a>
+                    {% endif %}
+
                 </div>
                 <div class="followings">
                     <div class="following">

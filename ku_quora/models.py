@@ -36,6 +36,7 @@ class Tag(models.Model):
     
     def save(self,*args,**kwargs):
         self.slug = slugify(self.title)
+        print('slug : ',self.slug)
         return super().save(*args,**kwargs)
    
    

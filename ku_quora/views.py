@@ -9,6 +9,7 @@ from django.core.paginator import Paginator, EmptyPage , PageNotAnInteger
 from django.core import serializers
 import requests
 import string
+from django.utils.text import slugify
 
 # import geodecoder
 
@@ -58,12 +59,9 @@ def create_post_view(request):
         p, created = Post.objects.get_or_create(title=title,body=body,user=user)
         tags_list = list(tags.split('#'))
         tags_list.remove('')
-        print(tags_list)
-
         tags_list = list(dict.fromkeys(tags_list))
-        print(tags_list)
         for tag in tags_list:
-            t, created = Tag.objects.get_or_create(title=tag)
+            t , created = Tag.objects.get_or_create(slug=slugify(tag))
             tags_objs.append(t)
         p.tags.set(tags_objs)
         for image in images:
@@ -153,11 +151,11 @@ def addAnswerNew_view(request):
         post_id = request.POST.get('post_id')
         body = request.POST.get('answer')  
         post = Post.objects.get(id=post_id)
-        answer,created = Answer.objects.get_or_create(post=post,user=request.user,body=body)
+        answer = Answer.objects.create(post=post,user=request.user,body=body)
         OutImages = []
         for file in request.FILES:
             image = request.FILES.get(file)
-            i, created = AnswerImages.objects.get_or_create(answer=answer,image=image)
+            i = AnswerImages.objects.create(answer=answer,image=image)
             i.save()
 
         Images = AnswerImages.objects.filter(answer=answer)

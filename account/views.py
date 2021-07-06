@@ -33,18 +33,18 @@ def register_view(request):
         # valid_name_pattern = re.compile("[A-Za-z]+")
         # result = valid_name_pattern.fullmatch(first_name)
 
-        if user:
-            messages.error(request,'Error------    :( username already exists')
-            return redirect('register')
+        # if user:
+        #     messages.error(request,'Error------    :( username already exists')
+        #     return redirect('register')
         
-        user = User.objects.filter(email = email).exists()
-        if user:
-            messages.error(request,'Error------    :( Email already in use')
-            return redirect('register')
+        # user = User.objects.filter(email = email).exists()
+        # if user:
+        #     messages.error(request,'Error------    :( Email already in use')
+        #     return redirect('register')
         
-        if password1 != password2:
-            messages.error(request,"Error------    :( Password don't match'")
-            return redirect('register')
+        # if password1 != password2:
+        #     messages.error(request,"Error------    :( Password don't match'")
+        #     return redirect('register')
         
         user = User.objects.create_user(username=username,email=email,
                 password = password1,first_name=first_name,last_name=last_name)
@@ -88,6 +88,8 @@ def profile_view(request,id):
     selfProfile = 1
     already_following = 1
     
+
+
     if id == request.user.id:
         selfProfile = 1
         user = request.user
@@ -103,6 +105,9 @@ def profile_view(request,id):
         followers = Follow.objects.filter(following = user).count()
         followings = Follow.objects.filter(follower = user).count()
         already_following = Follow.objects.filter(follower=request.user,following=user).exists()
+
+    profile = Profile.objects.get(user=user)
+    print(profile.designation)
 
     saved_post_ids = []
     saved_objs = SavedPosts.objects.filter(user = request.user).all()
@@ -132,11 +137,16 @@ def profileEdit_view(request,id):
         profile_pic = request.FILES.get('profile_pic')
         twitter_link = request.POST.get('twitter_link')
         linkedin_link = request.POST.get('linkedin_link')
+        
         u = User.objects.get(id=id)
+        print('profile_pic is : ',profile_pic)
         Profile.objects.filter(user=u).update(designation=designation,fb_link=fb_link,twitter_link=twitter_link,linkedin_link=linkedin_link)
-        updatedProfile = Profile.objects.get(user=u)
-        updatedProfile.profile_pic = profile_pic
-        updatedProfile.save()
+
+        if profile_pic != None:
+            p = Profile.objects.get(user=u);
+            p.profile_pic = profile_pic 
+            p.save()    
+
         messages.success(request,'Successfully updated profile')
         return redirect('index')
     # notification_count = Notification.objects.filter(user=request.user).count()

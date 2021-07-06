@@ -197,21 +197,20 @@
 
 
 .blog-post .images{
-    display:flex;
+    /* display:flex;
     flex-wrap:wrap;
-    justify-content:space-evenly;
+    justify-content:space-between; */
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
 }
 
 .blog-post .images .image{
-    margin:0 .5em;
-    /* height:500px; */
-    width:200px;
-    flex-grow:.5;
-
+    margin:.5em;
 }
 
 .blog-post .images .image img{
     width:100%;
+    object-fit: cover;
 }
 
 .blog-post .buttons >div{

@@ -1,0 +1,57 @@
+.edit_profile_form_container{
+    /* border:1px solid red; */
+}
+
+
+form#edit_profile_form > div.field{
+}
+
+form#edit_profile_form{
+    width:90%;
+    max-width:900px;
+    margin:0 auto;
+}
+
+form#edit_profile_form > div.profile_pic{
+    height:250px;
+    width:250px;
+    border-radius:50%;
+    position:relative;
+    cursor: pointer;
+}
+
+
+form#edit_profile_form > div.profile_pic img{
+    height:250px;
+    width:250px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+form#edit_profile_form .profile_pic >*:not(#profile_pic){
+    position:absolute;
+}
+form#edit_profile_form .profile_pic > input{
+    display:none;
+    z-index:99;
+}
+form#edit_profile_form .profile_pic > label{
+    width:100%;
+    height:100%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    border-radius:50%;
+    background-color: rgba(0, 0, 0, 0.315);
+    visibility: hidden;
+}
+form#edit_profile_form .profile_pic:hover label{
+    visibility: visible;
+    cursor: pointer;
+
+}
+
+form#edit_profile_form .profile_pic > label i{
+    font-size:2rem;
+    color:white;
+}

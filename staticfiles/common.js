@@ -42,22 +42,22 @@ window.addEventListener('load',()=>{
     })
 
 
-    if(window.location.pathname == '/'){
-        fetch("https://google-news.p.rapidapi.com/v1/source_search?source=nytimes.com&lang=en&country=NP", {
-            "method": "GET",
-            "headers": {
-                "x-rapidapi-key": "3bf6f71c24msh3f2b75cef6f4ae3p11b0eejsna57855e25767",
-                "x-rapidapi-host": "google-news.p.rapidapi.com"
-            }
-        })
-        .then(res => res.json())
-        .then(data => {
-            console.log(data)
-        })
-        .catch(err => {
-            console.error(err);
-        });
-    }
+    // if(window.location.pathname == '/'){
+    //     fetch("https://google-news.p.rapidapi.com/v1/source_search?source=nytimes.com&lang=en&country=NP", {
+    //         "method": "GET",
+    //         "headers": {
+    //             "x-rapidapi-key": "3bf6f71c24msh3f2b75cef6f4ae3p11b0eejsna57855e25767",
+    //             "x-rapidapi-host": "google-news.p.rapidapi.com"
+    //         }
+    //     })
+    //     .then(res => res.json())
+    //     .then(data => {
+    //         console.log(data)
+    //     })
+    //     .catch(err => {
+    //         console.error(err);
+    //     });
+    // }
 
 
 
