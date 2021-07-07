@@ -1,0 +1,28 @@
+{% extends 'ku_quora/base.html' %}
+
+{% block content %}
+{% csrf_token %}
+    <div class="edit_post_form_container">
+        <form id = "edit_post_form" action="" method = 'POST' enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="field">
+                <label for ="title">Title</label>
+                <input type="text" id = "title" name='title' value = "{{ post.title }}">
+            </div> 
+
+            <div class="field">
+                <label for ="body">Body</label>
+                <input type="text" name='body' value = "{{post.body}}" >
+            </div>
+            <div class="field">
+                <label for ="tags">tags</label>
+                <input type="text" name='tags' value = "{% for tag in post.tags.all %} #{{tag}}  {% endfor %}" >
+            </div>
+           
+
+            <input type="submit" value = "submit">
+        </form>
+    </div>
+
+{% endblock %}

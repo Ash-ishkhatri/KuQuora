@@ -10,6 +10,8 @@ if(window.location.pathname.match(/post/)){
     function previewImage(){    
         console.log('inside')
         let files = postAnswerForm.querySelector("input[type='file']").files;
+        console.log(files)
+
         function readAndPreview(file){
 
             let reader = new FileReader();
@@ -19,6 +21,7 @@ if(window.location.pathname.match(/post/)){
                 image.src = this.result;
                 previewImageContainer.appendChild(image);
             })
+            
             reader.readAsDataURL(file);
         }
 
@@ -106,53 +109,36 @@ if(window.location.pathname.match(/post/)){
         }
         formData.append('post_id',post_id);
         formData.append('answer',answer.value);
+        
         fetch(endpoint , {
             method : 'post',
             body : formData,
             headers:{
                 'X-CSRFToken':csrf
             }
-        }).then(res => res.json())
+        })
+        .then(res => res.json())
         .then(data => {
-            console.log(data)
-            const answerContainer = document.createElement('div');
-            answerContainer.classList.add('answer-container')
-            const images = document.createElement('div');
-            images.classList.add('images');
-            const imgs = data.images;
-            console.log(data.images)
-            for(let i=0;i<data.images.length ;i++){
-                const img = document.createElement('img');
-                img.setAttribute('src',`/media/${imgs[i]}`);
-                images.append(img);
-            }
-            answerContainer.innerHTML = `
-                    <div class="header">
-                            <div class="profile">
-                                <a href="${data.profile_pic}"><img src="${data.profile_pic}" alt="sdf"></a>
-                            </div>
-                            <div>
-                                <span class="author">${data.author}</span>
-                                <span class="time-stamp">${data.time}</span>
-                            </div>
-                        </div>
-                        <div class="body">
-                            ${data.body}
-                        </div>
-                    </div>`;
-            answerContainer.append(images);
-            allAnswers.prepend(answerContainer);
-            if(allAnswers.querySelector('.noAnswer')){
-                allAnswers.querySelector('.noAnswer').style.display = "none";
-            }
-            postAnswerForm.querySelector('form').reset();
-            previewImageContainer.innerHTML = "";
             location.reload();
         })
 
      
     })
 
+    const post_comment_form = allAnswers.querySelectorAll('#post_comment_form');
+
+
+    post_comment_form.forEach(form => {
+        const formTrigger = form.querySelector('input.trigger');
+        const commentWritingArea = formTrigger.nextElementSibling;
+
+        formTrigger.addEventListener('click',() => {
+            event.target.style.display = "none";
+            commentWritingArea.style.display = 'flex';
+            commentWritingArea.children[0].focus();
+        })
+
+    })
 
 
 

@@ -5,12 +5,18 @@
     <div class="edit_profile_form_container">
         <form id = "edit_profile_form" action="" method = 'POST' enctype="multipart/form-data">
             {% csrf_token %}
+           
             <div class="field profile_pic" title = "change profile pic">
                 <img  src="/media/{{request.user.profile.profile_pic}}" alt="">
                 <label for ="profile_pic"><i class="fas fa-plus"></i></label>
                 <input type="file" id = "profile_pic" name='profile_pic' onchange = "previewProfileChange()">
             </div> 
-            
+
+            <div class="field">
+                <label for ="username">username</label>
+                <input type="text" id = "username" name='username' value = "{{ request.user.username }}">
+            </div> 
+
             <div class="field">
                 <label for ="">designation</label>
                 <input type="text" name='designation' value = "{% if request.user.profile.designation != None %}{{request.user.profile.designation}}{% endif %}" >

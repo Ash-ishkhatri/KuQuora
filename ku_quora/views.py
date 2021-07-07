@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect,get_object_or_404
-from .models import Post,Tag,PostImages,Answer,AnswerImages
+from .models import Post,Tag,PostImages,Answer,AnswerImages,Comment
 from django.contrib.auth.decorators import login_required
 import json
 from django.http import JsonResponse
@@ -7,42 +7,22 @@ from notification.models import Notification
 from saved.models import SavedPosts
 from django.core.paginator import Paginator, EmptyPage , PageNotAnInteger
 from django.core import serializers
-import requests
 import string
 from django.utils.text import slugify
 
-# import geodecoder
 
 @login_required(login_url='login')
 def index_view(request):
-    
     posts = Post.objects.all().order_by('-posted_on')
-
-    # p = Paginator(posts,2)
-    # page = request.GET.get('page')
-    # try:
-    #     posts = p.page(page)
-    # except PageNotAnInteger:
-    #     posts = p.page(1)
-    # except EmptyPage:
-    #     posts = p.page(p.num_pages)
-
     saved_post_ids = []
     saved_objs = SavedPosts.objects.filter(user = request.user).all()
     for obj in saved_objs:
         saved_post_ids.append(obj.post.id)
-
-    # notification_count = Notification.objects.filter(user=request.user,is_seen=False).count()
     images = PostImages.objects.all()
-    
-    # r = requests.get("http://worldtimeapi.org/api/timezone/Europe")
-    
     context = {
         'posts':posts,
-        # 'notification_count':notification_count,
         'images':images,
         'saved_post_ids':saved_post_ids,
-        # 'requests':r
     }
     return render(request,'ku_quora/index.html',context)
 
@@ -54,14 +34,15 @@ def create_post_view(request):
         title = request.POST.get('title')
         body = request.POST.get('body')
         tags = request.POST.get('tags')
-        tags.replace(" ","")
         images = request.FILES.getlist('image1')
         p, created = Post.objects.get_or_create(title=title,body=body,user=user)
         tags_list = list(tags.split('#'))
         tags_list.remove('')
         tags_list = list(dict.fromkeys(tags_list))
+        print(tags_list)
         for tag in tags_list:
             t , created = Tag.objects.get_or_create(slug=slugify(tag))
+            print(slugify(tag))
             tags_objs.append(t)
         p.tags.set(tags_objs)
         for image in images:
@@ -74,7 +55,6 @@ def post_detail_view(request,post_id):
     saved_objs = SavedPosts.objects.filter(user = request.user).all()
     for obj in saved_objs:
         saved_post_ids.append(obj.post.id)
-    # notification_count = Notification.objects.filter(user=request.user,is_seen=False).count()
     p = Post.objects.get(id=post_id)
     images = PostImages.objects.filter(post=p)
     
@@ -89,6 +69,11 @@ def post_detail_view(request,post_id):
         images = AnswerImages.objects.filter(answer=answer).all()
         for image in images:
             answerImages.append(image)
+    comments = Comment.objects.all()
+    print(comments)
+
+   
+
     detail = 1
     context = {
         'post':post,
@@ -98,7 +83,8 @@ def post_detail_view(request,post_id):
         'saved_post_ids':saved_post_ids,
         'answers':answers,
         'UpVotedAnswerIds':UpVotedAnswerIds,
-        'inDetailView':detail
+        'inDetailView':detail,
+        'comments':comments
     }
     return render(request,'ku_quora/post_detail.html',context)
 
@@ -202,32 +188,43 @@ def post_upVote_view(request):
         return JsonResponse(response)
 
 
-# def CommentView(request):
-#     if request.method == "POST":
-#         comment=request.POST.get('comment')
-#         user=request.user
-#         CmtSno =request.POST.get('CmtSno')
-#         answer= Answer.objects.get(ansId=CmtSno)
-#         comment=Comment(comment= comment, user=user, answer=answer)
-#         comment.save()
+def post_comment_view(request):
+    if request.method == "POST":
+        comment_body = request.POST.get('comment_body')
+        user=request.user
+        answerId =request.POST.get('answerId')
+        answer= Answer.objects.get(ansID=answerId)
+        Comment.objects.create(body = comment_body, user=user, answer=answer)
+        return redirect('post_detail',answer.post.id) 
+    return render(request,'ku_quora/index.html',{})
+
+
+
+# def post_edit_view(request,post_id):
+    
+
+#     if request.method == 'POST':
+#         title = request.POST.get('title')
+#         body = request.POST.get('body')
+#         tags = request.POST.get('tags')
+
+#         Post.objects.filter(id=post_id).update(title=title,body=body)
+
+#         # print(tags)
+#         # tags = list(tags.split('#'))
+#         # print(tags)
+#         tags =  ['lorem','next'] 
+#         tagsObj = []
+#         for tag in tags:
+#             t,created = Tag.objects.get_or_create(title=tag)
+#             tagsObj.append(t)
+
+#         Post.objects.filter(id=post_id).update(tags=tagsObj)        
         
-#     return redirect(f"/{post.slug}")        
+#     post = Post.objects.get(id = post_id)
 
+#     context = {
+#         'post':post
+#     }
 
-# def get_post_view(request):
-#     if request.method == 'GET':
-#         posts = Post.objects.all().order_by('-posted_on')
-#         p = Paginator(posts,2)
-#         page = request.GET.get('page')
-#         try:
-#             posts = p.page(page)
-#         except PageNotAnInteger:
-#             posts = p.page(1)
-#         except EmptyPage:
-#             posts = p.page(p.num_pages)
-
-#         posts = serializers.serialize('json',posts)
-#         response = {
-#             'posts':posts
-#         }
-#         return JsonResponse(response)
+#     return render(request,'ku_quora/edit_post.html',context)

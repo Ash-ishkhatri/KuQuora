@@ -418,7 +418,7 @@
     
 }
 .all-answers .answer-container{
-    /* margin:1em 0; */
+    margin:2em 0;
     padding:.5em 2em;
 }
 
@@ -498,4 +498,95 @@
 
 .answer-container .footer i.upVoted{
     color:rgb(13, 110, 200);
+}
+
+#post_comment_form{
+    margin-top:2em;
+}
+#post_comment_form textarea{
+    width:100%;
+    padding:1em;
+    margin-top:1em;
+    font-size:1.2rem;
+    outline:none;
+    resize: vertical;
+    border:1px solid var(--border)
+}
+#post_comment_form textarea:focus{
+    border:1px solid rgba(0, 0, 226, 0.411);
+}
+#post_comment_form input.trigger{
+    width:100%;
+    border:none;
+    font-size:1.3rem;
+    font-weight:bold;
+    color:gray;
+    padding:.2em 0 .2em 1em;
+    outline:none;
+    cursor:pointer;
+    opacity:.7;
+}
+
+#post_comment_form > div{
+    display:none;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+#post_comment_form > div input[type="submit"]{
+    padding:.3em 2em;
+    border:none;
+    background-color:green;
+    color:white;
+    font-weight: bold;
+    font-size:1.1rem;
+    margin:1em 0;
+    cursor:pointer;
+}
+
+.post-comments-all{
+    width:100px;
+    margin-top:-2em;
+}
+
+.post-comments-all .comment{
+    background-color:white;
+    width:98%;
+    padding:1em;
+    margin:.5em 0 .5em auto;
+}
+
+.post-comments-all .comment >* {
+    padding:.5em 0;
+    margin:1em 0;
+}
+.post-comments-all .comment > .top {
+    display:flex;
+    align-items: center;
+}
+.post-comments-all .comment > .top .data >* {
+    margin-right:1em;
+    opacity:.5;
+}
+
+.post-comments-all .comment > .top  .profile{
+    height:50px;
+    width:50px;
+    border-radius:50%;
+    overflow: hidden;
+    background:pink;
+    margin-right:1em;
+
+}
+.post-comments-all .comment > .top  .profile img{
+    height:100%;
+    width:100%;
+    object-fit: cover;
+    margin-right:1em;
+}
+
+.post-comments-all .comment > .body{
+    padding:1em;
+    color:gray;
+
 }

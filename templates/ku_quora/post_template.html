@@ -138,6 +138,43 @@
                     </div> 
                     {% endif %}
                 </div>
+            
+            <!-- comment fomr -->
+                <form id = "post_comment_form" action="/postComment/" method = "post">
+                    {% csrf_token %}
+                    <input type="text" class = "trigger" value = "write comment here...." readonly>
+                    <div>
+                        <textarea name="comment_body" id="" cols="30" rows="5"></textarea>
+                        <input type="hidden" name = "answerId" value = "{{answer.ansID}}">
+                        
+                        <input type="submit">
+                    </div>
+                    
+                </form>
+            </div>
+            <div class="post-comments-all">
+                {% for comment in comments %}
+                    {% if comment.answer.ansID == answer.ansID %}
+                    <div class="comment">
+                        <div class="top">
+                            <div class="profile">
+                                <img src="/media/{{comment.user.profile.profile_pic}}" alt="">
+                            </div>
+                            <div class="data">
+                                <span class="username">
+                                    {{answer.user.username}}
+                                </span>
+                                <span class="date">
+                                    {{comment.time}}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="body">
+                            {{comment.body}}
+                        </div>
+                    </div>
+                    {% endif %}
+                {% endfor %}
             </div>
         {% endfor %}
     {% endif %}

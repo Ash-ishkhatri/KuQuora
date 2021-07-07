@@ -130,16 +130,16 @@ class PostImages(models.Model):
         instance.image.delete()
         print('image deleted')
       
-# class Comment(models.Model):
-#     commentId= models.AutoField(primary_key= True)
-#     post = models.ForeignKey(Post, on_delete= CASCADE)
-#     user = models.ForeignKey(User, on_delete= CASCADE)
-#     parent = models.ForeignKey('self', on_delete=CASCADE)
-#     body = models.TextField()
-#     time = models.DateTimeField(auto_now_add=True)
+class Comment(models.Model):
+    commentId= models.AutoField(primary_key= True)
+    answer = models.ForeignKey(Answer, on_delete= CASCADE)
+    user = models.ForeignKey(User, on_delete= CASCADE)
+    # parent = models.ForeignKey('self', on_delete=CASCADE)
+    body = models.TextField()
+    time = models.DateTimeField(auto_now_add=True)
 
-#     def __str__(self):
-#         return '%s - %s' %(self.body, self.user)
+    def __str__(self):
+        return '%s - %s' %(self.body, self.user)
 
 
 

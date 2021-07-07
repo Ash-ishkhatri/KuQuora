@@ -137,7 +137,10 @@ def profileEdit_view(request,id):
         profile_pic = request.FILES.get('profile_pic')
         twitter_link = request.POST.get('twitter_link')
         linkedin_link = request.POST.get('linkedin_link')
+        username = request.POST.get('username')
         
+        User.objects.filter(id=id).update(username=username)
+
         u = User.objects.get(id=id)
         print('profile_pic is : ',profile_pic)
         Profile.objects.filter(user=u).update(designation=designation,fb_link=fb_link,twitter_link=twitter_link,linkedin_link=linkedin_link)
@@ -149,7 +152,6 @@ def profileEdit_view(request,id):
 
         messages.success(request,'Successfully updated profile')
         return redirect('index')
-    # notification_count = Notification.objects.filter(user=request.user).count()
 
     context = {
         # 'notification_count':notification_count
