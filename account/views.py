@@ -21,8 +21,6 @@ def register_view(request):
     if request.user.is_authenticated:
         return redirect('index')
     if request.method == 'POST':
-        first_name = request.POST.get('first_name')
-        last_name = request.POST.get('last_name')
         username = request.POST.get('username')
         email = request.POST.get('email')
         password1 = request.POST.get('password1')
@@ -30,25 +28,21 @@ def register_view(request):
 
         user = User.objects.filter(username=username).exists()
 
-        # valid_name_pattern = re.compile("[A-Za-z]+")
-        # result = valid_name_pattern.fullmatch(first_name)
-
-        # if user:
-        #     messages.error(request,'Error------    :( username already exists')
-        #     return redirect('register')
+        if user:
+            messages.error(request,'Error------    :( username already exists')
+            return redirect('register')
         
-        # user = User.objects.filter(email = email).exists()
-        # if user:
-        #     messages.error(request,'Error------    :( Email already in use')
-        #     return redirect('register')
+        user = User.objects.filter(email = email).exists()
+        if user:
+            messages.error(request,'Error------    :( Email already in use')
+            return redirect('register')
         
-        # if password1 != password2:
-        #     messages.error(request,"Error------    :( Password don't match'")
-        #     return redirect('register')
+        if password1 != password2:
+            messages.error(request,"Error------    :( Password didn't match'")
+            return redirect('register')
         
         user = User.objects.create_user(username=username,email=email,
-                password = password1,first_name=first_name,last_name=last_name)
-        # messages.success(request,"Success - ----  : ) Signed Up successfully")
+                password = password1)
         login(request,user)
         return redirect('index')
         
@@ -138,13 +132,14 @@ def profileEdit_view(request,id):
         twitter_link = request.POST.get('twitter_link')
         linkedin_link = request.POST.get('linkedin_link')
         username = request.POST.get('username')
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
         
-        User.objects.filter(id=id).update(username=username)
-
+        User.objects.filter(id=id).update(username=username,first_name=first_name,last_name=last_name);
         u = User.objects.get(id=id)
         print('profile_pic is : ',profile_pic)
         Profile.objects.filter(user=u).update(designation=designation,fb_link=fb_link,twitter_link=twitter_link,linkedin_link=linkedin_link)
-
+        
         if profile_pic != None:
             p = Profile.objects.get(user=u);
             p.profile_pic = profile_pic 
@@ -186,11 +181,10 @@ def follow_view(request):
 
 def validateUsername_view(request):
     if request.method == 'POST':
+        
         data = json.loads(request.body)
         username = data['username']
-        
         taken = User.objects.filter(username=username).exists()
-
         if taken:
             response = {
                 'taken':True
@@ -206,8 +200,7 @@ def validateUsername_view(request):
 def validateEmail_view(request):
     if request.method == 'POST':
         data = json.loads(request.body)
-        email = data['email']
-        
+        email = data['email'] 
         taken = User.objects.filter(email=email).exists()
 
         if taken:
@@ -223,4 +216,37 @@ def validateEmail_view(request):
 
 def followings_view(request):
 
-    return render(request,'account/followings.html',{})
+    followings = Follow.objects.filter(follower=request.user)
+    followers = Follow.objects.filter(following=request.user)
+    print(followings)
+    for u in followings:
+        print(u.following.username)
+    context = {
+        'followers' : followers,
+        'followings':followings
+    }
+
+    return render(request,'account/followings.html',context)
+
+
+def change_password_view(request):
+
+    if request.method == 'POST':
+        old_password = request.POST.get('old_password')
+        new_password = request.POST.get('new_password')
+        new_password_2 = request.POST.get('confirm_new_password')
+
+        if not request.user.check_password(old_password):
+            messages.error(request,f"Old Password didn't match , try again")
+            return redirect('change_password')
+        if new_password != new_password_2:
+            messages.error(request,f"Two new password didn't match to one another , try again")
+            return redirect('change_password')
+        request.user.set_password(new_password)
+        messages.success(request,f"Password changed successfully")
+        return redirect('index')
+
+    context = {
+        
+    }
+    return render(request,'account/changePassword.html',context)

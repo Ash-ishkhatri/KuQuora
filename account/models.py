@@ -44,10 +44,10 @@ class Profile(models.Model):
     designation = models.CharField(max_length=200,null=True,blank=True)
     is_verified = models.BooleanField(default=False)
     profile_pic = models.ImageField(upload_to = get_upload_directory )
-    fb_link = models.CharField(max_length=200,null=True,blank=True)
-    twitter_link = models.CharField(max_length=200,null=True,blank=True)
-    linkedin_link = models.CharField(max_length=200,null=True,blank=True)
-    
+    fb_link = models.URLField(max_length = 5000 , null=True,blank=True)
+    twitter_link = models.URLField(max_length = 5000 ,null=True,blank=True)
+    linkedin_link = models.URLField(max_length = 5000  , null=True,blank=True)
+
     def __str__(self):
         return self.token
     

@@ -8,6 +8,13 @@ ku-quora
 {% block content %}
 <div class="body-wrapper">
 
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+                <span class = "message {{message.tags}}">{{message}}</span>
+            {% endif %}
+        {% endfor %}
+     {% endif %}
     <!-- <div class="question-wrapper "> -->
         <div class="addQuestion-container">
             <div class="add-question">

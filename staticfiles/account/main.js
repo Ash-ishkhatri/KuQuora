@@ -1,159 +1,123 @@
-// if(window.location.pathname == '/account/register/'){
-//     firstName = document.querySelector(' input[name="first_name"]');
-//     lastName = document.querySelector(' input[name="last_name"]');
+if(window.location.pathname == '/account/register/'){
 
-//     form = document.querySelector('form#signup')
-//     usernameField = document.querySelector(' input[name="username"]');
-//     emailField = document.querySelector(' input[name="email"]');
-//     signupBtn = document.querySelector(' input[type="submit"]');
-//     password1 = document.querySelector(' input[name="password1"]');
-//     password2 = document.querySelector(' input[name="password2"]');
-//     let validEmail = validUsername = validPassword1 =  validPassword2 = validFirstName = validLastName = 0;
-//     // let nameFormat = /^[a-z ,.'-]+$/i;
+    const form = document.querySelector('form');
+    const password1 = form.querySelector('input[name = "password1"]');
+    const password2 = form.querySelector('input[name = "password2"]');
+    const username = form.querySelector('input[name = "username"]');
+    const email = form.querySelector('input[name = "email"]');
+    const submitBtn =form.querySelector('input[type="submit"]');
+    
+    form.addEventListener('submit',(e) => {
+        e.preventDefault();
+        checkInputs();
+    }) 
+    
+     function checkInputs(){
+        console.log('1');
+        const usernameValue = username.value.trim();
+        const emailValue = email.value.trim();
+        const password1Value = password1.value.trim();
+        const password2Value = password2.value.trim();
 
-//     let validName = /^[a-zA-Z]*$/;
-//     let strongPassword = new RegExp('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})')
-//     let mediumPassword = new RegExp('((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{6,}))|((?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9])(?=.{8,}))')
+        if(usernameValue.length < 3){
+            setErrorFor(username , 'Username is too short');
+        }else{
+            const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+            let data = {
+                'username' : username.value
+            }
+            fetch(username.parentElement.parentElement.getAttribute('data-url') , {
+                method : 'post',
+                body : JSON.stringify(data),
+                headers : {
+                    'Content-Type' : 'application/json',
+                    'X-CSRFToken':csrfToken
+                }
+            }).then(res => res.json())
+            .then(response => {
+                if(response.taken){
+                    setErrorFor(username , 'Username already used');
+                }else{
+                    setSuccess(username);
+                }
+                console.log('inside then of username');
+            })
 
-//     // signupBtn.classList.add('inactive');
+        }
 
-
-//     function validFields(){
-//         const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
-
-//         let field = firstName
-//         if(field.value.match(validName)){
-//             validFirstName = 1;
-//         }
-//         else {
-//             validFirstName = 0;
-//             field.style.border = '2px solid red';
-//         }
-
-//         field = lastName
-//         if(field.value.match(validName)){ 
-//             validLastName = 1;
-//         }
-//         else {
-//             field.style.border = '2px solid red';
-//             validLastName = 0;
-//         }
-//         field = usernameField
-//         if(field.value.length < 3){
-//             field.style.border = '2px solid red';
-//             field.parentNode.children[2].style.opacity = "1";
-//         }
-//         data = {
-//             'username' : field.value
-//         }
-//         fetch(field.getAttribute("data-url"),{
-//             method : 'post',
-//             body : JSON.stringify(data),
-//             headers : {
-//                 'Content-Type' : 'application/json',
-//                 'X-CSRFToken':csrfToken
-                
-//             }
-//         })
-//         .then(res => res.json())
-//         .then(response => {
-//             if(response.taken == true){
-//                 field.style.border = '2px solid red';
-//                 field.parentNode.children[2].style.opacity = "1";
-//                 validUsername = 0;
-//             }else if(response.taken == false && field.value.length > 3){
-//                 field.style.border = '2px solid rgb(82, 202, 13)';
-//                 field.parentNode.children[2].style.opacity = "0";
-//                 validUsername = 1;
-//             }
-//         })
-
-//         field = emailField
-//         const mailFormat = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-//         if(!field.value.match(mailFormat)){
-//             field.style.border = "2px solid red";
-//             field.parentNode.children[2].style.opacity = "1";
-//         }
-//         data = {
-//             'email' : field.value
-//         }
-//         fetch(field.getAttribute('data-url'),{
-//             method : 'post',
-//             body : JSON.stringify(data),
-//             headers : {
-//                 'Content-Type' : 'application/json',
-//                 'X-CSRFToken':csrfToken
-//             }
-//         })
-//         .then(res => res.json())
-//         .then(response => {
-//             if(response.taken == true){
-//                 field.style.border = '2px solid red';
-//                 field.parentNode.children[2].style.opacity = "1";
-//                 validEmail = 0;
-//             }else if(response.taken == false && field.value.match(mailFormat)){
-//                 field.style.border = '2px solid rgb(82, 202, 13)';
-//                 field.parentNode.children[2].style.opacity = "0";
-//                 validEmail = 1;
-//             }
-//         })
+        if(!isEmail(emailValue)){
+            setErrorFor(email , 'Email is invalid');
+        }else{
+            const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+            let taken;
+            let data = {
+                'email' : email.value
+            }
+            fetch(email.parentElement.parentElement.getAttribute('data-url') , {
+                method : 'post',
+                body : JSON.stringify(data),
+                headers : {
+                    'Content-Type' : 'application/json',
+                    'X-CSRFToken':csrfToken
+                }
+            }).then(res => res.json())
+            .then(response => {
+                if(response.taken){
+                    setErrorFor(email , 'Email already used');
+                }else{
+                    setSuccess(email);
+                }
+            })
+        }
 
 
-//         field = password1;
-//         pwd = password1.value;
-//         if(strongPassword.test(pwd)){
-//             field.style.border = "2px solid rgb(82,202,13)";
-//             field.parentNode.children[4].style.opacity = "1";
-//             field.parentNode.children[2].style.opacity = "0";
-//             field.parentNode.children[3].style.opacity = "0";
-//             console.log('strong');
-//             validPassword1 = 1;
-//         }else if(mediumPassword.test(pwd)){
-//             field.style.border = "2px solid rgb(233, 136, 26)";
-//             field.parentNode.children[3].style.opacity = "1";
-//             field.parentNode.children[2].style.opacity = "0";
-//             field.parentNode.children[4].style.opacity = "0";
-//             console.log('medium');
-//             validPassword1 = 1;
-//         }else{
-//             field.style.border = "2px solid red";
-//             field.parentNode.children[2].style.opacity = "1";
-//             field.parentNode.children[3].style.opacity = "0";
-//             field.parentNode.children[4].style.opacity = "0";
-//             console.log('weak');
-//             validPassword1 = 0;
-//         }
-
-//         field = password2;
-//         pwd = field.value;
-
-//         if(password1.value != pwd){
-//             field.style.border = "2px solid red";
-//             field.parentNode.children[2].style.opacity = "1";
-//             validPassword2 = 0;
-//         }else{
-//             validPassword2 = 1;
-//         }
-
-//         return validFirstName && validLastName && validEmail && validPassword1 && validPassword2 && validUsername;
-
-//     }
-
-
-//     form.addEventListener('submit',()=>{
-//         event.preventDefault();
-//         if(validFields()){
-//             // signupBtn.classList.remove('inactive');
-//             console.log('inside')
-//             event.target.submit();
-//         }
-//     })
+        let strongPassword = new RegExp('(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{8,})')
+        let mediumPassword = new RegExp('((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{6,}))|((?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9])(?=.{8,}))')
+    
+        if(password1Value != password2Value){
+            setErrorFor(password2 , "password didn't match with previous");
+        }else{
+            setSuccess(password2);
+        }
+        if(!password1Value.match(strongPassword)){
+            setErrorFor(password1 , 'Password is not strong');
+        }else{
+            setSuccess(password1);
+        }
+        function setErrorFor(input , message){
+            const field = input.parentElement.parentElement;
+            field.querySelector('small').innerHTML = message;
+            field.classList.remove('valid');
+            field.classList.add('invalid');
+    
+        }
+        function setSuccess(input){
+            const field = input.parentElement.parentElement;
+            field.classList.remove('invalid');
+            field.classList.add('valid');
+            let fields = form.querySelectorAll('.field');
+            let valid = 0;
+            fields.forEach(field => {
+                if(field.classList.contains('valid')){
+                    valid++;
+                }
+            })
+            if(valid == 4){
+                form.submit();
+            }
+        }
+        function isEmail(email){
+            return /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
+        }
+        
+   
+        
+        console.log('2');
+    }
+    
+  
 
 
 
+}
 
-
-
-
-
-// }

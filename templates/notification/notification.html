@@ -22,7 +22,7 @@ notification
                 {% url 'profile' notification.user_from.id %}
             {% elif notification.notification_type == 3 %}
                 {% url 'post_detail' notification.post.id %}
-            {% elif notification.notification_type == 4 or notification.notification_type == 1 %}
+            {% elif notification.notification_type == 5 or notification.notification_type == 1  or notification.notification_type == 4%}
                 {% url 'post_detail' notification.answer.post.id%}#{{notification.answer.ansID}} 
             {% endif %}
             "
@@ -46,12 +46,13 @@ notification
                                     New Follower
                                 {% elif notification.notification_type == 3 or notification.notification_type == 4%}
                                     {{notification.post.title}}
+                                {% elif notification.notification_type == 5%}
+                                    New Comment
                                 {% endif %}
                             </div>
                             <div class="time">
                                 {{notification.date}}
                             </div>
-
                         </div>
                         <div class="text">
                             {% if notification.notification_type == 1 %}
@@ -62,6 +63,8 @@ notification
                                 {{notification.user_from.username}} just posted a new question
                             {% elif notification.notification_type == 4 %}
                                 {{notification.user_from.username}} just answered your question
+                            {% elif notification.notification_type == 5 %}
+                                {{notification.user_from.username}} just commented to your answer
                             {% endif %}
                         </div>
                         

@@ -10,6 +10,7 @@ urlpatterns = [
     path('deleteAnswer/',views.deleteAnswer_view,name = "deleteAnswer"),
     path('post/<uuid:post_id>/',views.post_detail_view,name='post_detail'),
     path('postComment/',views.post_comment_view),
+    path('search/',views.search , name="search"),
     # path('postEdit/<uuid:post_id>',views.post_edit_view,name="post_edit"),
     path('tag/<slug:tag_slug>',views.tags_post_view,name='tags'),
 ]

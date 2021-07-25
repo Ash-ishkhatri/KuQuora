@@ -13,7 +13,8 @@ from django.utils.text import slugify
 
 @login_required(login_url='login')
 def index_view(request):
-    posts = Post.objects.all().order_by('-posted_on')
+    # posts = Post.objects.all().order_by('-posted_on')
+    posts = Post.objects.all().order_by('?')
     saved_post_ids = []
     saved_objs = SavedPosts.objects.filter(user = request.user).all()
     for obj in saved_objs:
@@ -37,12 +38,10 @@ def create_post_view(request):
         images = request.FILES.getlist('image1')
         p, created = Post.objects.get_or_create(title=title,body=body,user=user)
         tags_list = list(tags.split('#'))
-        tags_list.remove('')
-        tags_list = list(dict.fromkeys(tags_list))
-        print(tags_list)
+        print('list = ',list)
         for tag in tags_list:
-            t , created = Tag.objects.get_or_create(slug=slugify(tag))
-            print(slugify(tag))
+            t , created = Tag.objects.get_or_create(title=tag)
+            print('t = ' , t)
             tags_objs.append(t)
         p.tags.set(tags_objs)
         for image in images:
@@ -228,3 +227,20 @@ def post_comment_view(request):
 #     }
 
 #     return render(request,'ku_quora/edit_post.html',context)
+
+
+def search(request):
+    sq = request.GET.get('sq')
+    if(sq == ''):
+        allPosts = []
+        count = 0
+    else:
+        allPosts = Post.objects.filter(title__icontains=sq);
+        count = allPosts.count()
+
+    context = {
+        'allPosts':allPosts,
+        'query':sq,
+        'count':count
+    }
+    return render(request,'ku_quora/search.html',context)

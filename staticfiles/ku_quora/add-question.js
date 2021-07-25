@@ -58,10 +58,16 @@ if(window.location.pathname == '/'){
     addQuestionForm.addEventListener('submit',() => {
         event.preventDefault();
         const tags = addQuestionForm.querySelector('input[name="tags"]');
-        tagsValue = tags.value.split(' ').join('')
-        tags.value = tagsValue
+        const tagsData= tags.value;
+        tag = tagsData.split(' ').join('');
+        console.log(tag);
+        tagsValue = tag.split('#').join('#');
+        tagsArray = tagsValue.split('');
+        tagsArray.shift();
+        tags.value = tagsArray.join('');
         console.log(tags.value)
         event.target.submit();
+
     })
 
 }

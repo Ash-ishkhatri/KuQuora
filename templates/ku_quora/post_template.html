@@ -130,7 +130,7 @@
                                 <form action="/deleteAnswer/" method = "POST">
                                     {% csrf_token %}
                                     <button value = "{{answer.ansID}}" name = "button">
-                                        <i class="fas fa-trash"></i>delete post</li>
+                                        <i class="fas fa-trash"></i>delete answer</li>
                                     </button>
                                 </form>
                             </li>
@@ -162,7 +162,7 @@
                             </div>
                             <div class="data">
                                 <span class="username">
-                                    {{answer.user.username}}
+                                    {{comment.user.username}}
                                 </span>
                                 <span class="date">
                                     {{comment.time}}

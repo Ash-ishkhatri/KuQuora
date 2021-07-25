@@ -11,5 +11,6 @@ urlpatterns = [
     path('validateUsername/',views.validateUsername_view,name='validateUsername'),
     path('validateEmail/',views.validateEmail_view,name='validateEmail'),
     path('followings/',views.followings_view,name='followings'),
+    path('change_password/',views.change_password_view,name='change_password'),
 
 ]

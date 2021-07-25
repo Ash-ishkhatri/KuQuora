@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 # Create your models here.
 class Notification(models.Model):
-    NOTIFICATION_TYPES = ((1,'upVote'),(2,'follow'),(3,'post'),(4,'answer'))
+    NOTIFICATION_TYPES = ((1,'upVote'),(2,'follow'),(3,'post'),(4,'answer'),(5,'comment'))
 
     post = models.ForeignKey('ku_quora.Post', on_delete=models.CASCADE,blank=True,null=True)
     answer = models.ForeignKey('ku_quora.Answer', on_delete=models.CASCADE,blank=True,null=True)

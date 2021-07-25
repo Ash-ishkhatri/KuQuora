@@ -57,7 +57,7 @@ class Post(models.Model):
         return reverse('post_detail',args=[self.id])
     
     def save(self,*args,**kwargs):
-        self.slug = slugify(self.title + str(self.id))
+        self.slug = slugify(self.title + str(self.posted_on))
         return super().save(*args,**kwargs)
     
     def notify_post(sender,instance,*args,**kwargs):
@@ -141,11 +141,21 @@ class Comment(models.Model):
     def __str__(self):
         return '%s - %s' %(self.body, self.user)
 
+    def notify_comment(sender,instance,*args,**kwargs):
+        user_from = instance.user
+        user_to = instance.answer.user
+        notification_type = 5
+        post = instance.answer.post
+        answer = instance.answer
+        if user_from != user_to:
+            Notification.objects.create(answer=answer,user_from=user_from,user_to=user_to,notification_type=notification_type,post=post)
+            print('comment notified')
 
 
 pre_delete.connect(PostImages.deleteImage,sender=PostImages)
 pre_delete.connect(AnswerImages.deleteImage,sender=AnswerImages)
 post_save.connect(Post.notify_post,sender=Post)
 post_save.connect(Answer.notify_answer,sender=Answer)
+post_save.connect(Comment.notify_comment , sender = Comment)
 m2m_changed.connect(Answer.notify_upVote,sender=Answer.upVotes.through)
 
