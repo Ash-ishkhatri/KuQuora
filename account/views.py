@@ -242,6 +242,7 @@ def change_password_view(request):
             messages.error(request,f"Two new password didn't match to one another , try again")
             return redirect('change_password')
         request.user.set_password(new_password)
+        request.user.save();
         messages.success(request,f"Password changed successfully")
         return redirect('index')
 
