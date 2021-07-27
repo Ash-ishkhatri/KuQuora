@@ -59,3 +59,24 @@ a{
     }
     
 }
+
+
+span.success{
+    padding:1em;
+    width:100%;
+    background-color:rgba(5, 85, 5, 0.301);
+    border-radius:5px;
+    color:green;
+    animation:dissappear 1s ease-in forwards;
+}
+
+@keyframes dissappear {
+    0%{
+        opacity:1;
+    }
+
+    100%{
+        opacity:0;
+
+    }
+}

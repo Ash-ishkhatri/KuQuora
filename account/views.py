@@ -131,11 +131,10 @@ def profileEdit_view(request,id):
         profile_pic = request.FILES.get('profile_pic')
         twitter_link = request.POST.get('twitter_link')
         linkedin_link = request.POST.get('linkedin_link')
-        username = request.POST.get('username')
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         
-        User.objects.filter(id=id).update(username=username,first_name=first_name,last_name=last_name);
+        User.objects.filter(id=id).update(first_name=first_name,last_name=last_name);
         u = User.objects.get(id=id)
         print('profile_pic is : ',profile_pic)
         Profile.objects.filter(user=u).update(designation=designation,fb_link=fb_link,twitter_link=twitter_link,linkedin_link=linkedin_link)

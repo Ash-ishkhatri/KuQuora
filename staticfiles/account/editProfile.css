@@ -71,8 +71,17 @@ form#edit_profile_form > div.profile_pic{
     position:relative;
     cursor: pointer;
     border:10px solid rgb(255, 255, 255);
+    position: relative;
 }
 
+form#edit_profile_form > div.profile_pic >div{
+    position:absolute;
+    bottom:-3em;
+    width:100%;
+    text-align: center;
+    font-size:1.2rem;
+    font-weight:bold;
+}
 
 form#edit_profile_form > div.profile_pic img{
     height:230px;

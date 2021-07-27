@@ -10,7 +10,11 @@
                 <img  src="/media/{{request.user.profile.profile_pic}}" alt="">
                 <label for ="profile_pic"><i class="fas fa-plus"></i></label>
                 <input type="file" id = "profile_pic" name='profile_pic' onchange = "previewProfileChange()">
+                <div class = "username">
+                    @{{request.user.username}}
+                </div>
             </div> 
+
             <div class="fields">
                 <div class="field">
                     <label for ="first_name">First Name :</label>
@@ -19,10 +23,6 @@
                 <div class="field">
                     <label for ="last_name">Last Name :</label>
                     <input type="text" id = "last_name" name='last_name' value = "{{ request.user.last_name }}">
-                </div> 
-                <div class="field">
-                    <label for ="username">username :</label>
-                    <input type="text" id = "username" name='username' value = "{{ request.user.username }}">
                 </div> 
                 <div class="field">
                     <label for ="">designation :</label>

@@ -24,6 +24,10 @@ window.addEventListener('load',()=>{
         indicate(savedIcon);
     }
 
+    if(window.location.pathname == '/account/followings/'){
+        indicate(FollowersIcon);
+    }
+
     const posts = document.querySelectorAll('.blog-post');
     posts.forEach(post=>{
         const expandBtn = post.querySelector('.expand span');
