@@ -10,7 +10,7 @@ from django.core import serializers
 import string
 from django.utils.text import slugify
 from django.contrib import messages
-
+from better_profanity import profanity
 
 @login_required(login_url='login')
 def index_view(request):
@@ -34,13 +34,16 @@ def create_post_view(request):
         user = request.user
         tags_objs = []
         title = request.POST.get('title')
+        # title = profanity.censor(title,'*')
         body = request.POST.get('body')
+        # body = profanity.censor(body,'*')
         tags = request.POST.get('tags')
         images = request.FILES.getlist('image1')
         p, created = Post.objects.get_or_create(title=title,body=body,user=user)
         tags_list = list(tags.split('#'))
         print('list = ',list)
         for tag in tags_list:
+            # tag = profanity.censor(tag,'*')
             t , created = Tag.objects.get_or_create(title=tag)
             print('t = ' , t)
             tags_objs.append(t)

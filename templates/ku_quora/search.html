@@ -5,6 +5,7 @@
 
 
 {% block content %}
+{% load profanity %}
 <div class="top-info">
     <h1 >Search result for "{{query}}" : </h1>
     <small>{{count}} results found</small>
@@ -28,14 +29,14 @@
         </div>
     </div>
     <div class="body">
-        <h2 class = "title"><a href="{{post.get_absolute_url}}">{{post.title}}</a></h1>
+        <h2 class = "title"><a href="{{post.get_absolute_url}}">{% with string=post.title %} {{ string|censor }}  {% endwith%}</a></h1>
         <span class="tags">
            {% for tag  in post.tags.all %}
-                <a href="{{tag.get_absolute_url }}">#{{tag}}</a>
+                <a href="{{tag.get_absolute_url }}">#{% with string=tag.title %} {{ string|censor }}  {% endwith%}</a>
            {% endfor %}
         </span>
         <div class="text"> 
-            {{post.body|safe}}
+            {% with string=post.body %} {{ string|censor }}  {% endwith%}
         </div>
     </div>
     <div class="images">

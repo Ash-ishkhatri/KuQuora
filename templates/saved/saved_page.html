@@ -9,6 +9,7 @@ saved
     
 {% for post in saved_posts %}
 
+{% load profanity %}
 
 <div class="blog-post" >
     <div class="header">
@@ -21,14 +22,14 @@ saved
         </div>
     </div>
     <div class="body">
-        <h2 class = "title"><a href="{{post.post.get_absolute_url}}">{{post.post.title}}</a></h1>
+        <h2 class = "title"><a href="{{post.post.get_absolute_url}}">{% with string=post.post.title %} {{ string|censor }}  {% endwith%}</a></h1>
         <span class="tags">
            {% for tag  in post.post.tags.all %}
-                <a href="{{tag.get_absolute_url}}">#{{tag}}</a>
+                <a href="{{tag.get_absolute_url}}">#{% with string=tag.title %} {{ string|censor }}  {% endwith%}</a>
            {% endfor %}
         </span>
         <div class="text"> 
-            {{post.post.body|safe}}
+            {% with string=post.post.body %} {{ string|censor }}  {% endwith%}
         </div>
     </div>
     <div class="images">
@@ -52,7 +53,7 @@ saved
                 <div><i class="fas fa-ellipsis-h"></i></div>
                 <ul data-status = 'collapsed'>
                     {% if request.user == post.post.user %}
-                        <a href="{% url 'post_edit' post.lpost.id%}"><li><i class="fas fa-pen"></i>Edit</li></a>
+                        <a href="{% url 'post_edit' post.post.id%}"><li><i class="fas fa-pen"></i>Edit</li></a>
                        <li data-post-id = {{post.post.id}} class = "deletePostBtn"><i class="fas fa-trash"></i>delete post</li>
                     {% endif %}
                    <a href=""><li data-post-id = {{post.post.id}} class = "savePostBtn"><i class="fas fa-save"></i></a>
@@ -113,7 +114,7 @@ saved
                 </div>
             </div>
             <div class="body">
-                {{answer.body}}
+                {% with string=answer.body %} {{ string|censor }}  {% endwith%}
             </div>
             <div class="images">
                 {% for image in answerImages %}

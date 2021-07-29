@@ -1,4 +1,4 @@
-
+{% load profanity %}
  <div class="blog-post">
     <div class="header">
         <div class="profile">
@@ -10,14 +10,14 @@
         </div>
     </div>
     <div class="body">
-        <h2 class = "title"><a href="{{post.get_absolute_url}}">{{post.title}}</a></h1>
+        <h2 class = "title"><a href="{{post.get_absolute_url}}">{% with string=post.title %} {{ string|censor }}  {% endwith%}</a></h1>
         <span class="tags">
            {% for tag  in post.tags.all %}
-                <a href="{{tag.get_absolute_url }}">#{{tag}}</a>
+                <a href="{{tag.get_absolute_url }}">#{% with string=tag.title %} {{ string|censor }}  {% endwith%}</a>
            {% endfor %}
         </span>
         <div class="text"> 
-            {{post.body|safe}}
+            {% with string=post.body %} {{ string|censor }}  {% endwith%}
         </div>
     </div>
     <div class="images">
@@ -101,7 +101,8 @@
                         </div>
                     </div>
                     <div class="body">
-                        {{answer.body}}
+                        {% with string=answer.body %} {{ string|censor }}  {% endwith%}
+
                     </div>
                     <div class="images">
                         {% for image in answerImages %}
@@ -170,7 +171,8 @@
                             </div>
                         </div>
                         <div class="body">
-                            {{comment.body}}
+                            {% with string=comment.body %} {{ string|censor }}  {% endwith%}
+
                         </div>
                     </div>
                     {% endif %}

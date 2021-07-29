@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'profanity',
     'django.contrib.staticfiles',
     'ku_quora',
     'account',
