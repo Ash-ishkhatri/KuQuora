@@ -11,13 +11,15 @@ from core.settings import BASE_DIR
 User = get_user_model()
 
 
+
 def clean_media_files(sender,instance,*args,**kwargs):
     print('media files cleamed')
-    user_id = instance.id
+    user_id = instance.id 
     media = os.path.join(BASE_DIR,'media')
     for item in os.listdir(media):
         if item == str(user_id):
             shutil.rmtree(os.path.join(media,item))
+
 
 # uploading profile image to media/user_id/post_images/
 def get_upload_directory(instance,filename):

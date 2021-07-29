@@ -52,7 +52,7 @@ saved
                 <div><i class="fas fa-ellipsis-h"></i></div>
                 <ul data-status = 'collapsed'>
                     {% if request.user == post.post.user %}
-                        <a href=""><li><i class="fas fa-pen"></i>Edit</li></a>
+                        <a href="{% url 'post_edit' post.lpost.id%}"><li><i class="fas fa-pen"></i>Edit</li></a>
                        <li data-post-id = {{post.post.id}} class = "deletePostBtn"><i class="fas fa-trash"></i>delete post</li>
                     {% endif %}
                    <a href=""><li data-post-id = {{post.post.id}} class = "savePostBtn"><i class="fas fa-save"></i></a>

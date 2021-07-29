@@ -40,7 +40,7 @@
                 <div><i class="fas fa-ellipsis-h"></i></div>
                 <ul data-status = 'collapsed'>
                     {% if request.user == post.user %}
-                        <a href=""><li><i class="fas fa-pen"></i>Edit</li></a>
+                        <a href="{% url 'post_edit' post.id%}"><li><i class="fas fa-pen"></i>Edit</li></a>
                         {% csrf_token %}
                         <li data-post-id = {{post.id}} class = "deletePostBtn"><i class="fas fa-trash"></i>delete post</li>
                     {% endif %}

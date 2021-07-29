@@ -7,7 +7,6 @@ window.addEventListener('load',()=>{
     savedIcon = document.querySelector('nav li i.fa-save');    
 
     let indicate = (icon) => {
-        console.log(icon)
         icon.style.color = 'white';
         icon.style.webkitTextStroke = '0px';
         icon.parentNode.style.backgroundColor = 'var(--blue)';
@@ -46,65 +45,6 @@ window.addEventListener('load',()=>{
     })
 
 
-    // if(window.location.pathname == '/'){
-    //     fetch("https://google-news.p.rapidapi.com/v1/source_search?source=nytimes.com&lang=en&country=NP", {
-    //         "method": "GET",
-    //         "headers": {
-    //             "x-rapidapi-key": "3bf6f71c24msh3f2b75cef6f4ae3p11b0eejsna57855e25767",
-    //             "x-rapidapi-host": "google-news.p.rapidapi.com"
-    //         }
-    //     })
-    //     .then(res => res.json())
-    //     .then(data => {
-    //         console.log(data)
-    //     })
-    //     .catch(err => {
-    //         console.error(err);
-    //     });
-    // }
-
-
-
-    // let updateTime = () => {
-    //     let timezone;
-        
-    
-    //     fetch('https://api.ipify.org?format=json',{
-    //         method : 'get',
-    //     }) 
-    //     .then(res => res.json())
-    //     .then(data => {
-    //         console.log(data.ip)
-    //         fetch('https://ipinfo.io/json?token=ba743880fdd4c3',{
-    //             method : 'get',
-    //         }) 
-    //         .then(res => res.json())
-    //         .then(data => {
-    //             console.log(data)
-    //             timezone = data.timezone
-    //                 fetch(`http://worldtimeapi.org/api/timezone/${timezone}`,
-    //                     {
-    //                         method : 'get'
-    //                     }
-    //                 ).then(res => res.json())
-    //                 .then(data => {
-    //                     console.log(data)
-    //                     let dateTime = data.datetime;
-    //                     dateTime = dateTime.split('');
-    //                     console.log(dateTime)
-    //                     let time = dateTime.slice(11,19);
-    //                     console.log(time)
-    //                     time = time.join('')
-    //                     const timeDisplay = document.querySelector('div.timezone');
-    //                     timeDisplay.innerHTML = time;
-    //                 })
-    
-    //         })
-    //     })
-    // }
-
-    // setInterval(updateTime , 30000);
-
 
 })
 
@@ -118,7 +58,6 @@ function getBlogPost(node){
 
 // deleting post through fetch api
 const deletePostBtn = document.querySelectorAll('li.deletePostBtn');
-console.log(deletePostBtn)
 deletePostBtn.forEach(btn => {
     csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
     btn.addEventListener('click',()=>{
@@ -138,7 +77,6 @@ deletePostBtn.forEach(btn => {
         })
         .then(res => res.json())
         .then(data => {
-            console.log(data);
                 if(data.deleted == true){
                     options.dataset.status = 'collapsed';
                     options.style.visibility = 'hidden';  
@@ -160,12 +98,10 @@ deletePostBtn.forEach(btn => {
 
 // saving post through fetch api
 const saveBtn = document.querySelectorAll('li.savePostBtn');
-console.log(saveBtn)
 saveBtn.forEach(btn => {
     
     csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
     btn.addEventListener('click',()=>{
-        console.log(event.target)
         let data = {
             'post_id' : event.target.dataset.postId
         }
@@ -183,7 +119,6 @@ saveBtn.forEach(btn => {
         })
         .then(res => res.json())
         .then(data => {
-            console.log(data);
                 if(data.status === 'saved'){
                     let msg = document.querySelector('.overlay-message');
                     let btnText = btn.querySelector('span');
@@ -196,7 +131,6 @@ saveBtn.forEach(btn => {
                 }
                 if(data.status === 'unsaved'){
                     if(location == '/saved/'){
-                        console.log('deltet')
                         post.style.display = "none";
                     } 
                     let msg = document.querySelector('.overlay-message');
@@ -255,7 +189,9 @@ if(window.location.pathname.match('/profile/')){
     })
 }
 
-
+if(window.location.pathname.match('/saved/') || window.location.pathname.match('/post/')){
+    document.querySelector('.blog-post').style.marginTop='10em';
+}
 
 // notifications = document.querySelectorAll('.notification');
 
@@ -282,6 +218,40 @@ if(window.location.pathname.match('/profile/')){
 
 // })
 
+const date = new Date().getTimezoneOffset();
+console.log('date = ',date);
+
+try{
+    const sideBlock = document.querySelector('.sideBlock');
+    const jokeArea = sideBlock.querySelector('.joke-area');
+    const jokeCategory = jokeArea.querySelector('div.joke h3');
+    const jokeSetup = jokeArea.querySelector('div.joke .body .setup');
+    const jokeDelivery = jokeArea.querySelector('div.joke .body .delivery');
+    const spinner = jokeArea.querySelector('i.fa-spinner');
+    jokeArea.querySelector('button').addEventListener('click',()=>{
+        jokeSetup.innerHTML = "";
+        jokeDelivery.innerHTML = "";
+        spinner.style.display="block";
+        fetch("https://official-joke-api.appspot.com/random_joke", {
+            "method": "GET",
+        })
+        .then(res => res.json())
+        .then(data => {
+                spinner.style.display="none";
+                jokeSetup.innerHTML = data.setup;
+                jokeDelivery.innerHTML = data.punchline;
+                i = document.createElement('i');
+                i.classList.add('fas','fa-smile')
+                jokeDelivery.append(i);
+        })
+        .catch(err => {
+            console.error(err);
+        });
+    })
+}catch(error){
+    console.log(error);
+}
+
 
 
 
@@ -307,6 +277,5 @@ setInterval(()=>{
                 notificationAudio.play();
         } 
     })
+
 },1000);
-
-

@@ -23,7 +23,6 @@ def get_file_path(instance,filename):
     subfolder = 'postimages'
     return os.path.join(str(instance.post.user.id),subfolder,filename)
 
-
 class Tag(models.Model):
     title = models.CharField(max_length = 30)
     slug = models.SlugField(null=True,unique=True,blank=True)
@@ -125,7 +124,7 @@ class AnswerImages(models.Model):
 class PostImages(models.Model):
     post = models.ForeignKey(Post, on_delete = models.CASCADE)
     image = models.ImageField(upload_to = get_file_path)
-
+    
     def deleteImage(sender,instance,*args,**kwargs):
         instance.image.delete()
         print('image deleted')

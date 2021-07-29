@@ -9,6 +9,7 @@ from django.core.paginator import Paginator, EmptyPage , PageNotAnInteger
 from django.core import serializers
 import string
 from django.utils.text import slugify
+from django.contrib import messages
 
 
 @login_required(login_url='login')
@@ -199,48 +200,83 @@ def post_comment_view(request):
 
 
 
-# def post_edit_view(request,post_id):
+def post_edit_view(request,post_id):
     
 
-#     if request.method == 'POST':
-#         title = request.POST.get('title')
-#         body = request.POST.get('body')
-#         tags = request.POST.get('tags')
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        body = request.POST.get('body')
+        tags = request.POST.get('tags')
+        images = request.FILES.getlist('images')
+        print(images)
+        Post.objects.filter(id=post_id).update(title=title,body=body)
+        tags_objs = []
+        p = Post.objects.get(id=post_id)      
+        tags_list = list(tags.split('#'))
+        for tag in tags_list:
+            t , created = Tag.objects.get_or_create(title=tag)
+            tags_objs.append(t)
+        p.tags.set(tags_objs)
+        p.save()
+        for image in images:
+            i, created = PostImages.objects.get_or_create(post=p,image=image)
+        messages.success(request,f"Post Edited successfully")
+        return redirect('/')
 
-#         Post.objects.filter(id=post_id).update(title=title,body=body)
+    post = Post.objects.get(id = post_id)
+    tags = post.tags.all()
+    images = PostImages.objects.filter(post=post)
+    context = {
+        'post':post,
+        'tags' : tags,
+        'images':images
+    }
 
-#         # print(tags)
-#         # tags = list(tags.split('#'))
-#         # print(tags)
-#         tags =  ['lorem','next'] 
-#         tagsObj = []
-#         for tag in tags:
-#             t,created = Tag.objects.get_or_create(title=tag)
-#             tagsObj.append(t)
-
-#         Post.objects.filter(id=post_id).update(tags=tagsObj)        
-        
-#     post = Post.objects.get(id = post_id)
-
-#     context = {
-#         'post':post
-#     }
-
-#     return render(request,'ku_quora/edit_post.html',context)
+    return render(request,'ku_quora/edit_post.html',context)
 
 
 def search(request):
     sq = request.GET.get('sq')
+    post_ids = []
     if(sq == ''):
-        allPosts = []
         count = 0
     else:
-        allPosts = Post.objects.filter(title__icontains=sq);
-        count = allPosts.count()
-
+        PostFromTitle = Post.objects.filter(title__icontains=sq);
+        for post in PostFromTitle:
+            post_ids.append(post.id)
+        tags = Tag.objects.filter(title__icontains=sq);
+        for tag in tags:
+            posts = tag.post_set.all()
+            for post in posts:
+                if post.id not in post_ids:
+                    post_ids.append(post.id)
+        
+        PostFromBody = Post.objects.filter(body__icontains=sq)
+        for post in PostFromBody:
+            if post.id not in post_ids:
+                post_ids.append(post.id)
+        count = len(post_ids)
+    allPosts = []
+    for id in post_ids:
+        p = Post.objects.get(id=id)
+        allPosts.append(p)
+    print(allPosts)
     context = {
         'allPosts':allPosts,
         'query':sq,
         'count':count
     }
     return render(request,'ku_quora/search.html',context)
+
+
+def delete_post_image(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        imageId = data['imageId']
+        print(imageId)
+        PostImages.objects.filter(id=imageId).delete()
+        response = {
+            'deleted':True
+        }
+
+        return JsonResponse(response)

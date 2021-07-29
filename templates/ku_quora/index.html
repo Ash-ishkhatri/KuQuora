@@ -14,7 +14,7 @@ ku-quora
             {% endif %}
         {% endfor %}
      {% endif %}
-    <!-- <div class="question-wrapper "> -->
+
         <div class="addQuestion-container">
             <div class="add-question">
                 <div class="visible-part">
@@ -53,23 +53,32 @@ ku-quora
 
             </div>
             <i class="fa fa-angle-double-down animate-direction-down"></i>
-
+            
         </div>
-
-    <!-- </div> -->
-        <div class="news">
-            <!-- Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quasi inventore incidunt ducimus vitae laudantium distinctio perspiciatis praesentium commodi cupiditate assumenda id est vel suscipit saepe ea dolore, voluptate autem earum asperiores. Atque expedita animi aut odio, repellat quibusdam laborum esse nemo impedit eaque cumque! Tenetur dolores perferendis saepe dicta natus. -->
-            <!-- {{requests}} -->
-            <div class="timezone">
-                
+  
+        <div class="sideBlock">
+            <div class="joke-area">
+                <button>get random joke</button>
+                <i class="fas fa-spinner"></i>
+                <div class="joke">
+                    <div class="body">
+                        <p class="setup"></p>
+                        <p class="delivery"></p>
+                    </div>
+                </div>
             </div>
         </div>
+        <div class="post ">
+            {% for post in posts %}
+            {% include 'ku_quora/post_template.html' %}
+            {% endfor %}
+        </div>
+   
 
-    <div class="post ">
-        {% for post in posts %}
-        {% include 'ku_quora/post_template.html' %}
-        {% endfor %}
-    </div>
+<!-- <div class="box">
+    <i class="fas fa-times"></i>
+</div> -->
 
-{% endblock %}
+{% endblock %} 
+
 

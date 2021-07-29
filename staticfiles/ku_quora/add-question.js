@@ -63,7 +63,9 @@ if(window.location.pathname == '/'){
         console.log(tag);
         tagsValue = tag.split('#').join('#');
         tagsArray = tagsValue.split('');
-        tagsArray.shift();
+        if(tagsArray[0] === '#'){
+           tagsArray.shift();
+        }
         tags.value = tagsArray.join('');
         console.log(tags.value)
         event.target.submit();
