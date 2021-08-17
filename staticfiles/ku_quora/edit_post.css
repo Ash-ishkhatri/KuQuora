@@ -1,8 +1,8 @@
 form#edit_post_form{
     margin-top:8em;
 }
-form#edit_post_form .images{
-    /* border:1px solid red; */
+form#edit_post_form .images,
+.recently-added-images{
     margin-top:2em;
     display:flex;
     justify-content: left;
@@ -28,8 +28,9 @@ form#edit_post_form .images .image i.fa-times{
     right:-.5em;
     cursor:pointer;
 }
-form#edit_post_form .images > .removed{
+form#edit_post_form .images  .removed{
     display:none;
+    border:1px solid red;
 }
 form#edit_post_form .field{
     margin:1em 0;

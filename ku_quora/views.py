@@ -10,7 +10,6 @@ from django.core import serializers
 import string
 from django.utils.text import slugify
 from django.contrib import messages
-from better_profanity import profanity
 
 @login_required(login_url='login')
 def index_view(request):
@@ -204,7 +203,6 @@ def post_comment_view(request):
 
 
 def post_edit_view(request,post_id):
-    
 
     if request.method == 'POST':
         title = request.POST.get('title')

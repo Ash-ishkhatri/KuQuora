@@ -24,7 +24,7 @@ def get_file_path(instance,filename):
     return os.path.join(str(instance.post.user.id),subfolder,filename)
 
 class Tag(models.Model):
-    title = models.CharField(max_length = 30)
+    title = models.TextField(max_length = 1000)
     slug = models.SlugField(null=True,unique=True,blank=True)
 
     def __str__(self):

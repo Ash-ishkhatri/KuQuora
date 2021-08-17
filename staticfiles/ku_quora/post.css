@@ -455,8 +455,9 @@
 .all-answers .answer-container .images img{
     max-height:200px;
 }
-.all-answers .answer-container .images a{
-
+.all-answers .answer-container .body{
+    /* border:1px solid red; */
+    word-wrap: break-word;
 }
 
 .all-answers .answer-container .images img{

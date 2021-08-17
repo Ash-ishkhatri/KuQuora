@@ -58,10 +58,10 @@ if(window.location.pathname.match(/PostEdit/)){
                 div.classList.add('image');
                 img = document.createElement('img');
                 img.src = this.result;
-                i = document.createElement('i');
-                i.classList.add('fas','fa-times');
+                // i = document.createElement('i');
+                // i.classList.add('fas','fa-times');`
                 div.append(img);
-                div.append(i);
+                // div.append(i);
                 imagePreviewArea.append(div);
 
                 i.addEventListener('click',() => {

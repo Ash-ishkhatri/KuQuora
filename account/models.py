@@ -44,7 +44,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     token = models.CharField(max_length=200,unique=True,null=False,blank=False)
     designation = models.CharField(max_length=200,null=True,blank=True)
-    is_verified = models.BooleanField(default=False)
+    # is_verified = models.BooleanField(default=False)
     profile_pic = models.ImageField(upload_to = get_upload_directory )
     fb_link = models.URLField(max_length = 5000 , null=True,blank=True)
     twitter_link = models.URLField(max_length = 5000 ,null=True,blank=True)

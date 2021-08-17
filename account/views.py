@@ -82,8 +82,6 @@ def profile_view(request,id):
     selfProfile = 1
     already_following = 1
     
-
-
     if id == request.user.id:
         selfProfile = 1
         user = request.user
